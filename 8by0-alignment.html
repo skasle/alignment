@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8/0 Alignment</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#ffffff;--bg2:#f7f6f3;--bg3:#f0efe9;
+    --text:#1a1a18;--text2:#6b6a63;--text3:#9c9a92;
+    --border:rgba(0,0,0,0.12);--border2:rgba(0,0,0,0.2);
+    --radius:8px;--radius-lg:12px;
+    --green:#3B6D11;--amber:#BA7517;--blue:#185FA5;--red:#A32D2D;
+    --green-bg:#EAF3DE;--amber-bg:#FAEEDA;--blue-bg:#E6F1FB;--gray-bg:#F1EFE8;
+  }
+  @media(prefers-color-scheme:dark){
+    :root{
+      --bg:#1c1c1a;--bg2:#242422;--bg3:#2a2a27;
+      --text:#e8e6de;--text2:#9c9a92;--text3:#6b6a63;
+      --border:rgba(255,255,255,0.1);--border2:rgba(255,255,255,0.18);
+      --green-bg:#1a2e0a;--amber-bg:#2e1f08;--blue-bg:#0a1e35;--gray-bg:#242422;
+    }
+  }
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;min-height:100vh}
+  .app{display:flex;flex-direction:column;min-height:100vh}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-bottom:0.5px solid var(--border);gap:12px;flex-wrap:wrap;position:sticky;top:0;background:var(--bg);z-index:100}
+  .brand{font-size:15px;font-weight:600;letter-spacing:-.4px}
+  .brand span{color:var(--text2);font-weight:400}
+  .nav{display:flex;gap:2px}
+  .nav button{background:none;border:0.5px solid transparent;padding:5px 14px;border-radius:var(--radius);font-size:13px;cursor:pointer;color:var(--text2);transition:all .15s}
+  .nav button.active{background:var(--bg2);border-color:var(--border);color:var(--text);font-weight:500}
+  .nav button:hover:not(.active){color:var(--text);background:var(--bg2)}
+  .actions{display:flex;gap:8px;align-items:center}
+  .btn{border:0.5px solid var(--border2);background:none;padding:5px 14px;border-radius:var(--radius);font-size:12px;cursor:pointer;color:var(--text);transition:all .15s;font-family:inherit}
+  .btn:hover{background:var(--bg2)}
+  .btn.primary{background:var(--text);color:var(--bg);border-color:transparent}
+  .btn.primary:hover{opacity:.85}
+  .btn.sm{padding:3px 10px;font-size:11px}
+  .btn.danger{color:var(--red)}
+  .save-dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;transition:background .3s}
+  .save-dot.saving{background:var(--amber)}
+  .save-dot.error{background:var(--red)}
+  .save-lbl{font-size:11px;color:var(--text3);margin-left:5px}
+  .content{padding:24px;flex:1;max-width:1100px;width:100%;margin:0 auto}
+
+  /* Setup */
+  .setup{max-width:400px;margin:80px auto;padding:32px;border:0.5px solid var(--border);border-radius:var(--radius-lg)}
+  .setup h2{font-size:16px;font-weight:600;margin-bottom:8px}
+  .setup p{font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.7}
+  .setup input{width:100%;padding:9px 12px;border:0.5px solid var(--border2);border-radius:var(--radius);font-size:13px;background:var(--bg2);color:var(--text);margin-bottom:10px;font-family:monospace}
+  .setup input:focus{outline:none;border-color:var(--blue)}
+  .setup-err{font-size:12px;color:var(--red);margin-top:6px}
+  .setup-steps{font-size:12px;color:var(--text2);margin-bottom:20px;line-height:2}
+  .setup-steps span{display:block}
+
+  /* Tree */
+  .epic-card{border:0.5px solid var(--border);border-radius:var(--radius-lg);margin-bottom:10px;overflow:hidden}
+  .epic-header{display:flex;align-items:center;gap:12px;padding:11px 16px;cursor:pointer;background:var(--bg2);user-select:none;transition:background .1s}
+  .epic-header:hover{background:var(--bg3)}
+  .epic-num{font-size:11px;font-weight:600;color:var(--text3);min-width:16px}
+  .epic-title{font-size:14px;font-weight:500;flex:1}
+  .epic-nba{font-size:12px;color:var(--text2);flex:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .epic-meta{display:flex;align-items:center;gap:10px;flex-shrink:0}
+  .pct{font-size:11px;font-weight:600}
+  .chevron{font-size:9px;color:var(--text3);transition:transform .2s;margin-left:2px}
+  .chevron.open{transform:rotate(90deg)}
+  .tasks-wrap{border-top:0.5px solid var(--border)}
+  .task-row{display:flex;align-items:center;gap:10px;padding:8px 16px 8px 40px;border-bottom:0.5px solid var(--border);font-size:13px;cursor:pointer;transition:background .1s}
+  .task-row:last-of-type{border-bottom:none}
+  .task-row:hover{background:var(--bg2)}
+  .task-row.blocking{border-left:2px solid #E24B4A;padding-left:38px}
+  .t-name{flex:2;font-size:13px}
+  .t-owner{font-size:11px;color:var(--text2);min-width:44px;text-align:center}
+  .t-eta{font-size:11px;color:var(--text3);min-width:72px}
+  .pill{font-size:11px;font-weight:500;padding:2px 9px;border-radius:20px;min-width:82px;text-align:center;white-space:nowrap}
+  .p-ns{background:var(--gray-bg);color:#5F5E5A}
+  .p-s{background:var(--blue-bg);color:var(--blue)}
+  .p-50{background:var(--amber-bg);color:var(--amber)}
+  .p-75{background:var(--green-bg);color:var(--green)}
+  .p-done{background:var(--green-bg);color:var(--green)}
+  .score{font-size:11px;color:var(--text3);min-width:26px;text-align:center}
+  .no-tasks{padding:12px 16px 12px 40px;font-size:12px;color:var(--text3)}
+  .quick-add{padding:8px 16px 8px 40px;display:flex;gap:8px;background:var(--bg2)}
+  .quick-add input{flex:1;border:0.5px solid var(--border);background:var(--bg);padding:5px 9px;border-radius:var(--radius);font-size:12px;color:var(--text);font-family:inherit}
+  .quick-add input:focus{outline:none;border-color:var(--blue)}
+
+  /* Board */
+  .board{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;align-items:start}
+  .col-head{font-size:12px;font-weight:500;color:var(--text2);padding:5px 0;margin-bottom:8px;border-bottom:0.5px solid var(--border)}
+  .b-card{border:0.5px solid var(--border);border-radius:var(--radius);padding:10px;margin-bottom:8px;background:var(--bg);cursor:pointer;transition:border-color .15s}
+  .b-card:hover{border-color:var(--border2)}
+  .b-title{font-size:12px;font-weight:500;margin-bottom:5px;line-height:1.4}
+  .b-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--text2)}
+  .b-epic{font-size:10px;padding:2px 7px;border-radius:20px;background:var(--bg2);color:var(--text2);margin-top:5px;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  /* Reporting */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+  .stat{background:var(--bg2);border-radius:var(--radius);padding:14px}
+  .stat-val{font-size:26px;font-weight:600}
+  .stat-lbl{font-size:11px;color:var(--text2);margin-top:3px}
+  .rep-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .rep-card{border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:16px}
+  .rep-title{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
+  .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:9px;font-size:12px}
+  .bar-lbl{min-width:88px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar-track{flex:1;height:5px;background:var(--bg2);border-radius:3px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:3px;transition:width .4s}
+  .bar-val{min-width:24px;text-align:right;color:var(--text3);font-size:11px}
+
+  /* Archive */
+  .arc-search{width:100%;padding:8px 12px;border:0.5px solid var(--border2);border-radius:var(--radius);font-size:13px;background:var(--bg2);color:var(--text);margin-bottom:16px;font-family:inherit}
+  .arc-search:focus{outline:none;border-color:var(--blue)}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th{text-align:left;padding:6px 10px;border-bottom:0.5px solid var(--border2);font-weight:500;color:var(--text2);font-size:11px}
+  td{padding:7px 10px;border-bottom:0.5px solid var(--border)}
+  tr:hover td{background:var(--bg2)}
+
+  /* Modal */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:200}
+  .modal{background:var(--bg);border-radius:var(--radius-lg);border:0.5px solid var(--border2);padding:24px;width:min(480px,92vw);max-height:88vh;overflow-y:auto}
+  .modal h2{font-size:15px;font-weight:600;margin-bottom:18px}
+  .field{margin-bottom:13px}
+  .field label{display:block;font-size:11px;color:var(--text2);margin-bottom:4px;font-weight:500}
+  .field input,.field select,.field textarea{width:100%;border:0.5px solid var(--border2);background:var(--bg2);padding:7px 10px;border-radius:var(--radius);font-size:13px;color:var(--text);font-family:inherit}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);background:var(--bg)}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;padding-top:16px;border-top:0.5px solid var(--border)}
+
+  @media(max-width:700px){
+    .board{grid-template-columns:1fr 1fr}
+    .rep-grid{grid-template-columns:1fr}
+    .stats{grid-template-columns:1fr 1fr}
+    .epic-nba{display:none}
+    .t-eta{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+const TOKEN_KEY = '8by0_token';
+const GIST_KEY  = '8by0_gist';
+const FILENAME  = '8by0_alignment.json';
+
+const EPICS_DEFAULT = [
+  {id:'e0',priority:0,title:'Implementations / Pilots (WMC & FDI)',nba:'Drive pilots to production sign-off'},
+  {id:'e1',priority:1,title:'Fund Raise (First Meetings)',nba:'50 outbound target; Diagram MOU closes April 5'},
+  {id:'e2',priority:2,title:'Sales - TOF & Close',nba:'Munich, Canadian targets, small US outbound & carrier'},
+  {id:'e3',priority:3,title:'VP Eng & Tech Team',nba:'Candidates in loop; EOM decision'},
+  {id:'e4',priority:4,title:'Munich Investment & Distribution',nba:'Drive introductions; touch base with Dawn on next steps'},
+  {id:'e5',priority:5,title:'Admin & Company Formation',nba:'SR&ED; equity; SOC 2'},
+  {id:'e6',priority:6,title:'Move Down Product Roadmap',nba:'What beyond implementations?'},
+];
+const TASKS_DEFAULT = [
+  {id:'t1',epicId:'e1',priority:0,name:'Investor outreach',owner:'SK',eta:'1/30/2026',progress:'25%',scope:2,impact:1,notes:''},
+  {id:'t2',epicId:'e0',priority:0,name:'WMC implementation',owner:'JP',eta:'',progress:'Started',scope:3,impact:1,notes:''},
+  {id:'t3',epicId:'e1',priority:0.5,name:'MunichRe rev share agreement',owner:'SK',eta:'2/16/2026',progress:'25%',scope:1,impact:2,notes:"Draft in Dawn's hands"},
+  {id:'t4',epicId:'e0',priority:0.5,name:'SOC 2 consideration',owner:'JP',eta:'',progress:'Started',scope:1,impact:2,notes:'Vanta selected; kickoff pending'},
+  {id:'t5',epicId:'e0',priority:0.5,name:'Brokers pitch',owner:'JP',eta:'2/16/2026',progress:'Started',scope:2,impact:2,notes:'WTW, AON etc.'},
+  {id:'t6',epicId:'e1',priority:0.75,name:'Broker outreach',owner:'SK',eta:'2/6/2026',progress:'Started',scope:2,impact:2,notes:''},
+  {id:'t7',epicId:'e0',priority:0.75,name:'CRM solution',owner:'SK',eta:'2/16/2026',progress:'Started',scope:2,impact:3,notes:''},
+  {id:'t8',epicId:'e1',priority:1.5,name:'Manufacture a carrier agreement',owner:'SK',eta:'',progress:'Not Started',scope:null,impact:null,notes:''},
+  {id:'t9',epicId:'e1',priority:2,name:'Forecast v2',owner:'SK/JP',eta:'',progress:'Started',scope:2,impact:3,notes:'Sales & dev expense refinement'},
+  {id:'t10',epicId:'e0',priority:1,name:'Alliant pilot prep',owner:'JP',eta:'',progress:'Not Started',scope:2,impact:1,notes:'Jumbo client pilot advancing'},
+  {id:'t11',epicId:'e4',priority:1,name:'Carrier strategy session with Dawn / Leo Tinkham',owner:'SK',eta:'',progress:'Not Started',scope:1,impact:2,notes:''},
+  {id:'t12',epicId:'e3',priority:1,name:'Yan Avery onboarding (LOE execution)',owner:'SK',eta:'',progress:'Started',scope:2,impact:1,notes:'Interim period began March 16'},
+  {id:'t13',epicId:'e5',priority:1,name:'Jim Kenny equity negotiation',owner:'SK',eta:'',progress:'Started',scope:1,impact:3,notes:'Counter: 2-year post-termination exercise window'},
+  {id:'t14',epicId:'e2',priority:1,name:'Symetra NDA follow-up',owner:'SK',eta:'',progress:'Started',scope:1,impact:2,notes:'Escalate via Kayla Halpin VP'},
+  {id:'t15',epicId:'e2',priority:1,name:'Equitable call with Evan Scarponi',owner:'SK',eta:'',progress:'Not Started',scope:1,impact:2,notes:'Intro via Don Russell'},
+  {id:'t16',epicId:'e2',priority:1,name:'Davies TPA re-engagement',owner:'SK',eta:'',progress:'Not Started',scope:1,impact:2,notes:'Stalled since late Feb'},
+  {id:'t17',epicId:'e1',priority:1,name:'Intact Ventures meeting',owner:'SK',eta:'',progress:'Not Started',scope:1,impact:1,notes:''},
+  {id:'t18',epicId:'e1',priority:1,name:'markd.vc / Amanda Couture meeting',owner:'SK',eta:'',progress:'Not Started',scope:1,impact:1,notes:''},
+];
+const COMPLETED_DEFAULT = [
+  {id:'c1',epicId:'e1',name:'Munich MOU',owner:'SK',scope:2,impact:2,notes:''},
+  {id:'c2',epicId:'e0',name:'FDI agreement',owner:'SK',scope:2,impact:1,notes:''},
+  {id:'c3',epicId:'e1',name:'Deck for MunichRe internal',owner:'SK',scope:2,impact:3,notes:''},
+  {id:'c4',epicId:'e1',name:'Move SR&ED forward',owner:'SK',scope:3,impact:2,notes:''},
+  {id:'c5',epicId:'e1',name:'Investor one pager',owner:'SK',scope:2,impact:3,notes:''},
+  {id:'c6',epicId:'e1',name:'Investor deck',owner:'SK',scope:3,impact:1,notes:''},
+  {id:'c7',epicId:'e0',name:'MunichRe account manager one pager',owner:'JP',scope:2,impact:2,notes:''},
+  {id:'c8',epicId:'e0',name:'Privacy agreement for WMC',owner:'JP',scope:1,impact:1,notes:''},
+  {id:'c9',epicId:'e0',name:'MOU for WMC',owner:'SK',scope:1,impact:1,notes:''},
+  {id:'c10',epicId:'e0',name:'Short form sales deck',owner:'Sam',scope:2,impact:1,notes:''},
+  {id:'c11',epicId:'e1',name:'Rework econ slides for sales deck',owner:'SK',scope:1,impact:3,notes:''},
+  {id:'c12',epicId:'e0',name:'Demo V2',owner:'JP',scope:3,impact:2,notes:''},
+  {id:'c13',epicId:'e0',name:'Wave 3 - Canadian carriers outreach',owner:'JP',scope:2,impact:2,notes:''},
+  {id:'c14',epicId:'e1',name:'Company name (Eight by Zero)',owner:'Sam',scope:3,impact:2,notes:''},
+  {id:'c15',epicId:'e1',name:'Website v1',owner:'Sam',scope:2,impact:3,notes:''},
+  {id:'c16',epicId:'e0',name:'Advisory board setup',owner:'JP',scope:3,impact:2,notes:''},
+];
+
+const STATUSES = ['Not Started','Started','50%','75%','Completed'];
+const OWNERS   = ['SK','JP','SK/JP','Sam','Yan'];
+let nextId = 300;
+let saveTimer = null;
+let saveSt = 'saved';
+
+let S = {
+  view:'tree', modal:null, search:'', setupErr:'',
+  epics: JSON.parse(JSON.stringify(EPICS_DEFAULT)),
+  tasks: JSON.parse(JSON.stringify(TASKS_DEFAULT)),
+  completed: JSON.parse(JSON.stringify(COMPLETED_DEFAULT)),
+  expanded: Object.fromEntries(EPICS_DEFAULT.map(e=>[e.id,true])),
+};
+
+function token(){ return localStorage.getItem(TOKEN_KEY); }
+function gistId(){ return localStorage.getItem(GIST_KEY); }
+
+async function apiLoad(tok) {
+  const r = await fetch('https://api.github.com/gists', {
+    headers:{ Authorization:'token '+tok, Accept:'application/vnd.github.v3+json' }
+  });
+  if (!r.ok) throw new Error('auth');
+  const list = await r.json();
+  const found = list.find(g => g.files && g.files[FILENAME]);
+  if (!found) return null;
+  localStorage.setItem(GIST_KEY, found.id);
+  const full = await fetch('https://api.github.com/gists/'+found.id, {
+    headers:{ Authorization:'token '+tok }
+  });
+  const d = await full.json();
+  return JSON.parse(d.files[FILENAME].content);
+}
+
+async function apiSave() {
+  const tok = token();
+  if (!tok) return;
+  const payload = { epics:S.epics, tasks:S.tasks, completed:S.completed, expanded:S.expanded, nextId };
+  const body = { files:{ [FILENAME]:{ content: JSON.stringify(payload, null, 2) } } };
+  const id = gistId();
+  if (id) {
+    await fetch('https://api.github.com/gists/'+id, {
+      method:'PATCH',
+      headers:{ Authorization:'token '+tok, 'Content-Type':'application/json' },
+      body: JSON.stringify(body)
+    });
+  } else {
+    const r = await fetch('https://api.github.com/gists', {
+      method:'POST',
+      headers:{ Authorization:'token '+tok, 'Content-Type':'application/json' },
+      body: JSON.stringify({ ...body, description:'8/0 Alignment OS', public:false })
+    });
+    const d = await r.json();
+    if (d.id) localStorage.setItem(GIST_KEY, d.id);
+  }
+}
+
+function scheduleSave() {
+  saveSt = 'saving'; updateDot();
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async () => {
+    try { await apiSave(); saveSt='saved'; }
+    catch(e) { saveSt='error'; }
+    updateDot();
+  }, 900);
+}
+
+function updateDot() {
+  const d = document.getElementById('sdot');
+  const l = document.getElementById('slbl');
+  if (d) d.className = 'save-dot'+(saveSt==='saving'?' saving':saveSt==='error'?' error':'');
+  if (l) l.textContent = saveSt==='saving'?'Saving...':saveSt==='error'?'Save failed':'Saved';
+}
+
+function sc(t){ return t.scope&&t.impact ? t.scope*t.impact : null; }
+function pct(eid) {
+  const t = S.tasks.filter(x=>x.epicId===eid);
+  if (!t.length) return 0;
+  const m = {'Not Started':0,'Started':25,'50%':50,'75%':75,'Completed':100};
+  return Math.round(t.reduce((a,x)=>a+(m[x.progress]||0),0)/t.length);
+}
+function epic(t){ return S.epics.find(e=>e.id===t.epicId); }
+function trunc(s,n){ return s&&s.length>n?s.slice(0,n)+'...':s; }
+function pc(s){
+  if(!s||s==='Not Started') return 'p-ns';
+  if(s==='Started') return 'p-s';
+  if(s==='50%') return 'p-50';
+  if(s==='75%') return 'p-75';
+  return 'p-done';
+}
+
+function render() {
+  document.getElementById('app').innerHTML = !token() ? buildSetup() : buildMain();
+  bind();
+}
+
+function buildSetup() {
+  return `<div class="content"><div class="setup">
+    <h2>8/0 Alignment OS</h2>
+    <p>Connect a GitHub account to persist your data across sessions. Your data saves to a private Gist and works on any device.</p>
+    <div class="setup-steps">
+      <span>1. Go to <strong>github.com/settings/tokens</strong></span>
+      <span>2. Generate new token (classic)</span>
+      <span>3. Check only the <strong>gist</strong> scope</span>
+      <span>4. Paste token below</span>
+    </div>
+    <input id="tok" type="password" placeholder="ghp_..." autocomplete="off" />
+    <button class="btn primary" id="connect-btn" style="width:100%;padding:9px 0">Connect</button>
+    ${S.setupErr?`<div class="setup-err">${S.setupErr}</div>`:''}
+  </div></div>`;
+}
+
+function buildMain() {
+  return `
+  <div class="topbar">
+    <div class="brand">8/0 <span>Alignment</span></div>
+    <div class="nav">
+      ${['tree','board','reporting','archive'].map(v=>`<button class="${S.view===v?'active':''}" data-view="${v}">${{tree:'Tree',board:'Board',reporting:'Reporting',archive:'Archive'}[v]}</button>`).join('')}
+    </div>
+    <div class="actions">
+      <span class="save-dot${saveSt==='saving'?' saving':saveSt==='error'?' error':''}" id="sdot"></span>
+      <span class="save-lbl" id="slbl">Saved</span>
+      <button class="btn sm" data-action="disconnect">Disconnect</button>
+      <button class="btn primary" data-action="new-task">+ Task</button>
+      <button class="btn sm" data-action="new-epic">+ Epic</button>
+    </div>
+  </div>
+  <div class="content">
+    ${S.view==='tree'?buildTree():''}
+    ${S.view==='board'?buildBoard():''}
+    ${S.view==='reporting'?buildReporting():''}
+    ${S.view==='archive'?buildArchive():''}
+  </div>
+  ${S.modal?buildModal():''}`;
+}
+
+function buildTree() {
+  return S.epics.slice().sort((a,b)=>a.priority-b.priority).map(e=>{
+    const tasks = S.tasks.filter(t=>t.epicId===e.id).sort((a,b)=>a.priority-b.priority);
+    const p = pct(e.id);
+    const open = S.expanded[e.id];
+    const blocking = tasks.filter(t=>t.progress==='Not Started'&&sc(t)!==null&&sc(t)<=2).length;
+    return `<div class="epic-card">
+      <div class="epic-header" data-toggle="${e.id}">
+        <span class="epic-num">${e.priority}</span>
+        <span class="epic-title">${e.title}</span>
+        <span class="epic-nba">${e.nba||''}</span>
+        <div class="epic-meta">
+          ${blocking?`<span style="font-size:11px;color:#E24B4A;font-weight:600">&#9889; ${blocking} blocking</span>`:''}
+          <span style="font-size:11px;color:var(--text3)">${tasks.length} tasks</span>
+          <span class="pct" style="color:${p>=75?'var(--green)':p>=40?'var(--amber)':'var(--text3)'}">${p}%</span>
+          <button class="btn sm" data-edit-epic="${e.id}">Edit</button>
+          <span class="chevron ${open?'open'}">&#9654;</span>
+        </div>
+      </div>
+      ${open?`<div class="tasks-wrap">
+        ${tasks.length?tasks.map(t=>`
+          <div class="task-row${sc(t)!==null&&sc(t)<=2&&t.progress==='Not Started'?' blocking':''}" data-edit-task="${t.id}">
+            <span class="t-name">${t.name}</span>
+            <span class="t-owner">${t.owner||''}</span>
+            <span class="t-eta">${t.eta||''}</span>
+            <span class="pill ${pc(t.progress)}">${t.progress||'Not Started'}</span>
+            <span class="score">${sc(t)!==null?sc(t):'-'}</span>
+            <button class="btn sm" style="color:var(--text3)" data-archive="${t.id}" title="Archive as completed">86</button>
+          </div>`).join(''):`<div class="no-tasks">No active tasks</div>`}
+        <div class="quick-add">
+          <input placeholder="Quick-add task..." data-qa="${e.id}">
+          <button class="btn sm" data-qs="${e.id}">Add</button>
+        </div>
+      </div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function buildBoard() {
+  return `<div class="board">${STATUSES.map(col=>{
+    const tasks = S.tasks.filter(t=>t.progress===col);
+    return `<div>
+      <div class="col-head">${col} <span style="color:var(--text3);font-weight:400">${tasks.length}</span></div>
+      ${tasks.map(t=>{const e=epic(t);const s=sc(t);return`
+        <div class="b-card" data-edit-task="${t.id}">
+          <div class="b-title">${t.name}</div>
+          <div class="b-meta"><span>${t.owner||''}</span><span>${t.eta||''}</span></div>
+          ${e?`<div class="b-epic">${trunc(e.title,30)}</div>`:''}
+          ${s!==null?`<div style="font-size:10px;color:var(--text3);margin-top:4px">Score ${s}</div>`:''}
+        </div>`;}).join('')}
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function buildReporting() {
+  const active=S.tasks, done=S.completed, all=[...active,...done];
+  const byOwner={};
+  active.forEach(t=>{const o=t.owner||'?';byOwner[o]=(byOwner[o]||0)+1});
+  const byScope={};
+  all.forEach(t=>{if(t.scope)byScope[t.scope]=(byScope[t.scope]||0)+1});
+  const maxO=Math.max(...Object.values(byOwner),1);
+  const maxS=Math.max(...Object.values(byScope),1);
+  const denom=done.length+active.filter(t=>t.progress!=='Completed').length;
+  const compPct=denom?Math.round(done.length/denom*100):0;
+  const hiPri=active.filter(t=>sc(t)!==null&&sc(t)<=3).length;
+  const sl={1:'3 days',2:'4-7 days',3:'1-2 wks',4:'3-4 wks',5:'4+ wks'};
+  return `
+  <div class="stats">
+    <div class="stat"><div class="stat-val">${active.filter(t=>t.progress!=='Completed').length}</div><div class="stat-lbl">Active tasks</div></div>
+    <div class="stat"><div class="stat-val">${done.length}</div><div class="stat-lbl">Completed (archived)</div></div>
+    <div class="stat"><div class="stat-val">${compPct}%</div><div class="stat-lbl">Overall completion</div></div>
+    <div class="stat"><div class="stat-val">${hiPri}</div><div class="stat-lbl">High-priority (score ≤3)</div></div>
+  </div>
+  <div class="rep-grid">
+    <div class="rep-card"><div class="rep-title">Tasks by owner</div>
+      ${Object.entries(byOwner).sort((a,b)=>b[1]-a[1]).map(([o,n])=>`
+        <div class="bar-row"><span class="bar-lbl">${o}</span>
+        <div class="bar-track"><div class="bar-fill" style="width:${Math.round(n/maxO*100)}%;background:var(--blue)"></div></div>
+        <span class="bar-val">${n}</span></div>`).join('')}
+    </div>
+    <div class="rep-card"><div class="rep-title">Scope distribution</div>
+      ${[1,2,3,4,5].map(s=>{const n=byScope[s]||0;return`
+        <div class="bar-row"><span class="bar-lbl">${sl[s]}</span>
+        <div class="bar-track"><div class="bar-fill" style="width:${Math.round(n/maxS*100)}%;background:#1D9E75"></div></div>
+        <span class="bar-val">${n}</span></div>`;}).join('')}
+    </div>
+    <div class="rep-card"><div class="rep-title">Epic progress</div>
+      ${S.epics.slice().sort((a,b)=>a.priority-b.priority).map(e=>{const p=pct(e.id);return`
+        <div class="bar-row"><span class="bar-lbl" title="${e.title}">${trunc(e.title,20)}</span>
+        <div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${p>=75?'var(--green)':p>=40?'var(--amber)':'var(--blue)'}"></div></div>
+        <span class="bar-val">${p}%</span></div>`;}).join('')}
+    </div>
+    <div class="rep-card"><div class="rep-title">Status breakdown</div>
+      ${STATUSES.map(s=>{const n=active.filter(t=>t.progress===s).length;return`
+        <div class="bar-row"><span class="bar-lbl">${s}</span>
+        <div class="bar-track"><div class="bar-fill" style="width:${Math.round(n/Math.max(active.length,1)*100)}%;background:#534AB7"></div></div>
+        <span class="bar-val">${n}</span></div>`;}).join('')}
+    </div>
+  </div>`;
+}
+
+function buildArchive() {
+  const q=S.search.toLowerCase();
+  const items=S.completed.filter(t=>!q||t.name.toLowerCase().includes(q)||(t.owner||'').toLowerCase().includes(q));
+  return `<input class="arc-search" placeholder="Search completed tasks..." id="arc-search" value="${S.search}">
+  <table><thead><tr><th>Task</th><th>Epic</th><th>Owner</th><th>Scope</th><th>Impact</th><th>Score</th><th></th></tr></thead>
+  <tbody>${items.map(t=>{const e=epic(t);const s=t.scope&&t.impact?t.scope*t.impact:null;return`
+    <tr><td style="font-weight:500">${t.name}</td>
+    <td style="color:var(--text2)">${e?trunc(e.title,26):'—'}</td>
+    <td>${t.owner||'—'}</td><td>${t.scope||'—'}</td><td>${t.impact||'—'}</td><td>${s!==null?s:'—'}</td>
+    <td><button class="btn sm" data-restore="${t.id}">Restore</button></td></tr>`;}).join('')}
+  </tbody></table>`;
+}
+
+function buildModal() {
+  const m=S.modal;
+  if (m.type==='task') {
+    const t=m.data||{};
+    return `<div class="overlay" id="ov"><div class="modal">
+      <h2>${m.isNew?'New task':'Edit task'}</h2>
+      <div class="field"><label>Task name</label><input id="m-name" value="${t.name||''}"></div>
+      <div class="field"><label>Epic</label><select id="m-epic">
+        ${S.epics.slice().sort((a,b)=>a.priority-b.priority).map(e=>`<option value="${e.id}"${t.epicId===e.id?' selected':''}>${e.priority}. ${e.title}</option>`).join('')}
+      </select></div>
+      <div class="field"><label>Owner</label><select id="m-owner">
+        ${OWNERS.map(o=>`<option${t.owner===o?' selected':''}>${o}</option>`).join('')}
+        ${t.owner&&!OWNERS.includes(t.owner)?`<option selected>${t.owner}</option>`:''}
+      </select></div>
+      <div class="field"><label>Status</label><select id="m-status">
+        ${STATUSES.map(s=>`<option${t.progress===s?' selected':''}>${s}</option>`).join('')}
+      </select></div>
+      <div class="row3">
+        <div class="field"><label>ETA</label><input id="m-eta" value="${t.eta||''}"></div>
+        <div class="field"><label>Scope (1-5)</label><input id="m-scope" type="number" min="1" max="5" value="${t.scope||''}"></div>
+        <div class="field"><label>Impact (1-5)</label><input id="m-impact" type="number" min="1" max="5" value="${t.impact||''}"></div>
+      </div>
+      <div class="field"><label>Notes</label><textarea id="m-notes" rows="2">${t.notes||''}</textarea></div>
+      <div class="modal-footer">
+        ${!m.isNew?`<button class="btn danger" id="m-del">Delete</button>`:''}
+        <button class="btn" id="m-cancel">Cancel</button>
+        <button class="btn primary" id="m-save">Save</button>
+      </div>
+    </div></div>`;
+  }
+  if (m.type==='epic') {
+    const e=m.data||{};
+    return `<div class="overlay" id="ov"><div class="modal">
+      <h2>${m.isNew?'New Epic':'Edit Epic'}</h2>
+      <div class="field"><label>Priority (0 = highest)</label><input id="m-pri" type="number" min="0" value="${e.priority!==undefined?e.priority:7}"></div>
+      <div class="field"><label>Title</label><input id="m-title" value="${e.title||''}"></div>
+      <div class="field"><label>Next best action</label><input id="m-nba" value="${e.nba||''}"></div>
+      <div class="modal-footer">
+        ${!m.isNew?`<button class="btn danger" id="m-del">Delete epic</button>`:''}
+        <button class="btn" id="m-cancel">Cancel</button>
+        <button class="btn primary" id="m-save">${m.isNew?'Create':'Save'}</button>
+      </div>
+    </div></div>`;
+  }
+  return '';
+}
+
+function bind() {
+  // Setup
+  const cb = document.getElementById('connect-btn');
+  if (cb) {
+    const go = async () => {
+      const tok = document.getElementById('tok').value.trim();
+      if (!tok) return;
+      cb.textContent='Connecting...'; cb.disabled=true;
+      try {
+        const existing = await apiLoad(tok);
+        localStorage.setItem(TOKEN_KEY, tok);
+        if (existing) {
+          S.epics=existing.epics||S.epics;
+          S.tasks=existing.tasks||S.tasks;
+          S.completed=existing.completed||S.completed;
+          S.expanded=existing.expanded||S.expanded;
+          if(existing.nextId) nextId=existing.nextId;
+        } else {
+          await apiSave();
+        }
+        S.setupErr=''; render();
+      } catch(e) {
+        S.setupErr='Could not connect. Make sure the token has the gist scope.';
+        cb.textContent='Connect'; cb.disabled=false;
+        render();
+      }
+    };
+    cb.addEventListener('click', go);
+    document.getElementById('tok').addEventListener('keydown', e=>{ if(e.key==='Enter') go(); });
+    return;
+  }
+
+  // Nav
+  document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{S.view=b.dataset.view;render()}));
+
+  // Actions
+  document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>{
+    if(b.dataset.action==='new-task'){S.modal={type:'task',isNew:true,data:{epicId:S.epics[0]?.id,progress:'Not Started'}};render();}
+    if(b.dataset.action==='new-epic'){S.modal={type:'epic',isNew:true,data:{}};render();}
+    if(b.dataset.action==='disconnect'){localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(GIST_KEY);render();}
+  }));
+
+  // Tree toggles
+  document.querySelectorAll('[data-toggle]').forEach(b=>b.addEventListener('click',e=>{
+    if(e.target.closest('[data-edit-epic]')) return;
+    S.expanded[b.dataset.toggle]=!S.expanded[b.dataset.toggle];
+    scheduleSave(); render();
+  }));
+
+  // Edit epic
+  document.querySelectorAll('[data-edit-epic]').forEach(b=>b.addEventListener('click',e=>{
+    e.stopPropagation();
+    const ep=S.epics.find(x=>x.id===b.dataset.editEpic);
+    if(ep){S.modal={type:'epic',isNew:false,data:{...ep}};render();}
+  }));
+
+  // Edit task
+  document.querySelectorAll('[data-edit-task]').forEach(b=>b.addEventListener('click',e=>{
+    if(e.target.closest('[data-archive]')) return;
+    const t=S.tasks.find(x=>x.id===b.dataset.editTask);
+    if(t){S.modal={type:'task',isNew:false,data:{...t}};render();}
+  }));
+
+  // Archive
+  document.querySelectorAll('[data-archive]').forEach(b=>b.addEventListener('click',e=>{
+    e.stopPropagation();
+    const t=S.tasks.find(x=>x.id===b.dataset.archive);
+    if(t){S.completed.unshift({...t,progress:'Completed'});S.tasks=S.tasks.filter(x=>x.id!==t.id);scheduleSave();render();}
+  }));
+
+  // Restore
+  document.querySelectorAll('[data-restore]').forEach(b=>b.addEventListener('click',()=>{
+    const t=S.completed.find(x=>x.id===b.dataset.restore);
+    if(t){S.tasks.push({...t,progress:'Not Started'});S.completed=S.completed.filter(x=>x.id!==t.id);scheduleSave();render();}
+  }));
+
+  // Quick add
+  document.querySelectorAll('[data-qs]').forEach(b=>b.addEventListener('click',()=>{
+    const inp=document.querySelector(`[data-qa="${b.dataset.qs}"]`);
+    if(inp&&inp.value.trim()){
+      S.tasks.push({id:'t'+(nextId++),epicId:b.dataset.qs,priority:99,name:inp.value.trim(),owner:'',eta:'',progress:'Not Started',scope:null,impact:null,notes:''});
+      scheduleSave(); render();
+    }
+  }));
+  document.querySelectorAll('[data-qa]').forEach(inp=>inp.addEventListener('keydown',e=>{
+    if(e.key==='Enter') document.querySelector(`[data-qs="${inp.dataset.qa}"]`)?.click();
+  }));
+
+  // Archive search
+  const as=document.getElementById('arc-search');
+  if(as) as.addEventListener('input',()=>{S.search=as.value;render()});
+
+  // Modal
+  const ov=document.getElementById('ov');
+  if(ov){
+    ov.addEventListener('click',e=>{if(e.target===ov){S.modal=null;render();}});
+    document.getElementById('m-cancel')?.addEventListener('click',()=>{S.modal=null;render()});
+    document.getElementById('m-del')?.addEventListener('click',()=>{
+      if(S.modal.type==='task') S.tasks=S.tasks.filter(t=>t.id!==S.modal.data.id);
+      if(S.modal.type==='epic') S.epics=S.epics.filter(e=>e.id!==S.modal.data.id);
+      scheduleSave(); S.modal=null; render();
+    });
+    document.getElementById('m-save')?.addEventListener('click',()=>{
+      const m=S.modal;
+      if(m.type==='task'){
+        const d={
+          name:document.getElementById('m-name').value||'',
+          epicId:document.getElementById('m-epic').value||'',
+          owner:document.getElementById('m-owner').value||'',
+          progress:document.getElementById('m-status').value||'Not Started',
+          eta:document.getElementById('m-eta').value||'',
+          scope:parseInt(document.getElementById('m-scope').value)||null,
+          impact:parseInt(document.getElementById('m-impact').value)||null,
+          notes:document.getElementById('m-notes').value||'',
+        };
+        if(m.isNew) S.tasks.push({id:'t'+(nextId++),priority:99,...d});
+        else { const i=S.tasks.findIndex(t=>t.id===m.data.id); if(i>=0) S.tasks[i]={...S.tasks[i],...d}; }
+      }
+      if(m.type==='epic'){
+        const d={
+          priority:parseInt(document.getElementById('m-pri').value)||7,
+          title:document.getElementById('m-title').value||'',
+          nba:document.getElementById('m-nba').value||'',
+        };
+        if(m.isNew) S.epics.push({id:'e'+(nextId++),expanded:true,...d});
+        else { const i=S.epics.findIndex(e=>e.id===m.data.id); if(i>=0) S.epics[i]={...S.epics[i],...d}; }
+      }
+      scheduleSave(); S.modal=null; render();
+    });
+  }
+}
+
+render();
+</script>
+</body>
+</html>
