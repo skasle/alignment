@@ -431,7 +431,27 @@ function bind(){
     });
   }
 }
-render();
+// Auto-load on startup if token exists
+(async function(){
+  var t=localStorage.getItem(TK);
+  if(t){
+    document.getElementById("app").innerHTML="<div style=\"padding:60px;text-align:center;font-size:13px;color:#9c9a92\">Loading...</div>";
+    try{
+      var existing=await apiLoad(t);
+      if(existing){
+        S.epics=existing.epics||S.epics;
+        S.tasks=existing.tasks||S.tasks;
+        S.completed=existing.completed||S.completed;
+        S.expanded=existing.expanded||S.expanded;
+        if(existing.nextId)nid=existing.nextId;
+      }
+    }catch(e){
+      localStorage.removeItem(TK);
+      localStorage.removeItem(GK);
+    }
+  }
+  render();
+})();
 </script>
 </body>
 </html>
