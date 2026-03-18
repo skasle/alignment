@@ -225,6 +225,29 @@ function dot(){
 
 function sc(t){return t.scope&&t.impact?t.scope*t.impact:null}
 
+// Convert M/D/YYYY or M/D/YY → YYYY-MM-DD for date input value
+function toInputDate(s){
+  if(!s)return '';
+  // Already YYYY-MM-DD
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;
+  var parts=s.split('/');
+  if(parts.length===3){
+    var m=parts[0].padStart(2,'0'),d=parts[1].padStart(2,'0'),y=parts[2];
+    if(y.length===2)y='20'+y;
+    return y+'-'+m+'-'+d;
+  }
+  return '';
+}
+// Convert YYYY-MM-DD → M/D/YYYY for display
+function fromInputDate(s){
+  if(!s)return '';
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s)){
+    var parts=s.split('-');
+    return parseInt(parts[1]+'')+'/'+parseInt(parts[2]+'')+'/'+parts[0];
+  }
+  return s;
+}
+
 // Returns {avgScope, avgScore} for tasks in an epic that have both values set
 function epicAvgs(eid){
   var tasks=S.tasks.filter(function(t){return t.epicId===eid&&t.scope&&t.impact});
@@ -395,7 +418,7 @@ function buildModal(){
       '<div class="field"><label>Epic</label><select id="m-epic">'+S.epics.slice().sort(function(a,b){return a.priority-b.priority}).map(function(e){return'<option value="'+e.id+'"'+(t.epicId===e.id?' selected':'')+'>'+e.priority+'. '+e.title+'</option>'}).join('')+'</select></div>'+
       '<div class="field"><label>Owner</label><select id="m-owner">'+OWNERS.map(function(o){return'<option'+(t.owner===o?' selected':'')+'>'+o+'</option>'}).join('')+(t.owner&&!OWNERS.includes(t.owner)?'<option selected>'+t.owner+'</option>':'')+'</select></div>'+
       '<div class="field"><label>Status</label><select id="m-status">'+STATUSES.map(function(s){return'<option'+(t.progress===s?' selected':'')+'>'+s+'</option>'}).join('')+'</select></div>'+
-      '<div class="row3"><div class="field"><label>ETA</label><input id="m-eta" value="'+(t.eta||'')+'"></div><div class="field"><label>Scope 1-5</label><input id="m-scope" type="number" min="1" max="5" value="'+(t.scope||'')+'"></div><div class="field"><label>Impact 1-5</label><input id="m-impact" type="number" min="1" max="5" value="'+(t.impact||'')+'"></div></div>'+
+      '<div class="row3"><div class="field"><label>ETA</label><input id="m-eta" type="date" value="'+toInputDate(t.eta||'')+'"></div><div class="field"><label>Scope 1-5</label><input id="m-scope" type="number" min="1" max="5" value="'+(t.scope||'')+'"></div><div class="field"><label>Impact 1-5</label><input id="m-impact" type="number" min="1" max="5" value="'+(t.impact||'')+'"></div></div>'+
       '<div class="field"><label>Notes</label><textarea id="m-notes" rows="2">'+(t.notes||'')+'</textarea></div>'+
       '<div class="modal-footer">'+((!m.isNew)?'<button class="btn danger" id="m-del">Delete</button>':'')+
       '<button class="btn" id="m-cancel">Cancel</button><button class="btn primary" id="m-save">Save</button></div></div></div>';
@@ -484,7 +507,7 @@ function bind(){
     if(ms)ms.addEventListener('click',function(){
       var m=S.modal;
       if(m.type==='task'){
-        var d={name:document.getElementById('m-name').value||'',epicId:document.getElementById('m-epic').value||'',owner:document.getElementById('m-owner').value||'',progress:document.getElementById('m-status').value||'Not Started',eta:document.getElementById('m-eta').value||'',scope:parseInt(document.getElementById('m-scope').value)||null,impact:parseInt(document.getElementById('m-impact').value)||null,notes:document.getElementById('m-notes').value||''};
+        var d={name:document.getElementById('m-name').value||'',epicId:document.getElementById('m-epic').value||'',owner:document.getElementById('m-owner').value||'',progress:document.getElementById('m-status').value||'Not Started',eta:fromInputDate(document.getElementById('m-eta').value)||'',scope:parseInt(document.getElementById('m-scope').value)||null,impact:parseInt(document.getElementById('m-impact').value)||null,notes:document.getElementById('m-notes').value||''};
         if(m.isNew)S.tasks.push(Object.assign({id:'t'+(nid++),priority:99},d));
         else{var i=S.tasks.findIndex(function(t){return t.id===m.data.id});if(i>=0)S.tasks[i]=Object.assign({},S.tasks[i],d);}
       }
