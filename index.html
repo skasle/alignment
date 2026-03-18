@@ -14,9 +14,9 @@
     --surface3: #1f1f25;
     --border: #2a2a32;
     --border2: #333340;
-    --text: #e8e8f0;
-    --text2: #9090a8;
-    --text3: #55556a;
+    --text: #f2f2f8;
+    --text2: #a8a8c0;
+    --text3: #6e6e88;
     --accent: #6c8cff;
     --accent2: #3d5aff;
     --green: #3ecf8e;
@@ -657,8 +657,17 @@
     .epics-grid { grid-template-columns: 1fr; }
   }
 
-  /* ── MISC ─────────────────────────────────────────── */
-  .empty-state {
+  .tasks-table tbody tr.critical-path {
+    border-left: 2px solid var(--accent);
+    background: rgba(108,140,255,0.04);
+  }
+  .tasks-table tbody tr.critical-path:hover {
+    background: rgba(108,140,255,0.09);
+  }
+  .tasks-table tbody tr.critical-path .td-priority {
+    color: var(--accent);
+    font-weight: 500;
+  }
     text-align: center;
     padding: 48px;
     color: var(--text3);
@@ -1045,8 +1054,15 @@ function renderTasks() {
     return true;
   });
 
-  // Sort
+  // Sort — priority-0 tasks always pin to top as critical path
   filtered = filtered.slice().sort((a, b) => {
+    const aPri = parseFloat(a.priority) || 999;
+    const bPri = parseFloat(b.priority) || 999;
+    const aZero = aPri === 0;
+    const bZero = bPri === 0;
+    if (aZero && !bZero) return -1;
+    if (!aZero && bZero) return 1;
+
     let av = a[STATE.sortKey], bv = b[STATE.sortKey];
     if (STATE.sortKey === 'priority' || STATE.sortKey === 'score' || STATE.sortKey === 'scope' || STATE.sortKey === 'impact') {
       av = parseFloat(av) || 999; bv = parseFloat(bv) || 999;
@@ -1084,7 +1100,9 @@ function renderTasks() {
       else if (diff <= 7) etaClass = 'soon';
     }
 
-    return `<tr onclick="openEditTask(${idx})">
+    const isCritical = parseFloat(t.priority) === 0;
+
+    return `<tr onclick="openEditTask(${idx})" class="${isCritical ? 'critical-path' : ''}">
       <td class="td-priority">${t.priority === '99' ? '—' : t.priority}</td>
       <td class="td-task">
         ${escHtml(t.task)}
