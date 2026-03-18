@@ -15,8 +15,8 @@
     --border: #2a2a32;
     --border2: #333340;
     --text: #f2f2f8;
-    --text2: #a8a8c0;
-    --text3: #6e6e88;
+    --text2: #bebcd4;
+    --text3: #8e8eaa;
     --accent: #6c8cff;
     --accent2: #3d5aff;
     --green: #3ecf8e;
@@ -1056,8 +1056,8 @@ function renderTasks() {
 
   // Sort — priority-0 tasks always pin to top as critical path
   filtered = filtered.slice().sort((a, b) => {
-    const aPri = parseFloat(a.priority) || 999;
-    const bPri = parseFloat(b.priority) || 999;
+    const aPri = a.priority === '' || a.priority == null ? 999 : parseFloat(a.priority);
+    const bPri = b.priority === '' || b.priority == null ? 999 : parseFloat(b.priority);
     const aZero = aPri === 0;
     const bZero = bPri === 0;
     if (aZero && !bZero) return -1;
@@ -1100,7 +1100,7 @@ function renderTasks() {
       else if (diff <= 7) etaClass = 'soon';
     }
 
-    const isCritical = parseFloat(t.priority) === 0;
+    const isCritical = parseFloat(t.priority) === 0 && t.priority !== '';
 
     return `<tr onclick="openEditTask(${idx})" class="${isCritical ? 'critical-path' : ''}">
       <td class="td-priority">${t.priority === '99' ? '—' : t.priority}</td>
