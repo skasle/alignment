@@ -24,6 +24,7 @@
     --red: #f87171;
     --purple: #a855f7;
     --cyan: #22d3ee;
+    --orange: #fb923c;
     --mono: 'DM Mono', monospace;
     --sans: 'DM Sans', sans-serif;
   }
@@ -348,9 +349,10 @@
     color: var(--text2);
     white-space: nowrap;
   }
-  .owner-SK { color: var(--accent); background: rgba(108,140,255,0.1); }
-  .owner-JP { color: var(--cyan); background: rgba(34,211,238,0.1); }
-  .owner-SKJP { color: var(--purple); background: rgba(168,85,247,0.1); }
+  .owner-SK   { color: var(--accent); background: rgba(108,140,255,0.1); }
+  .owner-JP   { color: var(--cyan);   background: rgba(34,211,238,0.1);  }
+  .owner-SKJP { color: var(--purple); background: rgba(168,85,247,0.1);  }
+  .owner-Yan  { color: var(--orange); background: rgba(251,146,60,0.1);  }
 
   /* status */
   .status-badge {
@@ -360,11 +362,11 @@
     border-radius: 3px;
     white-space: nowrap;
   }
-  .status-started { color: var(--green); background: rgba(62,207,142,0.1); }
-  .status-not-started { color: var(--text3); background: var(--surface3); }
-  .status-pct { color: var(--amber); background: rgba(245,158,11,0.1); }
-  .status-blocked { color: var(--red); background: rgba(248,113,113,0.1); }
-  .status-done { color: var(--text3); background: var(--surface3); text-decoration: line-through; }
+  .status-started     { color: var(--green); background: rgba(62,207,142,0.1);  }
+  .status-not-started { color: var(--text3); background: var(--surface3);       }
+  .status-pct         { color: var(--amber); background: rgba(245,158,11,0.1);  }
+  .status-blocked     { color: var(--red);   background: rgba(248,113,113,0.1); }
+  .status-done        { color: var(--text3); background: var(--surface3); text-decoration: line-through; }
 
   /* score */
   .score-chip {
@@ -379,12 +381,12 @@
     border-radius: 4px;
     margin: 0 auto;
   }
-  .score-1 { background: rgba(62,207,142,0.15); color: var(--green); }
-  .score-2 { background: rgba(62,207,142,0.1); color: var(--green); opacity: 0.8; }
-  .score-3 { background: rgba(245,158,11,0.1); color: var(--amber); }
-  .score-4 { background: rgba(245,158,11,0.12); color: var(--amber); opacity: 0.8; }
-  .score-6 { background: rgba(248,113,113,0.08); color: var(--red); opacity: 0.7; }
-  .score-high { background: rgba(248,113,113,0.1); color: var(--red); }
+  .score-1    { background: rgba(62,207,142,0.15); color: var(--green); }
+  .score-2    { background: rgba(62,207,142,0.1);  color: var(--green); opacity: 0.8; }
+  .score-3    { background: rgba(245,158,11,0.1);  color: var(--amber); }
+  .score-4    { background: rgba(245,158,11,0.12); color: var(--amber); opacity: 0.8; }
+  .score-6    { background: rgba(248,113,113,0.08); color: var(--red);  opacity: 0.7; }
+  .score-high { background: rgba(248,113,113,0.1);  color: var(--red);  }
 
   /* ETA */
   .td-eta {
@@ -394,7 +396,7 @@
     white-space: nowrap;
   }
   .td-eta.overdue { color: var(--red); }
-  .td-eta.soon { color: var(--amber); }
+  .td-eta.soon    { color: var(--amber); }
 
   .td-num {
     font-family: var(--mono);
@@ -647,7 +649,6 @@
   }
 
   /* ── RESPONSIVE ───────────────────────────────────── */
-  .hide-sm { }
   @media (max-width: 900px) {
     .hide-sm { display: none; }
     main { padding: 16px; }
@@ -667,12 +668,6 @@
   .tasks-table tbody tr.critical-path .td-priority {
     color: var(--accent);
     font-weight: 500;
-  }
-    text-align: center;
-    padding: 48px;
-    color: var(--text3);
-    font-family: var(--mono);
-    font-size: 12px;
   }
 
   .drag-hint {
@@ -721,10 +716,11 @@
   <div class="section-label">Active Tasks</div>
   <div class="toolbar">
     <input class="filter-input" id="searchInput" placeholder="Filter tasks..." oninput="renderTasks()">
-    <div class="filter-chip active" data-owner="all" onclick="setOwnerFilter('all',this)">All</div>
-    <div class="filter-chip" data-owner="SK" onclick="setOwnerFilter('SK',this)">SK</div>
-    <div class="filter-chip" data-owner="JP" onclick="setOwnerFilter('JP',this)">JP</div>
-    <div class="filter-chip" data-owner="SK/JP" onclick="setOwnerFilter('SK/JP',this)">Shared</div>
+    <div class="filter-chip active" data-owner="all"   onclick="setOwnerFilter('all',this)">All</div>
+    <div class="filter-chip"        data-owner="SK"    onclick="setOwnerFilter('SK',this)">SK</div>
+    <div class="filter-chip"        data-owner="JP"    onclick="setOwnerFilter('JP',this)">JP</div>
+    <div class="filter-chip"        data-owner="Yan"   onclick="setOwnerFilter('Yan',this)">Yan</div>
+    <div class="filter-chip"        data-owner="SK/JP" onclick="setOwnerFilter('SK/JP',this)">Shared</div>
     <div class="toolbar-spacer"></div>
     <span class="drag-hint" id="taskCount"></span>
   </div>
@@ -803,6 +799,7 @@
           <select id="fOwner">
             <option value="SK">SK</option>
             <option value="JP">JP</option>
+            <option value="Yan">Yan</option>
             <option value="SK/JP">SK/JP</option>
             <option value="Sam">Sam</option>
           </select>
@@ -889,14 +886,12 @@
 // ─────────────────────────────────────────────────────────────
 
 const EPIC_COLORS = [
-  '#6c8cff', // Close Seed Round  → blue/accent
-  '#4a7aff', // Fund Raise        → blue2
-  '#3ecf8e', // Implementations   → green
-  '#a855f7', // VP Eng            → purple
-  '#f59e0b', // Sales TOF         → amber
-  '#22d3ee', // Munich            → cyan
-  '#f87171', // Admin             → red
-  '#64748b', // Product Roadmap   → slate
+  '#6c8cff', // P0 Close Seed Round         → blue/accent
+  '#3ecf8e', // P1 Generate Revenue vs Goal  → green
+  '#a855f7', // P1 Right-Sized Tech Team     → purple
+  '#22d3ee', // P1 Customer Onboarding       → cyan
+  '#f59e0b', // P2 Carrier Pipeline          → amber
+  '#f87171', // P2 AI Foundation             → red
 ];
 
 let STATE = {
@@ -912,59 +907,65 @@ let STATE = {
 // ─── DEFAULT DATA ────────────────────────────────────────────
 function loadDefaults() {
   STATE.epics = [
-    { priority: '1', title: 'Close Seed Round',                        nba: 'Unblock Diagram intros; work warm inbound; close by April 5', pct: '35%' },
-    { priority: '2', title: 'Fund Raise (First Meetings)',              nba: '50 outbound target; Diagram MOU closes April 5',              pct: '35%' },
-    { priority: '3', title: 'Implementations / Pilots (WMC & FDI)',    nba: 'Drive pilots to production sign-off',                         pct: '20%' },
-    { priority: '4', title: 'VP Eng & Tech Team',                      nba: 'Candidates in loop; EOM decision',                           pct: '25%' },
-    { priority: '5', title: 'Sales - TOF & Close',                     nba: 'Munich, Canadian targets, small US outbound & carrier',       pct: '8%'  },
-    { priority: '5', title: 'Munich Investment & Distribution',        nba: 'Drive introductions; touch base with Dawn on next steps',     pct: '0%'  },
-    { priority: '6', title: 'Admin & Company Formation',               nba: 'SR&ED; equity; SOC 2',                                       pct: '50%' },
-    { priority: '7', title: 'Move Down Product Roadmap',               nba: 'What beyond implementations?',                               pct: '0%'  },
+    { priority: 'P0', title: 'Close Seed Round',             nba: 'Unblock Diagram intros; close by April 5',                                              pct: '35%' },
+    { priority: 'P1', title: 'Generate Revenue vs. Goal',    nba: 'Drive WMC and FDI to paid agreements; identify Alliant pilot employer',                  pct: '20%' },
+    { priority: 'P1', title: 'Right-Sized Tech Team Build',  nba: 'Yan onboarded; assess Montreal team; scope ML/AI second hire',                           pct: '25%' },
+    { priority: 'P1', title: 'Customer Onboarding & Support',nba: 'Document onboarding flows; define support model for WMC and FDI',                        pct: '10%' },
+    { priority: 'P2', title: 'Carrier Pipeline Engagement',  nba: 'Active structured engagement with Sun Life / Symetra / MunichRe-introduced carriers',    pct: '8%'  },
+    { priority: 'P2', title: 'AI Foundation',                nba: 'Define internal AI workflow wins and external product-facing AI capability',              pct: '0%'  },
   ];
 
   STATE.tasks = [
-    { priority: '0',    task: 'Investor outreach',                          epic: 'Close Seed Round',                     owner: 'SK',    status: '75%',        eta: '3/31/2026',  scope: '2', impact: '1', score: '2', url: '', notes: '' },
-    { priority: '0',    task: 'WMC implementation',                         epic: 'Implementations / Pilots (WMC & FDI)', owner: 'JP',    status: 'Started',    eta: '',           scope: '3', impact: '1', score: '3', url: '', notes: '' },
-    { priority: '0.5',  task: 'MunichRe rev share agreement',               epic: 'Close Seed Round',                     owner: 'SK',    status: '75%',        eta: '2/16/2026',  scope: '1', impact: '2', score: '2', url: '', notes: 'Draft in Dawns hands' },
-    { priority: '0.5',  task: 'SOC 2 consideration',                        epic: 'Implementations / Pilots (WMC & FDI)', owner: 'JP',    status: 'Started',    eta: '',           scope: '1', impact: '2', score: '2', url: '', notes: 'Vanta selected; kickoff pending' },
-    { priority: '0.5',  task: 'Brokers pitch',                              epic: 'Sales - TOF & Close',                  owner: 'JP',    status: 'Started',    eta: '2/16/2026',  scope: '2', impact: '2', score: '4', url: '', notes: 'WTW AON etc' },
-    { priority: '0.75', task: 'Broker outreach',                            epic: 'Close Seed Round',                     owner: 'SK',    status: 'Started',    eta: '3/31/2026',  scope: '2', impact: '2', score: '4', url: '', notes: '' },
-    { priority: '0.75', task: 'CRM solution',                               epic: 'Implementations / Pilots (WMC & FDI)', owner: 'SK',    status: 'Started',    eta: '2/16/2026',  scope: '2', impact: '3', score: '6', url: '', notes: '' },
-    { priority: '1',    task: 'Alliant pilot prep',                         epic: 'Implementations / Pilots (WMC & FDI)', owner: 'JP',    status: 'Not Started', eta: '',          scope: '2', impact: '1', score: '2', url: '', notes: 'Jumbo client pilot advancing' },
-    { priority: '1',    task: 'Yan Avery onboarding',                       epic: 'VP Eng & Tech Team',                   owner: 'JP',    status: 'Started',    eta: '',           scope: '2', impact: '1', score: '2', url: '', notes: 'Interim period began March 16' },
-    { priority: '1',    task: 'Jim Kenny equity negotiation',               epic: 'Admin & Company Formation',            owner: 'SK',    status: 'Started',    eta: '',           scope: '1', impact: '3', score: '3', url: '', notes: 'Counter: 2-year post-termination exercise window' },
-    { priority: '1',    task: 'Symetra NDA follow-up',                      epic: 'Sales - TOF & Close',                  owner: 'SK',    status: 'Started',    eta: '',           scope: '1', impact: '2', score: '2', url: '', notes: 'Escalate via Kayla Halpin VP' },
-    { priority: '1',    task: 'Davies TPA re-engagement',                   epic: 'Sales - TOF & Close',                  owner: 'SK',    status: 'Not Started', eta: '',          scope: '1', impact: '2', score: '2', url: '', notes: 'Stalled since late Feb' },
-    { priority: '1.5',  task: 'Manufacture a carrier agreement',            epic: 'Close Seed Round',                     owner: 'SK',    status: 'Not Started', eta: '',          scope: '',  impact: '',  score: '',  url: '', notes: '' },
-    { priority: '2',    task: 'Forecast v2',                                epic: 'Close Seed Round',                     owner: 'SK/JP', status: 'Started',    eta: '',           scope: '2', impact: '3', score: '6', url: '', notes: 'Sales and dev expense refinement' },
-    { priority: '1',    task: 'Unblock Diagram on investor introductions',  epic: 'Close Seed Round',                     owner: 'SK',    status: 'Not Started', eta: '3/25/2026', scope: '2', impact: '1', score: '2', url: '', notes: 'Structural blocker; Steve hasn\'t scheduled deck sessions or made intros' },
-    { priority: '1',    task: 'Broker/employer sales deck rework',          epic: 'Sales - TOF & Close',                  owner: 'SK/JP', status: 'Not Started', eta: '3/28/2026', scope: '2', impact: '2', score: '4', url: '', notes: 'Rework language to broker/employer audience; less carrier-centric per Mar 11 Weekly Sync' },
-    { priority: '2',    task: 'Employer-level integration pricing model',   epic: 'Move Down Product Roadmap',            owner: 'SK/JP', status: 'Not Started', eta: '4/10/2026', scope: '2', impact: '2', score: '4', url: '', notes: 'Jim Product Review Mar 10: define pricing/charging for employer-level integrations' },
-    { priority: '1',    task: 'SOC 2 program kickoff',                      epic: 'Admin & Company Formation',            owner: 'JP',    status: 'Not Started', eta: '4/1/2026',  scope: '1', impact: '3', score: '3', url: '', notes: 'Vanta selected; kickoff pending' },
-    { priority: '99',   task: 'Cap Table',                                  epic: 'Admin & Company Formation',            owner: 'SK',    status: '90%',        eta: '3/24/2026',  scope: '4', impact: '1', score: '4', url: '', notes: 'Name change approved by Corps Canada Mar 18' },
+    { priority: '0',    task: 'Investor outreach',                          epic: 'Close Seed Round',              owner: 'SK',    status: '75%',         eta: '3/31/2026', scope: '2', impact: '1', score: '2',  url: '', notes: '' },
+    { priority: '0.5',  task: 'Broker outreach',                            epic: 'Close Seed Round',              owner: 'SK',    status: 'Started',     eta: '3/31/2026', scope: '2', impact: '2', score: '4',  url: '', notes: '' },
+    { priority: '0.5',  task: 'Unblock Diagram on investor introductions',  epic: 'Close Seed Round',              owner: 'SK',    status: 'Not Started', eta: '3/25/2026', scope: '2', impact: '1', score: '2',  url: '', notes: "Structural blocker; Steve hasn't scheduled deck sessions or made intros" },
+    { priority: '0.5',  task: 'MunichRe rev share agreement',               epic: 'Close Seed Round',              owner: 'SK',    status: '75%',         eta: '3/31/2026', scope: '1', impact: '2', score: '2',  url: '', notes: "Draft in Dawn's hands - needs close in Q2" },
+    { priority: '0.75', task: 'Advisor Agreement Update (Don & Sean)',      epic: 'Close Seed Round',              owner: 'SK',    status: 'Not Started', eta: '3/31/2026', scope: '1', impact: '1', score: '1',  url: '', notes: '' },
+    { priority: '1',    task: 'Manufacture a carrier agreement',            epic: 'Close Seed Round',              owner: 'SK',    status: 'Not Started', eta: '',          scope: '',  impact: '',  score: '',   url: '', notes: '' },
+    { priority: '1',    task: 'Forecast v2',                                epic: 'Close Seed Round',              owner: 'SK/JP', status: 'Started',     eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Sales and dev expense refinement' },
+    { priority: '0.25', task: 'Cap Table',                                  epic: 'Close Seed Round',              owner: 'SK',    status: '90%',         eta: '3/24/2026', scope: '4', impact: '1', score: '4',  url: '', notes: 'Name change approved by Corps Canada Mar 18' },
+    { priority: '0',    task: 'WMC implementation',                         epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '',          scope: '3', impact: '1', score: '3',  url: '', notes: '' },
+    { priority: '0.5',  task: 'FDI implementation',                        epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '',          scope: '3', impact: '1', score: '3',  url: '', notes: '' },
+    { priority: '0.75', task: 'CRM solution',                               epic: 'Generate Revenue vs. Goal',     owner: 'SK',    status: 'Started',     eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: '' },
+    { priority: '1',    task: 'Alliant pilot prep',                         epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Not Started', eta: '',          scope: '2', impact: '1', score: '2',  url: '', notes: 'PLOI sent to Tom Coyne; identify jumbo pilot employer via Blaine/ABC' },
+    { priority: '1',    task: 'TPA employer penetration playbook',          epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Not Started', eta: '',          scope: '2', impact: '2', score: '4',  url: '', notes: 'Define how WMC and FDI introduce 8/0 to employer clients; conversion target' },
+    { priority: '0.5',  task: 'Brokers pitch',                              epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '',          scope: '2', impact: '2', score: '4',  url: '', notes: 'WTW AON etc' },
+    { priority: '1',    task: 'Broker/employer sales deck rework',          epic: 'Generate Revenue vs. Goal',     owner: 'SK/JP', status: 'Not Started', eta: '3/28/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Rework language to broker/employer audience; less carrier-centric' },
+    { priority: '1',    task: 'Yan Avery onboarding',                       epic: 'Right-Sized Tech Team Build',   owner: 'JP',    status: 'Started',     eta: '',          scope: '2', impact: '1', score: '2',  url: '', notes: 'Interim period began March 16' },
+    { priority: '1',    task: 'Montreal engineering team assessment',       epic: 'Right-Sized Tech Team Build',   owner: 'SK/JP', status: 'Not Started', eta: '',          scope: '2', impact: '2', score: '4',  url: '', notes: 'Assess current team against WMC/FDI/Alliant delivery demands' },
+    { priority: '1.5',  task: 'ML/AI second hire scoping',                 epic: 'Right-Sized Tech Team Build',   owner: 'SK',    status: 'Not Started', eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Sequence after production data stable from WMC and FDI' },
+    { priority: '1',    task: 'WMC onboarding flow documentation',         epic: 'Customer Onboarding & Support', owner: 'JP',    status: 'Not Started', eta: '',          scope: '2', impact: '2', score: '4',  url: '', notes: 'Document repeatable onboarding process from WMC pilot' },
+    { priority: '1',    task: 'Support model definition',                  epic: 'Customer Onboarding & Support', owner: 'SK/JP', status: 'Not Started', eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Define support tiers and feedback loop back into product' },
+    { priority: '1',    task: 'SOC 2 program kickoff',                      epic: 'Customer Onboarding & Support', owner: 'JP',    status: 'Not Started', eta: '4/1/2026',  scope: '1', impact: '3', score: '3',  url: '', notes: 'Vanta selected; kickoff pending' },
+    { priority: '1',    task: 'Jim Kenny equity negotiation',               epic: 'Customer Onboarding & Support', owner: 'SK',    status: 'Started',     eta: '',          scope: '1', impact: '3', score: '3',  url: '', notes: 'Counter: 2-year post-termination exercise window' },
+    { priority: '1',    task: 'Symetra NDA follow-up',                      epic: 'Carrier Pipeline Engagement',   owner: 'SK',    status: 'Started',     eta: '',          scope: '1', impact: '2', score: '2',  url: '', notes: 'Escalate via Kayla Halpin VP' },
+    { priority: '1',    task: 'Davies TPA re-engagement',                   epic: 'Carrier Pipeline Engagement',   owner: 'SK',    status: 'Not Started', eta: '',          scope: '1', impact: '2', score: '2',  url: '', notes: 'Stalled since late Feb' },
+    { priority: '1',    task: 'Employer-level integration pricing model',   epic: 'Carrier Pipeline Engagement',   owner: 'SK/JP', status: 'Not Started', eta: '4/10/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Define pricing/charging for employer-level integrations' },
+    { priority: '1',    task: 'AI foundation scoping',                      epic: 'AI Foundation',                 owner: 'SK/JP', status: 'Not Started', eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Define internal workflow wins and external product-facing AI capability; align with Yan' },
   ];
 
   STATE.completed = [
-    { task: 'Carrier strategy session with Dawn',       epic: 'Munich Investment & Distribution',        owner: 'SK',  scope: '1', impact: '2', score: '2', url: '', notes: '' },
-    { task: 'markd.vc Amanda Couture meeting',          epic: 'Fund Raise (First Meetings)',             owner: 'SK',  scope: '1', impact: '1', score: '1', url: '', notes: '' },
-    { task: 'Intact Ventures meeting',                  epic: 'Fund Raise (First Meetings)',             owner: 'SK',  scope: '1', impact: '1', score: '1', url: '', notes: '' },
-    { task: 'Munich MOU',                               epic: 'Fund Raise (First Meetings)',             owner: 'SK',  scope: '2', impact: '2', score: '4', url: '', notes: '' },
-    { task: 'FDI agreement',                            epic: 'Implementations / Pilots (WMC & FDI)',   owner: 'SK',  scope: '2', impact: '1', score: '2', url: '', notes: '' },
-    { task: 'Deck for MunichRe internal',               epic: 'Fund Raise (First Meetings)',             owner: 'SK',  scope: '2', impact: '3', score: '6', url: '', notes: '' },
-    { task: 'Move SR&ED forward',                       epic: 'Fund Raise (First Meetings)',             owner: 'SK',  scope: '3', impact: '2', score: '6', url: '', notes: '' },
-    { task: 'Investor one pager',                       epic: 'Fund Raise (First Meetings)',             owner: 'SK',  scope: '2', impact: '3', score: '6', url: '', notes: '' },
-    { task: 'Investor deck',                            epic: 'Fund Raise (First Meetings)',             owner: 'SK',  scope: '3', impact: '1', score: '3', url: '', notes: '' },
-    { task: 'MunichRe account manager one pager',       epic: 'Implementations / Pilots (WMC & FDI)',   owner: 'JP',  scope: '2', impact: '2', score: '4', url: '', notes: '' },
-    { task: 'Privacy agreement for WMC',                epic: 'Implementations / Pilots (WMC & FDI)',   owner: 'JP',  scope: '1', impact: '1', score: '1', url: '', notes: '' },
-    { task: 'MOU for WMC',                              epic: 'Implementations / Pilots (WMC & FDI)',   owner: 'SK',  scope: '1', impact: '1', score: '1', url: '', notes: '' },
-    { task: 'Short form sales deck',                    epic: 'Implementations / Pilots (WMC & FDI)',   owner: 'Sam', scope: '2', impact: '1', score: '2', url: '', notes: '' },
-    { task: 'Rework econ slides',                       epic: 'Fund Raise (First Meetings)',             owner: 'SK',  scope: '1', impact: '3', score: '3', url: '', notes: '' },
-    { task: 'Demo V2',                                  epic: 'Implementations / Pilots (WMC & FDI)',   owner: 'JP',  scope: '3', impact: '2', score: '6', url: '', notes: '' },
-    { task: 'Wave 3 Canadian carriers outreach',        epic: 'Implementations / Pilots (WMC & FDI)',   owner: 'JP',  scope: '2', impact: '2', score: '4', url: '', notes: '' },
-    { task: 'Company name Eight by Zero',               epic: 'Fund Raise (First Meetings)',             owner: 'Sam', scope: '3', impact: '2', score: '6', url: '', notes: '' },
-    { task: 'Website v1',                               epic: 'Fund Raise (First Meetings)',             owner: 'Sam', scope: '2', impact: '3', score: '6', url: '', notes: '' },
-    { task: 'Advisory board setup',                     epic: 'Implementations / Pilots (WMC & FDI)',   owner: 'JP',  scope: '3', impact: '2', score: '6', url: '', notes: '' },
-    { task: 'Equitable call with Evan Scarponi',        epic: 'Sales - TOF & Close',                    owner: 'SK',  scope: '1', impact: '2', score: '2', url: '', notes: 'Reconnect meeting completed Mar 18' },
+    { task: 'SOC 2 consideration',                epic: 'Customer Onboarding & Support',  owner: 'JP',  scope: '1', impact: '2', score: '2', url: '', notes: 'Vanta selected' },
+    { task: 'Carrier strategy session with Dawn', epic: 'Carrier Pipeline Engagement',    owner: 'SK',  scope: '1', impact: '2', score: '2', url: '', notes: '' },
+    { task: 'markd.vc Amanda Couture meeting',    epic: 'Close Seed Round',               owner: 'SK',  scope: '1', impact: '1', score: '1', url: '', notes: '' },
+    { task: 'Intact Ventures meeting',            epic: 'Close Seed Round',               owner: 'SK',  scope: '1', impact: '1', score: '1', url: '', notes: '' },
+    { task: 'Munich MOU',                         epic: 'Close Seed Round',               owner: 'SK',  scope: '2', impact: '2', score: '4', url: '', notes: '' },
+    { task: 'FDI agreement',                      epic: 'Generate Revenue vs. Goal',      owner: 'SK',  scope: '2', impact: '1', score: '2', url: '', notes: '' },
+    { task: 'Deck for MunichRe internal',         epic: 'Close Seed Round',               owner: 'SK',  scope: '2', impact: '3', score: '6', url: '', notes: '' },
+    { task: 'Move SR&ED forward',                 epic: 'Close Seed Round',               owner: 'SK',  scope: '3', impact: '2', score: '6', url: '', notes: '' },
+    { task: 'Investor one pager',                 epic: 'Close Seed Round',               owner: 'SK',  scope: '2', impact: '3', score: '6', url: '', notes: '' },
+    { task: 'Investor deck',                      epic: 'Close Seed Round',               owner: 'SK',  scope: '3', impact: '1', score: '3', url: '', notes: '' },
+    { task: 'MunichRe account manager one pager', epic: 'Generate Revenue vs. Goal',      owner: 'JP',  scope: '2', impact: '2', score: '4', url: '', notes: '' },
+    { task: 'Privacy agreement for WMC',          epic: 'Generate Revenue vs. Goal',      owner: 'JP',  scope: '1', impact: '1', score: '1', url: '', notes: '' },
+    { task: 'MOU for WMC',                        epic: 'Generate Revenue vs. Goal',      owner: 'SK',  scope: '1', impact: '1', score: '1', url: '', notes: '' },
+    { task: 'Short form sales deck',              epic: 'Generate Revenue vs. Goal',      owner: 'SK',  scope: '2', impact: '1', score: '2', url: '', notes: '' },
+    { task: 'Rework econ slides',                 epic: 'Close Seed Round',               owner: 'SK',  scope: '1', impact: '3', score: '3', url: '', notes: '' },
+    { task: 'Demo V2',                            epic: 'Generate Revenue vs. Goal',      owner: 'JP',  scope: '3', impact: '2', score: '6', url: '', notes: '' },
+    { task: 'Wave 3 Canadian carriers outreach',  epic: 'Carrier Pipeline Engagement',    owner: 'JP',  scope: '2', impact: '2', score: '4', url: '', notes: '' },
+    { task: 'Company name Eight by Zero',         epic: 'Close Seed Round',               owner: 'SK',  scope: '3', impact: '2', score: '6', url: '', notes: '' },
+    { task: 'Website v1',                         epic: 'Close Seed Round',               owner: 'SK',  scope: '2', impact: '3', score: '6', url: '', notes: '' },
+    { task: 'Advisory board setup',               epic: 'Generate Revenue vs. Goal',      owner: 'JP',  scope: '3', impact: '2', score: '6', url: '', notes: '' },
+    { task: 'Equitable call with Evan Scarponi',  epic: 'Carrier Pipeline Engagement',    owner: 'SK',  scope: '1', impact: '2', score: '2', url: '', notes: 'Reconnect meeting completed Mar 18' },
   ];
 }
 
@@ -1000,7 +1001,7 @@ function renderEpics() {
       renderTasks();
     };
     card.innerHTML = `
-      <div class="epic-priority">Epic ${epic.priority}</div>
+      <div class="epic-priority">${escHtml(epic.priority)}</div>
       <div class="epic-title">${escHtml(epic.title)}</div>
       <div class="epic-nba">${escHtml(epic.nba)}</div>
       <div class="epic-footer">
@@ -1021,8 +1022,9 @@ function renderEpics() {
 function renderStats() {
   const active = STATE.tasks.length;
   const done = STATE.completed.length;
-  const byOwnerSK = STATE.tasks.filter(t => t.owner === 'SK').length;
-  const byOwnerJP = STATE.tasks.filter(t => t.owner === 'JP').length;
+  const byOwnerSK  = STATE.tasks.filter(t => t.owner === 'SK').length;
+  const byOwnerJP  = STATE.tasks.filter(t => t.owner === 'JP').length;
+  const byOwnerYan = STATE.tasks.filter(t => t.owner === 'Yan').length;
   const highPri = STATE.tasks.filter(t => parseFloat(t.priority) <= 1 && t.priority !== '99').length;
   document.getElementById('statsBar').innerHTML = `
     <div class="stat"><div class="stat-value">${active}</div><div class="stat-label">Active</div></div>
@@ -1032,6 +1034,8 @@ function renderStats() {
     <div class="stat"><div class="stat-value">${byOwnerSK}</div><div class="stat-label">SK Tasks</div></div>
     <div class="stat-divider"></div>
     <div class="stat"><div class="stat-value">${byOwnerJP}</div><div class="stat-label">JP Tasks</div></div>
+    <div class="stat-divider"></div>
+    <div class="stat"><div class="stat-value">${byOwnerYan}</div><div class="stat-label">Yan Tasks</div></div>
     <div class="stat-divider"></div>
     <div class="stat"><div class="stat-value">${done}</div><div class="stat-label">Completed</div></div>
   `;
@@ -1054,7 +1058,6 @@ function renderTasks() {
     return true;
   });
 
-  // Sort — priority-0 tasks always pin to top as critical path
   filtered = filtered.slice().sort((a, b) => {
     const aPri = a.priority === '' || a.priority == null ? 999 : parseFloat(a.priority);
     const bPri = b.priority === '' || b.priority == null ? 999 : parseFloat(b.priority);
@@ -1064,7 +1067,7 @@ function renderTasks() {
     if (!aZero && bZero) return 1;
 
     let av = a[STATE.sortKey], bv = b[STATE.sortKey];
-    if (STATE.sortKey === 'priority' || STATE.sortKey === 'score' || STATE.sortKey === 'scope' || STATE.sortKey === 'impact') {
+    if (['priority','score','scope','impact'].includes(STATE.sortKey)) {
       av = parseFloat(av) || 999; bv = parseFloat(bv) || 999;
     } else if (STATE.sortKey === 'eta') {
       av = av ? new Date(av) : new Date('9999'); bv = bv ? new Date(bv) : new Date('9999');
@@ -1080,17 +1083,21 @@ function renderTasks() {
 
   const tbody = document.getElementById('tasksBody');
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state">No tasks match filters</div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:48px;color:var(--text3);font-family:var(--mono);font-size:12px;">No tasks match filters</td></tr>`;
     return;
   }
 
   tbody.innerHTML = filtered.map(t => {
     const idx = STATE.tasks.indexOf(t);
     const color = epicColor(t.epic);
-    const ownerClass = t.owner === 'SK' ? 'owner-SK' : t.owner === 'JP' ? 'owner-JP' : t.owner === 'SK/JP' ? 'owner-SKJP' : '';
+    const ownerClass = t.owner === 'SK' ? 'owner-SK'
+                     : t.owner === 'JP' ? 'owner-JP'
+                     : t.owner === 'SK/JP' ? 'owner-SKJP'
+                     : t.owner === 'Yan' ? 'owner-Yan'
+                     : '';
     const statusClass = getStatusClass(t.status);
     const scoreVal = parseInt(t.score) || 0;
-    const scoreClass = scoreVal <= 2 ? 'score-1' : scoreVal <= 3 ? 'score-2' : scoreVal <= 4 ? 'score-3' : scoreVal <= 6 ? 'score-high' : 'score-high';
+    const scoreClass = scoreVal <= 2 ? 'score-1' : scoreVal <= 3 ? 'score-2' : scoreVal <= 4 ? 'score-3' : 'score-high';
 
     let etaClass = '';
     if (t.eta) {
@@ -1123,14 +1130,12 @@ function renderTasks() {
 
 function shortEpic(title) {
   const map = {
-    'Close Seed Round': 'Close Seed',
-    'Fund Raise (First Meetings)': 'Fund Raise',
-    'Implementations / Pilots (WMC & FDI)': 'Impl/Pilots',
-    'VP Eng & Tech Team': 'VP Eng',
-    'Sales - TOF & Close': 'Sales TOF',
-    'Munich Investment & Distribution': 'Munich',
-    'Admin & Company Formation': 'Admin',
-    'Move Down Product Roadmap': 'Product',
+    'Close Seed Round':              'Close Seed',
+    'Generate Revenue vs. Goal':     'Revenue',
+    'Right-Sized Tech Team Build':   'Tech Team',
+    'Customer Onboarding & Support': 'Onboarding',
+    'Carrier Pipeline Engagement':   'Carriers',
+    'AI Foundation':                 'AI',
   };
   return map[title] || title;
 }
@@ -1154,7 +1159,10 @@ function renderCompleted() {
   const tbody = document.getElementById('completedBody');
   tbody.innerHTML = STATE.completed.map((t, i) => {
     const color = epicColor(t.epic);
-    const ownerClass = t.owner === 'SK' ? 'owner-SK' : t.owner === 'JP' ? 'owner-JP' : '';
+    const ownerClass = t.owner === 'SK' ? 'owner-SK'
+                     : t.owner === 'JP' ? 'owner-JP'
+                     : t.owner === 'Yan' ? 'owner-Yan'
+                     : '';
     return `<tr>
       <td class="td-task" style="color:var(--text2);font-weight:400;text-decoration:line-through">${escHtml(t.task)}</td>
       <td class="hide-sm"><span class="epic-pill" style="color:${color};border-color:${color}30;background:${color}10">${escHtml(shortEpic(t.epic))}</span></td>
@@ -1186,7 +1194,6 @@ function sortBy(key) {
     STATE.sortKey = key;
     STATE.sortDir = 'asc';
   }
-  // Update headers
   SORT_KEYS.forEach(k => {
     const el = document.getElementById(`sort-${k}`);
     if (el) el.textContent = '';
@@ -1264,21 +1271,17 @@ function closeModalOnBackdrop(e) {
 }
 
 function calcScore() {
-  const s = parseInt(document.getElementById('fScope').value) || 0;
+  const s  = parseInt(document.getElementById('fScope').value)  || 0;
   const im = parseInt(document.getElementById('fImpact').value) || 0;
   const el = document.getElementById('scoreCalc');
-  if (s && im) {
-    el.textContent = `${s} × ${im} = ${s * im}`;
-  } else {
-    el.textContent = '—';
-  }
+  el.textContent = (s && im) ? `${s} × ${im} = ${s * im}` : '—';
 }
 
 function saveTask() {
   const idx = parseInt(document.getElementById('editIndex').value);
-  const scope = document.getElementById('fScope').value;
+  const scope  = document.getElementById('fScope').value;
   const impact = document.getElementById('fImpact').value;
-  const score = (scope && impact) ? String(parseInt(scope) * parseInt(impact)) : '';
+  const score  = (scope && impact) ? String(parseInt(scope) * parseInt(impact)) : '';
   const t = {
     priority: document.getElementById('fPriority').value || '1',
     task:     document.getElementById('fTask').value.trim(),
@@ -1334,8 +1337,8 @@ function exportCSV() {
     csv += `${csvCell(t.task)},${csvCell(t.epic)},${csvCell(t.owner)},${csvCell(t.scope)},${csvCell(t.impact)},${csvCell(t.score)},${csvCell(t.url)},${csvCell(t.notes)}\r\n`;
   });
   const blob = new Blob([csv], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
   a.href = url;
   a.download = `8by0-alignment-${today()}.csv`;
   a.click();
@@ -1378,16 +1381,16 @@ function parseCSV(text) {
 
   lines.forEach(line => {
     const trimmed = line.trim();
-    if (trimmed === 'EPICS') { section = 'epics'; return; }
-    if (trimmed === 'ACTIVE TASKS') { section = 'tasks'; return; }
-    if (trimmed === 'COMPLETED') { section = 'completed'; return; }
+    if (trimmed === 'EPICS')        { section = 'epics';     return; }
+    if (trimmed === 'ACTIVE TASKS') { section = 'tasks';     return; }
+    if (trimmed === 'COMPLETED')    { section = 'completed'; return; }
     if (!trimmed) return;
 
     const cells = parseCSVRow(trimmed);
     if (!cells || cells.length < 2) return;
 
     if (section === 'epics') {
-      if (cells[0] === 'Priority') return; // header
+      if (cells[0] === 'Priority') return;
       if (cells[0] && cells[1] && cells[1] !== 'Title') {
         newEpics.push({ priority: cells[0], title: cells[1], nba: cells[2] || '', pct: cells[3] || '0%' });
       }
@@ -1403,7 +1406,7 @@ function parseCSV(text) {
       }
     } else if (section === 'completed') {
       if (cells[0] === 'Task') return;
-      if (cells[0] && cells[0] !== 'Task') {
+      if (cells[0]) {
         newCompleted.push({
           task: cells[0], epic: cells[1] || '', owner: cells[2] || '',
           scope: cells[3] || '', impact: cells[4] || '', score: cells[5] || '',
@@ -1413,8 +1416,8 @@ function parseCSV(text) {
     }
   });
 
-  if (newEpics.length) STATE.epics = newEpics;
-  if (newTasks.length) STATE.tasks = newTasks;
+  if (newEpics.length)     STATE.epics     = newEpics;
+  if (newTasks.length)     STATE.tasks     = newTasks;
   if (newCompleted.length) STATE.completed = newCompleted;
 }
 
@@ -1469,7 +1472,6 @@ loadDefaults();
 renderAll();
 document.getElementById('sort-priority').textContent = '↑';
 
-// Keyboard shortcuts
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
   if ((e.metaKey || e.ctrlKey) && e.key === 'n') { e.preventDefault(); openAddTask(); }
