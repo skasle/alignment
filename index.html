@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>8/0 Alignment</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
 
@@ -780,45 +782,111 @@ function loadDefaults() {
   ];
 }
 
-// ─── PERSISTENCE (PATCH: localStorage) ───────────────────────
-const STORAGE_KEY = '8by0_alignment_state';
+// ─── FIREBASE CONFIG ─────────────────────────────────────────
+// SETUP: Paste your Firebase config here (see instructions below)
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCN_DHRL6sJHokdsKIZHry9HQuyVdIl_no",
+  authDomain: "by0-alignment.firebaseapp.com",
+  databaseURL: "https://by0-alignment-default-rtdb.firebaseio.com",
+  projectId: "by0-alignment",
+  storageBucket: "by0-alignment.firebasestorage.app",
+  messagingSenderId: "723363743370",
+  appId: "1:723363743370:web:cd7aa21d8a51be61e64f73"
+};
+// ─────────────────────────────────────────────────────────────
 
-function saveState() {
+let _fb = null;
+let _fbRef = null;
+let _saveTimeout = null;
+let _ignoreNextSync = false;
+
+function initFirebase() {
   try {
-    const data = {
-      epics: STATE.epics,
-      tasks: STATE.tasks,
-      completed: STATE.completed,
-      _saved: new Date().toISOString(),
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    const el = document.getElementById('saveIndicator');
-    if (el) el.textContent = 'saved ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+    if (FIREBASE_CONFIG.apiKey === "PASTE_YOUR_API_KEY") {
+      console.warn('Firebase not configured — running in local-only mode');
+      document.getElementById('saveIndicator').textContent = '⚠ LOCAL ONLY';
+      document.getElementById('saveIndicator').style.color = '#f59e0b';
+      return false;
+    }
+    firebase.initializeApp(FIREBASE_CONFIG);
+    _fb = firebase.database();
+    _fbRef = _fb.ref('alignment');
+
+    // Real-time listener — when anyone else saves, update our view
+    _fbRef.on('value', (snapshot) => {
+      if (_ignoreNextSync) { _ignoreNextSync = false; return; }
+      const data = snapshot.val();
+      if (!data) return;
+      if (data.epics && data.epics.length) STATE.epics = data.epics;
+      if (data.tasks)                      STATE.tasks = data.tasks;
+      if (data.completed)                  STATE.completed = data.completed;
+      renderStats(); renderEpics(); renderTasks(); renderCompleted(); renderDashboard();
+      const el = document.getElementById('saveIndicator');
+      if (el) el.textContent = 'synced ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      console.log('Synced from Firebase', data._saved || '');
+    });
+
+    console.log('Firebase connected');
+    return true;
   } catch (e) {
-    console.warn('Failed to save state:', e);
+    console.error('Firebase init failed:', e);
+    document.getElementById('saveIndicator').textContent = '⚠ OFFLINE';
+    document.getElementById('saveIndicator').style.color = '#f87171';
+    return false;
   }
 }
 
+function saveState() {
+  // Debounce: wait 500ms after last change before writing
+  clearTimeout(_saveTimeout);
+  _saveTimeout = setTimeout(_doSave, 500);
+  // Update indicator immediately
+  const el = document.getElementById('saveIndicator');
+  if (el) el.textContent = 'saving...';
+}
+
+function _doSave() {
+  const data = {
+    epics: STATE.epics,
+    tasks: STATE.tasks,
+    completed: STATE.completed,
+    _saved: new Date().toISOString(),
+  };
+  // Save to Firebase if connected
+  if (_fbRef) {
+    _ignoreNextSync = true; // don't re-render from our own write
+    _fbRef.set(data).then(() => {
+      const el = document.getElementById('saveIndicator');
+      if (el) el.textContent = 'saved ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+    }).catch(e => {
+      console.error('Firebase save failed:', e);
+      _ignoreNextSync = false;
+      const el = document.getElementById('saveIndicator');
+      if (el) { el.textContent = '⚠ SAVE FAILED'; el.style.color = '#f87171'; }
+    });
+  }
+  // Always save to localStorage as fallback
+  try { localStorage.setItem('8by0_alignment_state', JSON.stringify(data)); } catch(e) {}
+}
+
 function loadState() {
+  // Try localStorage as immediate cache (Firebase listener will override)
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem('8by0_alignment_state');
     if (raw) {
       const data = JSON.parse(raw);
       if (data.epics && data.epics.length) STATE.epics = data.epics;
       if (data.tasks)                      STATE.tasks = data.tasks;
       if (data.completed)                  STATE.completed = data.completed;
-      console.log('Loaded saved state from', data._saved || 'unknown');
       return true;
     }
-  } catch (e) {
-    console.warn('Failed to load state:', e);
-  }
+  } catch (e) {}
   return false;
 }
 
 function resetToDefaults() {
-  if (!confirm('Reset all data to defaults? This will discard all changes since last code deploy.')) return;
-  localStorage.removeItem(STORAGE_KEY);
+  if (!confirm('Reset all data to defaults? This will discard all changes.')) return;
+  localStorage.removeItem('8by0_alignment_state');
   loadDefaults();
   renderAll();
   showToast('Reset to defaults');
@@ -1464,8 +1532,9 @@ function renderAll() {
 
 // ─── INIT ────────────────────────────────────────────────────
 loadDefaults();          // set baseline structure
-loadState();             // override with saved data if any exist
-renderAll();
+loadState();             // load from localStorage cache (fast)
+renderAll();             // render immediately with whatever we have
+initFirebase();          // connect to Firebase — real-time listener will update if remote data is newer
 document.getElementById('sort-priority').textContent = '↑';
 
 document.addEventListener('keydown', e => {
