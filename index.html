@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>8/0 Alignment</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
 
@@ -412,6 +413,118 @@
   }
   .epic-card:hover .epic-edit-btn { opacity: 1; }
   .epic-edit-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(108,140,255,0.08); }
+
+  /* ── DASHBOARD ─────────────────────────────────── */
+  .dashboard-toggle {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    user-select: none;
+  }
+  .dashboard-toggle:hover { color: var(--text2); }
+  .dashboard-panel { display: none; margin-bottom: 32px; }
+  .dashboard-panel.open { display: block; }
+
+  .dash-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .dash-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+  }
+  .dash-card-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+    margin-bottom: 12px;
+  }
+  .dash-card canvas { max-height: 220px; }
+
+  .dash-kpi-row {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .dash-kpi {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 18px;
+    flex: 1;
+    min-width: 140px;
+  }
+  .dash-kpi-value {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .dash-kpi-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+  }
+  .dash-kpi-sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 4px;
+  }
+  .dash-empty {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    text-align: center;
+    padding: 32px;
+  }
+
+  /* ── CSV FOOTER ────────────────────────────────── */
+  .csv-footer {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    padding: 24px 0 8px;
+    margin-top: 16px;
+    border-top: 1px solid var(--border);
+    opacity: 0.5;
+    transition: opacity 0.2s;
+  }
+  .csv-footer:hover { opacity: 1; }
+
+  /* ── OVERDUE ROW ───────────────────────────────── */
+  .tasks-table tbody tr.overdue-row {
+    background: rgba(248,113,113,0.04);
+  }
+  .tasks-table tbody tr.overdue-row:hover {
+    background: rgba(248,113,113,0.09);
+  }
+  .tasks-table tbody tr.overdue-row .td-task {
+    color: var(--red);
+  }
+  .tasks-table tbody tr.overdue-row .td-eta {
+    color: var(--red);
+    font-weight: 500;
+  }
 </style>
 </head>
 <body>
@@ -421,8 +534,6 @@
   <div class="header-right">
     <span class="save-indicator" id="saveIndicator"></span>
     <input type="file" id="csvImport" accept=".csv">
-    <button class="btn" onclick="document.getElementById('csvImport').click()">Import CSV</button>
-    <button class="btn" onclick="exportCSV()">Export CSV</button>
     <button class="btn btn-primary" onclick="openAddTask()">+ Task</button>
   </div>
 </header>
@@ -480,6 +591,44 @@
       <tbody id="completedBody"></tbody>
     </table>
   </div>
+
+  <!-- Dashboard -->
+  <div class="dashboard-toggle" onclick="toggleDashboard()">
+    <span id="dashArrow">▶</span>
+    <span>Dashboard</span>
+    <span style="flex:1;height:1px;background:var(--border);margin-left:8px;"></span>
+  </div>
+  <div class="dashboard-panel" id="dashboardPanel">
+    <div class="dash-kpi-row" id="dashKPIs"></div>
+    <div class="dash-grid">
+      <div class="dash-card">
+        <div class="dash-card-title">Scoping Accuracy — Estimated vs Actual Days</div>
+        <canvas id="chartScopeAccuracy"></canvas>
+        <div class="dash-empty" id="scopeEmpty" style="display:none;">Needs completed tasks with start dates to populate</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-title">Epic Progress — Done vs Remaining</div>
+        <canvas id="chartEpicProgress"></canvas>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-title">Throughput — Completed per Week</div>
+        <canvas id="chartThroughput"></canvas>
+        <div class="dash-empty" id="throughputEmpty" style="display:none;">Needs tasks with completion dates to populate</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-title">ETA Reliability — On Time vs Late</div>
+        <canvas id="chartETA"></canvas>
+        <div class="dash-empty" id="etaEmpty" style="display:none;">Needs completed tasks with ETAs to populate</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import / Export -->
+  <div class="csv-footer">
+    <button class="btn" onclick="document.getElementById('csvImport').click()">Import CSV</button>
+    <button class="btn" onclick="exportCSV()">Export CSV</button>
+  </div>
+
 </main>
 
 <button class="fab" onclick="openAddTask()">+</button>
@@ -779,9 +928,18 @@ function renderTasks() {
     const scoreVal = parseInt(t.score) || 0;
     const scoreClass = scoreVal <= 2 ? 'score-1' : scoreVal <= 3 ? 'score-2' : scoreVal <= 4 ? 'score-3' : 'score-high';
     let etaClass = '';
-    if (t.eta) { const etaDate = new Date(t.eta); const diff = (etaDate - now) / (1000*60*60*24); if (diff < 0) etaClass = 'overdue'; else if (diff <= 7) etaClass = 'soon'; }
+    let isOverdue = false;
+    if (t.eta) {
+      const etaDate = new Date(t.eta);
+      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const etaDay = new Date(etaDate.getFullYear(), etaDate.getMonth(), etaDate.getDate());
+      const diff = (etaDay - todayStart) / (1000*60*60*24);
+      if (diff <= 0) { etaClass = 'overdue'; isOverdue = true; }
+      else if (diff <= 7) { etaClass = 'soon'; }
+    }
     const isCritical = parseFloat(t.priority) === 0 && t.priority !== '';
-    return `<tr onclick="openEditTask(${idx})" class="${isCritical ? 'critical-path' : ''}">
+    const rowClasses = [isCritical ? 'critical-path' : '', isOverdue ? 'overdue-row' : ''].filter(Boolean).join(' ');
+    return `<tr onclick="openEditTask(${idx})" class="${rowClasses}">
       <td class="td-priority">${t.priority === '99' ? '—' : t.priority}</td>
       <td class="td-task">${escHtml(t.task)}${t.notes ? `<div class="task-notes">${escHtml(t.notes)}</div>` : ''}</td>
       <td class="hide-sm"><span class="epic-pill" style="color:${color};border-color:${color}30;background:${color}10">${escHtml(shortEpic(t.epic))}</span></td>
@@ -905,19 +1063,30 @@ function saveTask() {
   const scope = document.getElementById('fScope').value;
   const impact = document.getElementById('fImpact').value;
   const score = (scope && impact) ? String(parseInt(scope) * parseInt(impact)) : '';
+  const newStatus = document.getElementById('fStatus').value;
   const t = {
     priority: document.getElementById('fPriority').value || '1',
     task: document.getElementById('fTask').value.trim(),
     epic: document.getElementById('fEpic').value,
     owner: document.getElementById('fOwner').value,
-    status: document.getElementById('fStatus').value,
+    status: newStatus,
     eta: document.getElementById('fETA').value.trim(),
     scope, impact, score,
     url: document.getElementById('fURL').value.trim(),
     notes: document.getElementById('fNotes').value.trim(),
   };
+  // Preserve existing startedDate, or auto-stamp if status just became active
+  const activeStatuses = ['Started','In Progress','25%','50%','75%','90%'];
+  if (idx >= 0 && STATE.tasks[idx].startedDate) {
+    t.startedDate = STATE.tasks[idx].startedDate;
+  } else if (activeStatuses.includes(newStatus)) {
+    t.startedDate = new Date().toISOString().slice(0, 10);
+  }
   if (!t.task) { showToast('Task name required'); return; }
-  if (idx === -1) { STATE.tasks.push(t); showToast('Task added'); }
+  if (idx === -1) {
+    if (activeStatuses.includes(newStatus)) t.startedDate = new Date().toISOString().slice(0, 10);
+    STATE.tasks.push(t); showToast('Task added');
+  }
   else { STATE.tasks[idx] = t; showToast('Task saved'); }
   closeModal(); renderAll();
 }
@@ -925,7 +1094,20 @@ function markComplete() {
   const idx = parseInt(document.getElementById('editIndex').value);
   if (idx < 0) return;
   const t = STATE.tasks[idx];
-  STATE.completed.unshift({ task: t.task, epic: t.epic, owner: t.owner, scope: t.scope, impact: t.impact, score: t.score, url: t.url, notes: t.notes });
+  const completedDate = new Date().toISOString().slice(0, 10);
+  const startedDate = t.startedDate || '';
+  let actualDays = '';
+  if (startedDate) {
+    const diff = (new Date(completedDate) - new Date(startedDate)) / (1000 * 60 * 60 * 24);
+    actualDays = String(Math.max(1, Math.round(diff)));
+  }
+  STATE.completed.unshift({
+    task: t.task, epic: t.epic, owner: t.owner,
+    scope: t.scope, impact: t.impact, score: t.score,
+    url: t.url, notes: t.notes,
+    startedDate, completedDate, actualDays,
+    eta: t.eta || '',
+  });
   STATE.tasks.splice(idx, 1);
   closeModal(); showToast('Moved to Completed'); renderAll();
 }
@@ -1035,10 +1217,10 @@ function deleteEpic() {
 function exportCSV() {
   let csv = 'EPICS\r\nPriority,Title,Next Best Action,Progress %\r\n';
   STATE.epics.forEach(e => { csv += `${csvCell(e.priority)},${csvCell(e.title)},${csvCell(e.nba)},${csvCell(e.pct)}\r\n`; });
-  csv += '\r\nACTIVE TASKS\r\nPriority,Task,Epic,Owner,Status,ETA,Scope,Impact,Score,URL,Notes\r\n';
-  STATE.tasks.forEach(t => { csv += `${csvCell(t.priority)},${csvCell(t.task)},${csvCell(t.epic)},${csvCell(t.owner)},${csvCell(t.status)},${csvCell(t.eta)},${csvCell(t.scope)},${csvCell(t.impact)},${csvCell(t.score)},${csvCell(t.url)},${csvCell(t.notes)}\r\n`; });
-  csv += '\r\nCOMPLETED\r\nTask,Epic,Owner,Scope,Impact,Score,URL,Notes\r\n';
-  STATE.completed.forEach(t => { csv += `${csvCell(t.task)},${csvCell(t.epic)},${csvCell(t.owner)},${csvCell(t.scope)},${csvCell(t.impact)},${csvCell(t.score)},${csvCell(t.url)},${csvCell(t.notes)}\r\n`; });
+  csv += '\r\nACTIVE TASKS\r\nPriority,Task,Epic,Owner,Status,ETA,Scope,Impact,Score,URL,Notes,Started\r\n';
+  STATE.tasks.forEach(t => { csv += `${csvCell(t.priority)},${csvCell(t.task)},${csvCell(t.epic)},${csvCell(t.owner)},${csvCell(t.status)},${csvCell(t.eta)},${csvCell(t.scope)},${csvCell(t.impact)},${csvCell(t.score)},${csvCell(t.url)},${csvCell(t.notes)},${csvCell(t.startedDate)}\r\n`; });
+  csv += '\r\nCOMPLETED\r\nTask,Epic,Owner,Scope,Impact,Score,URL,Notes,Started,Completed,Actual Days,ETA\r\n';
+  STATE.completed.forEach(t => { csv += `${csvCell(t.task)},${csvCell(t.epic)},${csvCell(t.owner)},${csvCell(t.scope)},${csvCell(t.impact)},${csvCell(t.score)},${csvCell(t.url)},${csvCell(t.notes)},${csvCell(t.startedDate)},${csvCell(t.completedDate)},${csvCell(t.actualDays)},${csvCell(t.eta)}\r\n`; });
   const blob = new Blob([csv], { type: 'text/csv' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -1077,10 +1259,10 @@ function parseCSV(text) {
       if (cells[0] && cells[1] && cells[1] !== 'Title') newEpics.push({ priority: cells[0], title: cells[1], nba: cells[2] || '', pct: cells[3] || '0%' });
     } else if (section === 'tasks') {
       if (cells[0] === 'Priority') return;
-      if (cells[1] && cells[1] !== 'Task') newTasks.push({ priority: cells[0] || '1', task: cells[1], epic: cells[2] || '', owner: cells[3] || 'SK', status: cells[4] || 'Not Started', eta: cells[5] || '', scope: cells[6] || '', impact: cells[7] || '', score: cells[8] || '', url: cells[9] || '', notes: cells[10] || '' });
+      if (cells[1] && cells[1] !== 'Task') newTasks.push({ priority: cells[0] || '1', task: cells[1], epic: cells[2] || '', owner: cells[3] || 'SK', status: cells[4] || 'Not Started', eta: cells[5] || '', scope: cells[6] || '', impact: cells[7] || '', score: cells[8] || '', url: cells[9] || '', notes: cells[10] || '', startedDate: cells[11] || '' });
     } else if (section === 'completed') {
       if (cells[0] === 'Task') return;
-      if (cells[0]) newCompleted.push({ task: cells[0], epic: cells[1] || '', owner: cells[2] || '', scope: cells[3] || '', impact: cells[4] || '', score: cells[5] || '', url: cells[6] || '', notes: cells[7] || '' });
+      if (cells[0]) newCompleted.push({ task: cells[0], epic: cells[1] || '', owner: cells[2] || '', scope: cells[3] || '', impact: cells[4] || '', score: cells[5] || '', url: cells[6] || '', notes: cells[7] || '', startedDate: cells[8] || '', completedDate: cells[9] || '', actualDays: cells[10] || '', eta: cells[11] || '' });
     }
   });
   if (newEpics.length)     STATE.epics     = newEpics;
@@ -1105,13 +1287,179 @@ function escHtml(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,
 function today() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
 
+// ─── DASHBOARD ───────────────────────────────────────────────
+function toggleDashboard() {
+  const sec = document.getElementById('dashboardPanel');
+  const arrow = document.getElementById('dashArrow');
+  sec.classList.toggle('open');
+  arrow.textContent = sec.classList.contains('open') ? '▼' : '▶';
+  if (sec.classList.contains('open')) renderDashboard();
+}
+
+const _charts = {};
+function getOrCreateChart(canvasId, config) {
+  if (_charts[canvasId]) _charts[canvasId].destroy();
+  const ctx = document.getElementById(canvasId);
+  if (!ctx) return null;
+  _charts[canvasId] = new Chart(ctx, config);
+  return _charts[canvasId];
+}
+
+const CHART_COLORS = { SK: '#6c8cff', JP: '#22d3ee', 'SK/JP': '#a855f7', Yan: '#fb923c' };
+const CHART_DEFAULTS = {
+  responsive: true,
+  plugins: { legend: { labels: { color: '#8e8eaa', font: { family: "'DM Mono', monospace", size: 10 } } } },
+  scales: {
+    x: { ticks: { color: '#8e8eaa', font: { family: "'DM Mono', monospace", size: 9 } }, grid: { color: '#2a2a32' } },
+    y: { ticks: { color: '#8e8eaa', font: { family: "'DM Mono', monospace", size: 9 } }, grid: { color: '#2a2a32' }, beginAtZero: true },
+  },
+};
+
+function scopeEstimateToDays(s) {
+  const map = { '1': 3, '2': 5.5, '3': 10.5, '4': 24.5, '5': 35 };
+  return map[s] || 0;
+}
+
+function renderDashboard() {
+  if (!document.getElementById('dashboardPanel').classList.contains('open')) return;
+
+  // ── KPIs ──
+  const withDates = STATE.completed.filter(t => t.actualDays);
+  const withETA = STATE.completed.filter(t => t.eta && t.completedDate);
+  const onTime = withETA.filter(t => new Date(t.completedDate) <= new Date(t.eta)).length;
+  const avgActualDays = withDates.length ? (withDates.reduce((s, t) => s + parseInt(t.actualDays), 0) / withDates.length).toFixed(1) : '—';
+  const etaPct = withETA.length ? Math.round((onTime / withETA.length) * 100) + '%' : '—';
+
+  document.getElementById('dashKPIs').innerHTML = `
+    <div class="dash-kpi">
+      <div class="dash-kpi-value">${STATE.completed.length}</div>
+      <div class="dash-kpi-label">Total Completed</div>
+    </div>
+    <div class="dash-kpi">
+      <div class="dash-kpi-value">${withDates.length}</div>
+      <div class="dash-kpi-label">With Duration Data</div>
+      <div class="dash-kpi-sub">New completions auto-track</div>
+    </div>
+    <div class="dash-kpi">
+      <div class="dash-kpi-value">${avgActualDays}</div>
+      <div class="dash-kpi-label">Avg Actual Days</div>
+    </div>
+    <div class="dash-kpi">
+      <div class="dash-kpi-value">${etaPct}</div>
+      <div class="dash-kpi-label">On-Time Rate</div>
+      <div class="dash-kpi-sub">${withETA.length ? onTime + '/' + withETA.length + ' on or before ETA' : 'Needs ETAs + completion dates'}</div>
+    </div>
+  `;
+
+  // ── Scope Accuracy Chart ──
+  const scopeCanvas = document.getElementById('chartScopeAccuracy');
+  const scopeEmpty = document.getElementById('scopeEmpty');
+  const scopeData = withDates.filter(t => t.scope);
+  if (scopeData.length >= 2) {
+    scopeCanvas.style.display = 'block'; scopeEmpty.style.display = 'none';
+    const labels = scopeData.slice(-15).map(t => t.task.length > 20 ? t.task.slice(0,18) + '…' : t.task);
+    const estimated = scopeData.slice(-15).map(t => scopeEstimateToDays(t.scope));
+    const actual = scopeData.slice(-15).map(t => parseInt(t.actualDays) || 0);
+    getOrCreateChart('chartScopeAccuracy', {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          { label: 'Estimated (days)', data: estimated, backgroundColor: 'rgba(108,140,255,0.4)', borderColor: '#6c8cff', borderWidth: 1 },
+          { label: 'Actual (days)', data: actual, backgroundColor: 'rgba(62,207,142,0.4)', borderColor: '#3ecf8e', borderWidth: 1 },
+        ]
+      },
+      options: { ...CHART_DEFAULTS, plugins: { ...CHART_DEFAULTS.plugins, tooltip: { callbacks: { title: (items) => scopeData.slice(-15)[items[0].dataIndex].task } } } }
+    });
+  } else {
+    scopeCanvas.style.display = 'none'; scopeEmpty.style.display = 'block';
+  }
+
+  // ── Epic Progress Chart ──
+  const epicLabels = STATE.epics.map(e => shortEpic(e.title));
+  const epicDone = STATE.epics.map(e => STATE.completed.filter(t => t.epic === e.title).length);
+  const epicRemaining = STATE.epics.map(e => STATE.tasks.filter(t => t.epic === e.title).length);
+  getOrCreateChart('chartEpicProgress', {
+    type: 'bar',
+    data: {
+      labels: epicLabels,
+      datasets: [
+        { label: 'Completed', data: epicDone, backgroundColor: 'rgba(62,207,142,0.5)', borderColor: '#3ecf8e', borderWidth: 1 },
+        { label: 'Remaining', data: epicRemaining, backgroundColor: 'rgba(248,113,113,0.3)', borderColor: '#f87171', borderWidth: 1 },
+      ]
+    },
+    options: { ...CHART_DEFAULTS, indexAxis: 'y', scales: { ...CHART_DEFAULTS.scales, x: { ...CHART_DEFAULTS.scales.x, stacked: true }, y: { ...CHART_DEFAULTS.scales.y, stacked: true } } }
+  });
+
+  // ── Throughput Chart ──
+  const throughputCanvas = document.getElementById('chartThroughput');
+  const throughputEmpty = document.getElementById('throughputEmpty');
+  const datedCompleted = STATE.completed.filter(t => t.completedDate);
+  if (datedCompleted.length >= 2) {
+    throughputCanvas.style.display = 'block'; throughputEmpty.style.display = 'none';
+    // Group by ISO week
+    const weekMap = {};
+    datedCompleted.forEach(t => {
+      const d = new Date(t.completedDate);
+      const wk = getISOWeekLabel(d);
+      if (!weekMap[wk]) weekMap[wk] = { count: 0, totalDays: 0, withDays: 0 };
+      weekMap[wk].count++;
+      if (t.actualDays) { weekMap[wk].totalDays += parseInt(t.actualDays); weekMap[wk].withDays++; }
+    });
+    const weeks = Object.keys(weekMap).sort().slice(-12);
+    getOrCreateChart('chartThroughput', {
+      type: 'bar',
+      data: {
+        labels: weeks,
+        datasets: [
+          { label: 'Tasks Completed', data: weeks.map(w => weekMap[w].count), backgroundColor: 'rgba(108,140,255,0.5)', borderColor: '#6c8cff', borderWidth: 1 },
+        ]
+      },
+      options: CHART_DEFAULTS
+    });
+  } else {
+    throughputCanvas.style.display = 'none'; throughputEmpty.style.display = 'block';
+  }
+
+  // ── ETA Reliability Chart ──
+  const etaCanvas = document.getElementById('chartETA');
+  const etaEmptyEl = document.getElementById('etaEmpty');
+  if (withETA.length >= 2) {
+    etaCanvas.style.display = 'block'; etaEmptyEl.style.display = 'none';
+    // By owner
+    const owners = [...new Set(withETA.map(t => t.owner))];
+    const onTimeByOwner = owners.map(o => withETA.filter(t => t.owner === o && new Date(t.completedDate) <= new Date(t.eta)).length);
+    const lateByOwner = owners.map(o => withETA.filter(t => t.owner === o && new Date(t.completedDate) > new Date(t.eta)).length);
+    getOrCreateChart('chartETA', {
+      type: 'bar',
+      data: {
+        labels: owners,
+        datasets: [
+          { label: 'On Time', data: onTimeByOwner, backgroundColor: 'rgba(62,207,142,0.5)', borderColor: '#3ecf8e', borderWidth: 1 },
+          { label: 'Late', data: lateByOwner, backgroundColor: 'rgba(248,113,113,0.4)', borderColor: '#f87171', borderWidth: 1 },
+        ]
+      },
+      options: { ...CHART_DEFAULTS, scales: { ...CHART_DEFAULTS.scales, x: { ...CHART_DEFAULTS.scales.x, stacked: true }, y: { ...CHART_DEFAULTS.scales.y, stacked: true } } }
+    });
+  } else {
+    etaCanvas.style.display = 'none'; etaEmptyEl.style.display = 'block';
+  }
+}
+
+function getISOWeekLabel(d) {
+  const jan1 = new Date(d.getFullYear(), 0, 1);
+  const week = Math.ceil(((d - jan1) / 86400000 + jan1.getDay() + 1) / 7);
+  return `W${String(week).padStart(2,'0')}`;
+}
+
 // ─── RENDER ALL (with persistence) ──────────────────────────
 function renderAll() {
   renderStats();
   renderEpics();
   renderTasks();
   renderCompleted();
-  saveState();  // ← PATCH: persist to localStorage after every change
+  renderDashboard();
+  saveState();
 }
 
 // ─── INIT ────────────────────────────────────────────────────
