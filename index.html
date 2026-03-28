@@ -393,6 +393,25 @@
 
   /* ── SAVE INDICATOR ──────────────────────────────── */
   .save-indicator { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.05em; }
+
+  /* ── EPIC EDIT BUTTON ──────────────────────────── */
+  .epic-edit-btn {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text3);
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.15s;
+  }
+  .epic-card:hover .epic-edit-btn { opacity: 1; }
+  .epic-edit-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(108,140,255,0.08); }
 </style>
 </head>
 <body>
@@ -516,7 +535,7 @@
       <input type="hidden" id="epicEditIndex">
       <div class="field-row single"><div class="field"><label>Title</label><input type="text" id="fEpicTitle" placeholder="Epic name..."></div></div>
       <div class="field-row">
-        <div class="field"><label>Priority</label><select id="fEpicPriority"><option value="P0">P0</option><option value="P1">P1</option><option value="P2">P2</option><option value="P3">P3</option></select></div>
+        <div class="field"><label>Priority</label><select id="fEpicPriority"></select></div>
         <div class="field"><label>Progress %</label><input type="text" id="fEpicPct" placeholder="e.g. 35%"></div>
       </div>
       <div class="field-row single"><div class="field"><label>Next Best Action</label><textarea id="fEpicNBA" rows="2" placeholder="What needs to happen next..."></textarea></div></div>
@@ -683,7 +702,7 @@ function renderEpics() {
     card.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:start;">
         <div class="epic-priority">${escHtml(epic.priority)}</div>
-        <button class="epic-edit-btn" onclick="openEditEpic(${i})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;padding:0 2px;line-height:1;opacity:0.5;transition:opacity 0.15s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5">✎</button>
+        <button class="epic-edit-btn" onclick="openEditEpic(${i})" title="Edit epic">edit</button>
       </div>
       <div class="epic-title">${escHtml(epic.title)}</div>
       <div class="epic-nba">${escHtml(epic.nba)}</div>
@@ -917,7 +936,7 @@ function openEditEpic(idx) {
   document.getElementById('epicModalTitle').textContent = 'Edit Epic';
   document.getElementById('epicEditIndex').value = idx;
   document.getElementById('fEpicTitle').value = e.title;
-  document.getElementById('fEpicPriority').value = e.priority;
+  populateEpicPrioritySelect(e.priority);
   document.getElementById('fEpicPct').value = e.pct;
   document.getElementById('fEpicNBA').value = e.nba;
   document.getElementById('deleteEpicBtn').style.display = 'block';
@@ -929,12 +948,29 @@ function openAddEpic() {
   document.getElementById('epicModalTitle').textContent = 'New Epic';
   document.getElementById('epicEditIndex').value = '-1';
   document.getElementById('fEpicTitle').value = '';
-  document.getElementById('fEpicPriority').value = 'P1';
+  populateEpicPrioritySelect('P' + STATE.epics.length);
   document.getElementById('fEpicPct').value = '0%';
   document.getElementById('fEpicNBA').value = '';
   document.getElementById('deleteEpicBtn').style.display = 'none';
   document.getElementById('epicModalOverlay').classList.add('open');
   setTimeout(() => document.getElementById('fEpicTitle').focus(), 50);
+}
+
+function populateEpicPrioritySelect(selected) {
+  const sel = document.getElementById('fEpicPriority');
+  const count = Math.max(STATE.epics.length, 1);
+  // When adding a new epic, include one extra slot
+  const isNew = document.getElementById('epicEditIndex').value === '-1';
+  const max = isNew ? count : count - 1;
+  sel.innerHTML = '';
+  for (let i = 0; i <= max; i++) {
+    const val = 'P' + i;
+    const opt = document.createElement('option');
+    opt.value = val;
+    opt.textContent = val;
+    if (val === selected) opt.selected = true;
+    sel.appendChild(opt);
+  }
 }
 
 function closeEpicModal() { document.getElementById('epicModalOverlay').classList.remove('open'); }
@@ -962,6 +998,12 @@ function saveEpic() {
     }
     showToast('Epic saved');
   }
+  // Re-sort epics by priority (P0 first)
+  STATE.epics.sort((a, b) => {
+    const aN = parseInt(a.priority.replace('P','')) || 0;
+    const bN = parseInt(b.priority.replace('P','')) || 0;
+    return aN - bN;
+  });
   closeEpicModal(); renderAll();
 }
 
@@ -978,6 +1020,13 @@ function deleteEpic() {
   STATE.tasks.forEach(t => { if (t.epic === epic.title) t.epic = ''; });
   STATE.completed.forEach(t => { if (t.epic === epic.title) t.epic = ''; });
   STATE.epics.splice(idx, 1);
+  // Re-number priorities to stay contiguous (P0, P1, P2...)
+  STATE.epics.sort((a, b) => {
+    const aN = parseInt(a.priority.replace('P','')) || 0;
+    const bN = parseInt(b.priority.replace('P','')) || 0;
+    return aN - bN;
+  });
+  STATE.epics.forEach((e, i) => { e.priority = 'P' + i; });
   if (STATE.epicFilter === epic.title) STATE.epicFilter = null;
   closeEpicModal(); showToast('Epic deleted'); renderAll();
 }
