@@ -302,85 +302,26 @@
     font-size: 12px;
   }
 
-  /* priority cell */
-  .td-priority {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text3);
-    width: 48px;
-    text-align: center;
-  }
-
-  /* task name */
+  .td-priority { font-family: var(--mono); font-size: 11px; color: var(--text3); width: 48px; text-align: center; }
   .td-task { color: var(--text); font-weight: 500; min-width: 200px; }
-  .td-task .task-notes {
-    font-size: 11px;
-    color: var(--text3);
-    font-weight: 400;
-    margin-top: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 300px;
-  }
+  .td-task .task-notes { font-size: 11px; color: var(--text3); font-weight: 400; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
 
-  /* epic pill */
-  .epic-pill {
-    display: inline-block;
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 3px;
-    border: 1px solid;
-    white-space: nowrap;
-    max-width: 180px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  .epic-pill { display: inline-block; font-family: var(--mono); font-size: 10px; padding: 2px 8px; border-radius: 3px; border: 1px solid; white-space: nowrap; max-width: 180px; overflow: hidden; text-overflow: ellipsis; }
 
-  /* owner */
-  .owner-badge {
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 500;
-    padding: 2px 7px;
-    border-radius: 3px;
-    background: var(--surface3);
-    color: var(--text2);
-    white-space: nowrap;
-  }
+  .owner-badge { font-family: var(--mono); font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 3px; background: var(--surface3); color: var(--text2); white-space: nowrap; }
   .owner-SK   { color: var(--accent); background: rgba(108,140,255,0.1); }
   .owner-JP   { color: var(--cyan);   background: rgba(34,211,238,0.1);  }
   .owner-SKJP { color: var(--purple); background: rgba(168,85,247,0.1);  }
   .owner-Yan  { color: var(--orange); background: rgba(251,146,60,0.1);  }
 
-  /* status */
-  .status-badge {
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 2px 7px;
-    border-radius: 3px;
-    white-space: nowrap;
-  }
+  .status-badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
   .status-started     { color: var(--green); background: rgba(62,207,142,0.1);  }
   .status-not-started { color: var(--text3); background: var(--surface3);       }
   .status-pct         { color: var(--amber); background: rgba(245,158,11,0.1);  }
   .status-blocked     { color: var(--red);   background: rgba(248,113,113,0.1); }
   .status-done        { color: var(--text3); background: var(--surface3); text-decoration: line-through; }
 
-  /* score */
-  .score-chip {
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 500;
-    width: 28px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    margin: 0 auto;
-  }
+  .score-chip { font-family: var(--mono); font-size: 11px; font-weight: 500; width: 28px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 4px; margin: 0 auto; }
   .score-1    { background: rgba(62,207,142,0.15); color: var(--green); }
   .score-2    { background: rgba(62,207,142,0.1);  color: var(--green); opacity: 0.8; }
   .score-3    { background: rgba(245,158,11,0.1);  color: var(--amber); }
@@ -388,307 +329,70 @@
   .score-6    { background: rgba(248,113,113,0.08); color: var(--red);  opacity: 0.7; }
   .score-high { background: rgba(248,113,113,0.1);  color: var(--red);  }
 
-  /* ETA */
-  .td-eta {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text3);
-    white-space: nowrap;
-  }
+  .td-eta { font-family: var(--mono); font-size: 11px; color: var(--text3); white-space: nowrap; }
   .td-eta.overdue { color: var(--red); }
   .td-eta.soon    { color: var(--amber); }
-
-  .td-num {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text3);
-    text-align: center;
-    width: 40px;
-  }
+  .td-num { font-family: var(--mono); font-size: 11px; color: var(--text3); text-align: center; width: 40px; }
 
   /* ── EDIT MODAL ───────────────────────────────────── */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(3px);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-  }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(3px); z-index: 200; align-items: center; justify-content: center; }
   .modal-overlay.open { display: flex; }
-
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: 8px;
-    width: 560px;
-    max-width: 95vw;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 24px 64px rgba(0,0,0,0.6);
-  }
-
-  .modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .modal-title {
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .modal-close {
-    background: none;
-    border: none;
-    color: var(--text3);
-    cursor: pointer;
-    font-size: 18px;
-    line-height: 1;
-    padding: 2px 6px;
-    border-radius: 3px;
-    transition: color 0.15s;
-  }
+  .modal { background: var(--surface); border: 1px solid var(--border2); border-radius: 8px; width: 560px; max-width: 95vw; max-height: 90vh; overflow-y: auto; box-shadow: 0 24px 64px rgba(0,0,0,0.6); }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+  .modal-title { font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--text); text-transform: uppercase; letter-spacing: 0.08em; }
+  .modal-close { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 18px; line-height: 1; padding: 2px 6px; border-radius: 3px; transition: color 0.15s; }
   .modal-close:hover { color: var(--text); }
-
   .modal-body { padding: 20px; }
-
-  .field-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
   .field-row.single { grid-template-columns: 1fr; }
   .field-row.triple { grid-template-columns: 1fr 1fr 1fr; }
-
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .field label {
-    font-family: var(--mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text3);
-    font-weight: 500;
-  }
-
-  .field input, .field select, .field textarea {
-    font-family: var(--mono);
-    font-size: 12px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    border-radius: 4px;
-    padding: 7px 10px;
-    outline: none;
-    transition: border-color 0.15s;
-    width: 100%;
-  }
-  .field input:focus, .field select:focus, .field textarea:focus {
-    border-color: var(--accent);
-  }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); font-weight: 500; }
+  .field input, .field select, .field textarea { font-family: var(--mono); font-size: 12px; background: var(--surface2); border: 1px solid var(--border); color: var(--text); border-radius: 4px; padding: 7px 10px; outline: none; transition: border-color 0.15s; width: 100%; }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); }
   .field select option { background: var(--surface2); }
   .field textarea { resize: vertical; min-height: 60px; font-family: var(--sans); font-size: 12px; }
-
-  .modal-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 20px;
-    border-top: 1px solid var(--border);
-    gap: 8px;
-  }
-
-  .btn-danger {
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 500;
-    padding: 6px 14px;
-    border-radius: 4px;
-    border: 1px solid rgba(248,113,113,0.3);
-    background: rgba(248,113,113,0.08);
-    color: var(--red);
-    cursor: pointer;
-    transition: all 0.15s;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
+  .modal-footer { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-top: 1px solid var(--border); gap: 8px; }
+  .btn-danger { font-family: var(--mono); font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: 4px; border: 1px solid rgba(248,113,113,0.3); background: rgba(248,113,113,0.08); color: var(--red); cursor: pointer; transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.04em; }
   .btn-danger:hover { background: rgba(248,113,113,0.15); border-color: var(--red); }
 
   /* ── COMPLETED SECTION ───────────────────────────── */
-  .completed-toggle {
-    font-family: var(--mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text3);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
-    user-select: none;
-  }
+  .completed-toggle { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); cursor: pointer; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; user-select: none; }
   .completed-toggle:hover { color: var(--text2); }
-
-  .completed-table {
-    display: none;
-    margin-bottom: 32px;
-  }
+  .completed-table { display: none; margin-bottom: 32px; }
   .completed-table.open { display: block; }
 
   /* ── STATS BAR ────────────────────────────────────── */
-  .stats-bar {
-    display: flex;
-    gap: 20px;
-    padding: 12px 0;
-    margin-bottom: 20px;
-    border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-  }
+  .stats-bar { display: flex; gap: 20px; padding: 12px 0; margin-bottom: 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .stat { display: flex; flex-direction: column; gap: 2px; }
+  .stat-value { font-family: var(--mono); font-size: 18px; font-weight: 500; color: var(--text); line-height: 1; }
+  .stat-label { font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); }
+  .stat-divider { width: 1px; background: var(--border); align-self: stretch; }
 
-  .stat {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
+  /* ── FAB ─────────────────────────────────────────── */
+  .fab { position: fixed; bottom: 28px; right: 28px; width: 44px; height: 44px; border-radius: 50%; background: var(--accent2); border: none; color: #fff; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(61,90,255,0.4); transition: all 0.2s; z-index: 50; }
+  .fab:hover { background: var(--accent); box-shadow: 0 6px 28px rgba(108,140,255,0.5); transform: scale(1.06); }
 
-  .stat-value {
-    font-family: var(--mono);
-    font-size: 18px;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1;
-  }
-
-  .stat-label {
-    font-family: var(--mono);
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text3);
-  }
-
-  .stat-divider {
-    width: 1px;
-    background: var(--border);
-    align-self: stretch;
-  }
-
-  /* ── ADD TASK FAB ─────────────────────────────────── */
-  .fab {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: var(--accent2);
-    border: none;
-    color: #fff;
-    font-size: 22px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 20px rgba(61,90,255,0.4);
-    transition: all 0.2s;
-    z-index: 50;
-  }
-  .fab:hover {
-    background: var(--accent);
-    box-shadow: 0 6px 28px rgba(108,140,255,0.5);
-    transform: scale(1.06);
-  }
-
-  /* ── URL LINK ─────────────────────────────────────── */
-  .task-url-link {
-    color: var(--accent);
-    text-decoration: none;
-    font-family: var(--mono);
-    font-size: 10px;
-  }
+  .task-url-link { color: var(--accent); text-decoration: none; font-family: var(--mono); font-size: 10px; }
   .task-url-link:hover { text-decoration: underline; }
 
   /* ── TOAST ────────────────────────────────────────── */
-  .toast {
-    position: fixed;
-    bottom: 80px;
-    right: 28px;
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 11px;
-    padding: 10px 16px;
-    border-radius: 6px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-    z-index: 300;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: all 0.2s;
-    pointer-events: none;
-  }
-  .toast.show {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  .toast { position: fixed; bottom: 80px; right: 28px; background: var(--surface2); border: 1px solid var(--border2); color: var(--text); font-family: var(--mono); font-size: 11px; padding: 10px 16px; border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 300; opacity: 0; transform: translateY(8px); transition: all 0.2s; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateY(0); }
 
   /* ── RESPONSIVE ───────────────────────────────────── */
-  @media (max-width: 900px) {
-    .hide-sm { display: none; }
-    main { padding: 16px; }
-    .epics-grid { grid-template-columns: 1fr 1fr; }
-  }
-  @media (max-width: 600px) {
-    .epics-grid { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 900px) { .hide-sm { display: none; } main { padding: 16px; } .epics-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .epics-grid { grid-template-columns: 1fr; } }
 
-  .tasks-table tbody tr.critical-path {
-    border-left: 2px solid var(--accent);
-    background: rgba(108,140,255,0.04);
-  }
-  .tasks-table tbody tr.critical-path:hover {
-    background: rgba(108,140,255,0.09);
-  }
-  .tasks-table tbody tr.critical-path .td-priority {
-    color: var(--accent);
-    font-weight: 500;
-  }
-
-  .drag-hint {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text3);
-    padding: 4px 0;
-  }
-
+  .tasks-table tbody tr.critical-path { border-left: 2px solid var(--accent); background: rgba(108,140,255,0.04); }
+  .tasks-table tbody tr.critical-path:hover { background: rgba(108,140,255,0.09); }
+  .tasks-table tbody tr.critical-path .td-priority { color: var(--accent); font-weight: 500; }
+  .drag-hint { font-family: var(--mono); font-size: 10px; color: var(--text3); padding: 4px 0; }
   input[type="file"] { display: none; }
+  .score-calc { font-family: var(--mono); font-size: 11px; color: var(--accent); padding: 6px 10px; background: rgba(108,140,255,0.06); border-radius: 4px; border: 1px solid rgba(108,140,255,0.15); text-align: center; }
 
-  .score-calc {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--accent);
-    padding: 6px 10px;
-    background: rgba(108,140,255,0.06);
-    border-radius: 4px;
-    border: 1px solid rgba(108,140,255,0.15);
-    text-align: center;
-  }
+  /* ── SAVE INDICATOR ──────────────────────────────── */
+  .save-indicator { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.05em; }
 </style>
 </head>
 <body>
@@ -696,7 +400,9 @@
 <header>
   <div class="logo">8<span>/</span>0 <span style="color:var(--text3);font-size:11px;margin-left:6px;">ALIGNMENT</span></div>
   <div class="header-right">
+    <span class="save-indicator" id="saveIndicator"></span>
     <input type="file" id="csvImport" accept=".csv">
+    <button class="btn" onclick="resetToDefaults()">Reset</button>
     <button class="btn" onclick="document.getElementById('csvImport').click()">Import CSV</button>
     <button class="btn" onclick="exportCSV()">Export CSV</button>
     <button class="btn btn-primary" onclick="openAddTask()">+ Task</button>
@@ -704,15 +410,9 @@
 </header>
 
 <main>
-
-  <!-- Stats -->
   <div class="stats-bar" id="statsBar"></div>
-
-  <!-- Epics -->
   <div class="section-label">Epics</div>
   <div class="epics-grid" id="epicsGrid"></div>
-
-  <!-- Active Tasks -->
   <div class="section-label">Active Tasks</div>
   <div class="toolbar">
     <input class="filter-input" id="searchInput" placeholder="Filter tasks..." oninput="renderTasks()">
@@ -724,7 +424,6 @@
     <div class="toolbar-spacer"></div>
     <span class="drag-hint" id="taskCount"></span>
   </div>
-
   <table class="tasks-table" id="tasksTable">
     <thead>
       <tr>
@@ -741,8 +440,6 @@
     </thead>
     <tbody id="tasksBody"></tbody>
   </table>
-
-  <!-- Completed -->
   <div class="completed-toggle" onclick="toggleCompleted()">
     <span id="completedArrow">▶</span>
     <span>Completed</span>
@@ -765,13 +462,9 @@
       <tbody id="completedBody"></tbody>
     </table>
   </div>
-
 </main>
 
-<!-- FAB -->
 <button class="fab" onclick="openAddTask()">+</button>
-
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <!-- Edit/Add Modal -->
@@ -783,92 +476,25 @@
     </div>
     <div class="modal-body">
       <input type="hidden" id="editIndex">
-      <div class="field-row single">
-        <div class="field">
-          <label>Task Name</label>
-          <input type="text" id="fTask" placeholder="Describe the task...">
-        </div>
+      <div class="field-row single"><div class="field"><label>Task Name</label><input type="text" id="fTask" placeholder="Describe the task..."></div></div>
+      <div class="field-row">
+        <div class="field"><label>Epic</label><select id="fEpic"></select></div>
+        <div class="field"><label>Owner</label><select id="fOwner"><option value="SK">SK</option><option value="JP">JP</option><option value="Yan">Yan</option><option value="SK/JP">SK/JP</option><option value="Sam">Sam</option></select></div>
       </div>
       <div class="field-row">
-        <div class="field">
-          <label>Epic</label>
-          <select id="fEpic"></select>
-        </div>
-        <div class="field">
-          <label>Owner</label>
-          <select id="fOwner">
-            <option value="SK">SK</option>
-            <option value="JP">JP</option>
-            <option value="Yan">Yan</option>
-            <option value="SK/JP">SK/JP</option>
-            <option value="Sam">Sam</option>
-          </select>
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field">
-          <label>Status</label>
-          <select id="fStatus">
-            <option value="Not Started">Not Started</option>
-            <option value="Started">Started</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Blocked">Blocked</option>
-            <option value="25%">25%</option>
-            <option value="50%">50%</option>
-            <option value="75%">75%</option>
-            <option value="90%">90%</option>
-            <option value="Done">Done</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>ETA</label>
-          <input type="text" id="fETA" placeholder="e.g. 3/31/2026">
-        </div>
+        <div class="field"><label>Status</label><select id="fStatus"><option value="Not Started">Not Started</option><option value="Started">Started</option><option value="In Progress">In Progress</option><option value="Blocked">Blocked</option><option value="25%">25%</option><option value="50%">50%</option><option value="75%">75%</option><option value="90%">90%</option><option value="Done">Done</option></select></div>
+        <div class="field"><label>ETA</label><input type="text" id="fETA" placeholder="e.g. 3/31/2026"></div>
       </div>
       <div class="field-row triple">
-        <div class="field">
-          <label>Scope (1–5)</label>
-          <select id="fScope" onchange="calcScore()">
-            <option value="">—</option>
-            <option value="1">1 · ≤3 days</option>
-            <option value="2">2 · 4-7 days</option>
-            <option value="3">3 · 1-2 wks</option>
-            <option value="4">4 · 3-4 wks</option>
-            <option value="5">5 · 4+ wks</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Impact (1–5)</label>
-          <select id="fImpact" onchange="calcScore()">
-            <option value="">—</option>
-            <option value="1">1 · 10%+ rev</option>
-            <option value="2">2 · 6-9% rev</option>
-            <option value="3">3 · 3-5% rev</option>
-            <option value="4">4 · 1-2% rev</option>
-            <option value="5">5 · minimal</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Score</label>
-          <div class="score-calc" id="scoreCalc">—</div>
-        </div>
+        <div class="field"><label>Scope (1–5)</label><select id="fScope" onchange="calcScore()"><option value="">—</option><option value="1">1 · ≤3 days</option><option value="2">2 · 4-7 days</option><option value="3">3 · 1-2 wks</option><option value="4">4 · 3-4 wks</option><option value="5">5 · 4+ wks</option></select></div>
+        <div class="field"><label>Impact (1–5)</label><select id="fImpact" onchange="calcScore()"><option value="">—</option><option value="1">1 · 10%+ rev</option><option value="2">2 · 6-9% rev</option><option value="3">3 · 3-5% rev</option><option value="4">4 · 1-2% rev</option><option value="5">5 · minimal</option></select></div>
+        <div class="field"><label>Score</label><div class="score-calc" id="scoreCalc">—</div></div>
       </div>
       <div class="field-row">
-        <div class="field">
-          <label>Priority</label>
-          <input type="number" id="fPriority" placeholder="e.g. 1" step="0.25">
-        </div>
-        <div class="field">
-          <label>URL</label>
-          <input type="text" id="fURL" placeholder="https://...">
-        </div>
+        <div class="field"><label>Priority</label><input type="number" id="fPriority" placeholder="e.g. 1" step="0.25"></div>
+        <div class="field"><label>URL</label><input type="text" id="fURL" placeholder="https://..."></div>
       </div>
-      <div class="field-row single">
-        <div class="field">
-          <label>Notes</label>
-          <textarea id="fNotes" rows="2" placeholder="Context, blockers, next step..."></textarea>
-        </div>
-      </div>
+      <div class="field-row single"><div class="field"><label>Notes</label><textarea id="fNotes" rows="2" placeholder="Context, blockers, next step..."></textarea></div></div>
     </div>
     <div class="modal-footer">
       <button class="btn-danger" id="completeBtn" onclick="markComplete()">Mark Complete</button>
@@ -884,24 +510,14 @@
 // ─────────────────────────────────────────────────────────────
 // DATA
 // ─────────────────────────────────────────────────────────────
-
 const EPIC_COLORS = [
-  '#6c8cff', // P0 Close Seed Round         → blue/accent
-  '#3ecf8e', // P1 Generate Revenue vs Goal  → green
-  '#a855f7', // P1 Right-Sized Tech Team     → purple
-  '#22d3ee', // P1 Customer Onboarding       → cyan
-  '#f59e0b', // P2 Carrier Pipeline          → amber
-  '#f87171', // P2 AI Foundation             → red
+  '#6c8cff','#3ecf8e','#a855f7','#22d3ee','#f59e0b','#f87171',
 ];
 
 let STATE = {
-  epics: [],
-  tasks: [],
-  completed: [],
-  sortKey: 'priority',
-  sortDir: 'asc',
-  ownerFilter: 'all',
-  epicFilter: null,
+  epics: [], tasks: [], completed: [],
+  sortKey: 'priority', sortDir: 'asc',
+  ownerFilter: 'all', epicFilter: null,
 };
 
 // ─── DEFAULT DATA ────────────────────────────────────────────
@@ -914,37 +530,39 @@ function loadDefaults() {
     { priority: 'P2', title: 'Carrier Pipeline Engagement',  nba: 'Active structured engagement with Sun Life / Symetra / MunichRe-introduced carriers',    pct: '8%'  },
     { priority: 'P2', title: 'AI Foundation',                nba: 'Define internal AI workflow wins and external product-facing AI capability',              pct: '0%'  },
   ];
-
   STATE.tasks = [
     { priority: '0',    task: 'Investor outreach',                          epic: 'Close Seed Round',              owner: 'SK',    status: '75%',         eta: '3/31/2026', scope: '2', impact: '1', score: '2',  url: '', notes: '' },
     { priority: '0.5',  task: 'Broker outreach',                            epic: 'Close Seed Round',              owner: 'SK',    status: 'Started',     eta: '3/31/2026', scope: '2', impact: '2', score: '4',  url: '', notes: '' },
-    { priority: '0.5',  task: 'Unblock Diagram on investor introductions',  epic: 'Close Seed Round',              owner: 'SK',    status: 'Not Started', eta: '3/25/2026', scope: '2', impact: '1', score: '2',  url: '', notes: "Structural blocker; Steve hasn't scheduled deck sessions or made intros" },
+    { priority: '0.5',  task: 'Unblock Diagram on investor introductions',  epic: 'Close Seed Round',              owner: 'SK',    status: 'Blocked',     eta: '4/8/2026',  scope: '2', impact: '1', score: '2',  url: '', notes: "Structural blocker; Steve hasn't scheduled deck sessions or made intros. Pushed from 3/25 — needs direct escalation." },
     { priority: '0.5',  task: 'MunichRe rev share agreement',               epic: 'Close Seed Round',              owner: 'SK',    status: '75%',         eta: '3/31/2026', scope: '1', impact: '2', score: '2',  url: '', notes: "Draft in Dawn's hands - needs close in Q2" },
     { priority: '0.75', task: 'Advisor Agreement Update (Don & Sean)',      epic: 'Close Seed Round',              owner: 'SK',    status: 'Not Started', eta: '3/31/2026', scope: '1', impact: '1', score: '1',  url: '', notes: '' },
     { priority: '1',    task: 'Manufacture a carrier agreement',            epic: 'Close Seed Round',              owner: 'SK',    status: 'Not Started', eta: '',          scope: '',  impact: '',  score: '',   url: '', notes: '' },
     { priority: '1',    task: 'Forecast v2',                                epic: 'Close Seed Round',              owner: 'SK/JP', status: 'Started',     eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Sales and dev expense refinement' },
-    { priority: '0.25', task: 'Cap Table',                                  epic: 'Close Seed Round',              owner: 'SK',    status: '90%',         eta: '3/24/2026', scope: '4', impact: '1', score: '4',  url: '', notes: 'Name change approved by Corps Canada Mar 18' },
-    { priority: '0',    task: 'WMC implementation',                         epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '',          scope: '3', impact: '1', score: '3',  url: '', notes: '' },
-    { priority: '0.5',  task: 'FDI implementation',                        epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '',          scope: '3', impact: '1', score: '3',  url: '', notes: '' },
-    { priority: '0.75', task: 'CRM solution',                               epic: 'Generate Revenue vs. Goal',     owner: 'SK',    status: 'Started',     eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: '' },
+    { priority: '0.25', task: 'Cap Table',                                  epic: 'Close Seed Round',              owner: 'SK',    status: '90%',         eta: '3/31/2026', scope: '4', impact: '1', score: '4',  url: '', notes: 'Name change approved by Corps Canada Mar 18. Was 90% on 3/24 — close out this week.' },
+    { priority: '0',    task: 'WMC implementation',                         epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '4/18/2026', scope: '3', impact: '1', score: '3',  url: '', notes: 'Placeholder ETA — JP to confirm or adjust.' },
+    { priority: '0.5',  task: 'FDI implementation',                        epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '4/25/2026', scope: '3', impact: '1', score: '3',  url: '', notes: 'Placeholder ETA — JP to confirm or adjust.' },
     { priority: '1',    task: 'Alliant pilot prep',                         epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Not Started', eta: '',          scope: '2', impact: '1', score: '2',  url: '', notes: 'PLOI sent to Tom Coyne; identify jumbo pilot employer via Blaine/ABC' },
-    { priority: '1',    task: 'TPA employer penetration playbook',          epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Not Started', eta: '',          scope: '2', impact: '2', score: '4',  url: '', notes: 'Define how WMC and FDI introduce 8/0 to employer clients; conversion target' },
-    { priority: '0.5',  task: 'Brokers pitch',                              epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '',          scope: '2', impact: '2', score: '4',  url: '', notes: 'WTW AON etc' },
-    { priority: '1',    task: 'Broker/employer sales deck rework',          epic: 'Generate Revenue vs. Goal',     owner: 'SK/JP', status: 'Not Started', eta: '3/28/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Rework language to broker/employer audience; less carrier-centric' },
-    { priority: '1',    task: 'Yan Avery onboarding',                       epic: 'Right-Sized Tech Team Build',   owner: 'JP',    status: 'Started',     eta: '',          scope: '2', impact: '1', score: '2',  url: '', notes: 'Interim period began March 16' },
+    { priority: '1',    task: 'TPA employer penetration playbook',          epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Not Started', eta: '4/18/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Define how WMC and FDI introduce 8/0 to employer clients. Placeholder ETA — JP to confirm.' },
+    { priority: '0.5',  task: 'Brokers pitch',                              epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '4/11/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'WTW AON etc. Placeholder ETA — JP to confirm or adjust.' },
+    { priority: '1',    task: 'Broker/employer sales deck rework',          epic: 'Generate Revenue vs. Goal',     owner: 'SK/JP', status: 'Not Started', eta: '4/4/2026',  scope: '2', impact: '2', score: '4',  url: '', notes: 'Rework language to broker/employer audience; less carrier-centric. Pushed from 3/28.' },
+    { priority: '1',    task: 'Yan Avery onboarding',                       epic: 'Right-Sized Tech Team Build',   owner: 'JP',    status: 'Started',     eta: '4/11/2026', scope: '2', impact: '1', score: '2',  url: '', notes: 'Interim period began March 16. Placeholder ETA — JP to confirm or adjust.' },
     { priority: '1',    task: 'Montreal engineering team assessment',       epic: 'Right-Sized Tech Team Build',   owner: 'SK/JP', status: 'Not Started', eta: '',          scope: '2', impact: '2', score: '4',  url: '', notes: 'Assess current team against WMC/FDI/Alliant delivery demands' },
     { priority: '1.5',  task: 'ML/AI second hire scoping',                 epic: 'Right-Sized Tech Team Build',   owner: 'SK',    status: 'Not Started', eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Sequence after production data stable from WMC and FDI' },
-    { priority: '1',    task: 'WMC onboarding flow documentation',         epic: 'Customer Onboarding & Support', owner: 'JP',    status: 'Not Started', eta: '',          scope: '2', impact: '2', score: '4',  url: '', notes: 'Document repeatable onboarding process from WMC pilot' },
+    { priority: '1',    task: 'WMC onboarding flow documentation',         epic: 'Customer Onboarding & Support', owner: 'JP',    status: 'Not Started', eta: '4/18/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Document repeatable onboarding process from WMC pilot. Placeholder ETA — JP to confirm.' },
     { priority: '1',    task: 'Support model definition',                  epic: 'Customer Onboarding & Support', owner: 'SK/JP', status: 'Not Started', eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Define support tiers and feedback loop back into product' },
-    { priority: '1',    task: 'SOC 2 program kickoff',                      epic: 'Customer Onboarding & Support', owner: 'JP',    status: 'Not Started', eta: '4/1/2026',  scope: '1', impact: '3', score: '3',  url: '', notes: 'Vanta selected; kickoff pending' },
+    { priority: '1',    task: 'SOC 2 program kickoff',                      epic: 'Customer Onboarding & Support', owner: 'JP',    status: 'Not Started', eta: '4/1/2026',  scope: '1', impact: '3', score: '3',  url: '', notes: 'Vanta selected; kickoff pending. JP to confirm 4/1 ETA still holds.' },
     { priority: '1',    task: 'Jim Kenny equity negotiation',               epic: 'Customer Onboarding & Support', owner: 'SK',    status: 'Started',     eta: '',          scope: '1', impact: '3', score: '3',  url: '', notes: 'Counter: 2-year post-termination exercise window' },
     { priority: '1',    task: 'Symetra NDA follow-up',                      epic: 'Carrier Pipeline Engagement',   owner: 'SK',    status: 'Started',     eta: '',          scope: '1', impact: '2', score: '2',  url: '', notes: 'Escalate via Kayla Halpin VP' },
     { priority: '1',    task: 'Davies TPA re-engagement',                   epic: 'Carrier Pipeline Engagement',   owner: 'SK',    status: 'Not Started', eta: '',          scope: '1', impact: '2', score: '2',  url: '', notes: 'Stalled since late Feb' },
     { priority: '1',    task: 'Employer-level integration pricing model',   epic: 'Carrier Pipeline Engagement',   owner: 'SK/JP', status: 'Not Started', eta: '4/10/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Define pricing/charging for employer-level integrations' },
     { priority: '1',    task: 'AI foundation scoping',                      epic: 'AI Foundation',                 owner: 'SK/JP', status: 'Not Started', eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Define internal workflow wins and external product-facing AI capability; align with Yan' },
+    { priority: '1',    task: 'Codebase & architecture review',             epic: 'Right-Sized Tech Team Build',   owner: 'Yan',   status: 'Not Started', eta: '4/4/2026',  scope: '1', impact: '2', score: '2',  url: '', notes: 'Full review of current codebase, infra, and deployment pipeline. Document findings.' },
+    { priority: '1',    task: 'WMC/FDI technical assessment',               epic: 'Right-Sized Tech Team Build',   owner: 'Yan',   status: 'Not Started', eta: '4/11/2026', scope: '2', impact: '1', score: '2',  url: '', notes: 'Assess WMC and FDI integration architecture; identify gaps and risks for production stability.' },
+    { priority: '1.5',  task: 'Tech debt & prioritization inventory',       epic: 'Right-Sized Tech Team Build',   owner: 'Yan',   status: 'Not Started', eta: '4/18/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Catalog tech debt; score by severity and delivery impact; propose sprint plan.' },
+    { priority: '1',    task: 'Data Room Setup',                            epic: 'Close Seed Round',              owner: 'SK',    status: 'Not Started', eta: '4/8/2026',  scope: '1', impact: '1', score: '1',  url: '', notes: 'Need to get template from Diagram' },
   ];
-
   STATE.completed = [
+    { task: 'CRM solution',                       epic: 'Generate Revenue vs. Goal',      owner: 'SK',  scope: '2', impact: '3', score: '6', url: '', notes: '' },
     { task: 'SOC 2 consideration',                epic: 'Customer Onboarding & Support',  owner: 'JP',  scope: '1', impact: '2', score: '2', url: '', notes: 'Vanta selected' },
     { task: 'Carrier strategy session with Dawn', epic: 'Carrier Pipeline Engagement',    owner: 'SK',  scope: '1', impact: '2', score: '2', url: '', notes: '' },
     { task: 'markd.vc Amanda Couture meeting',    epic: 'Close Seed Round',               owner: 'SK',  scope: '1', impact: '1', score: '1', url: '', notes: '' },
@@ -969,21 +587,58 @@ function loadDefaults() {
   ];
 }
 
-// ─────────────────────────────────────────────────────────────
-// EPIC COLORS
-// ─────────────────────────────────────────────────────────────
+// ─── PERSISTENCE (PATCH: localStorage) ───────────────────────
+const STORAGE_KEY = '8by0_alignment_state';
+
+function saveState() {
+  try {
+    const data = {
+      epics: STATE.epics,
+      tasks: STATE.tasks,
+      completed: STATE.completed,
+      _saved: new Date().toISOString(),
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    const el = document.getElementById('saveIndicator');
+    if (el) el.textContent = 'saved ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  } catch (e) {
+    console.warn('Failed to save state:', e);
+  }
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const data = JSON.parse(raw);
+      if (data.epics && data.epics.length) STATE.epics = data.epics;
+      if (data.tasks)                      STATE.tasks = data.tasks;
+      if (data.completed)                  STATE.completed = data.completed;
+      console.log('Loaded saved state from', data._saved || 'unknown');
+      return true;
+    }
+  } catch (e) {
+    console.warn('Failed to load state:', e);
+  }
+  return false;
+}
+
+function resetToDefaults() {
+  if (!confirm('Reset all data to defaults? This will discard all changes since last code deploy.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  loadDefaults();
+  renderAll();
+  showToast('Reset to defaults');
+}
+
+// ─── EPIC COLORS ─────────────────────────────────────────────
 function epicColor(epicTitle) {
   const idx = STATE.epics.findIndex(e => e.title === epicTitle);
   return EPIC_COLORS[idx % EPIC_COLORS.length] || '#6c8cff';
 }
+function epicColorByIndex(i) { return EPIC_COLORS[i % EPIC_COLORS.length]; }
 
-function epicColorByIndex(i) {
-  return EPIC_COLORS[i % EPIC_COLORS.length];
-}
-
-// ─────────────────────────────────────────────────────────────
-// RENDER EPICS
-// ─────────────────────────────────────────────────────────────
+// ─── RENDER EPICS ────────────────────────────────────────────
 function renderEpics() {
   const grid = document.getElementById('epicsGrid');
   grid.innerHTML = '';
@@ -995,30 +650,21 @@ function renderEpics() {
     const card = document.createElement('div');
     card.className = 'epic-card' + (isActive ? ' active' : '');
     card.style.setProperty('--epic-color', color);
-    card.onclick = () => {
-      STATE.epicFilter = isActive ? null : epic.title;
-      renderEpics();
-      renderTasks();
-    };
+    card.onclick = () => { STATE.epicFilter = isActive ? null : epic.title; renderEpics(); renderTasks(); };
     card.innerHTML = `
       <div class="epic-priority">${escHtml(epic.priority)}</div>
       <div class="epic-title">${escHtml(epic.title)}</div>
       <div class="epic-nba">${escHtml(epic.nba)}</div>
       <div class="epic-footer">
-        <div class="epic-progress-bar">
-          <div class="epic-progress-fill" style="width:${pctNum}%"></div>
-        </div>
+        <div class="epic-progress-bar"><div class="epic-progress-fill" style="width:${pctNum}%"></div></div>
         <span class="epic-pct">${epic.pct}</span>
         <span class="epic-task-count">${taskCount}t</span>
-      </div>
-    `;
+      </div>`;
     grid.appendChild(card);
   });
 }
 
-// ─────────────────────────────────────────────────────────────
-// RENDER STATS
-// ─────────────────────────────────────────────────────────────
+// ─── RENDER STATS ────────────────────────────────────────────
 function renderStats() {
   const active = STATE.tasks.length;
   const done = STATE.completed.length;
@@ -1037,17 +683,13 @@ function renderStats() {
     <div class="stat-divider"></div>
     <div class="stat"><div class="stat-value">${byOwnerYan}</div><div class="stat-label">Yan Tasks</div></div>
     <div class="stat-divider"></div>
-    <div class="stat"><div class="stat-value">${done}</div><div class="stat-label">Completed</div></div>
-  `;
+    <div class="stat"><div class="stat-value">${done}</div><div class="stat-label">Completed</div></div>`;
 }
 
-// ─────────────────────────────────────────────────────────────
-// RENDER TASKS
-// ─────────────────────────────────────────────────────────────
+// ─── RENDER TASKS ────────────────────────────────────────────
 function renderTasks() {
   const search = document.getElementById('searchInput').value.toLowerCase();
   const now = new Date();
-
   let filtered = STATE.tasks.filter(t => {
     if (STATE.ownerFilter !== 'all' && t.owner !== STATE.ownerFilter) return false;
     if (STATE.epicFilter && t.epic !== STATE.epicFilter) return false;
@@ -1057,89 +699,54 @@ function renderTasks() {
     }
     return true;
   });
-
   filtered = filtered.slice().sort((a, b) => {
     const aPri = a.priority === '' || a.priority == null ? 999 : parseFloat(a.priority);
     const bPri = b.priority === '' || b.priority == null ? 999 : parseFloat(b.priority);
-    const aZero = aPri === 0;
-    const bZero = bPri === 0;
-    if (aZero && !bZero) return -1;
-    if (!aZero && bZero) return 1;
-
+    if (aPri === 0 && bPri !== 0) return -1;
+    if (aPri !== 0 && bPri === 0) return 1;
     let av = a[STATE.sortKey], bv = b[STATE.sortKey];
     if (['priority','score','scope','impact'].includes(STATE.sortKey)) {
       av = parseFloat(av) || 999; bv = parseFloat(bv) || 999;
     } else if (STATE.sortKey === 'eta') {
       av = av ? new Date(av) : new Date('9999'); bv = bv ? new Date(bv) : new Date('9999');
-    } else {
-      av = (av || '').toLowerCase(); bv = (bv || '').toLowerCase();
-    }
+    } else { av = (av || '').toLowerCase(); bv = (bv || '').toLowerCase(); }
     if (av < bv) return STATE.sortDir === 'asc' ? -1 : 1;
     if (av > bv) return STATE.sortDir === 'asc' ? 1 : -1;
     return 0;
   });
-
   document.getElementById('taskCount').textContent = `${filtered.length} task${filtered.length !== 1 ? 's' : ''}`;
-
   const tbody = document.getElementById('tasksBody');
   if (filtered.length === 0) {
     tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:48px;color:var(--text3);font-family:var(--mono);font-size:12px;">No tasks match filters</td></tr>`;
     return;
   }
-
   tbody.innerHTML = filtered.map(t => {
     const idx = STATE.tasks.indexOf(t);
     const color = epicColor(t.epic);
-    const ownerClass = t.owner === 'SK' ? 'owner-SK'
-                     : t.owner === 'JP' ? 'owner-JP'
-                     : t.owner === 'SK/JP' ? 'owner-SKJP'
-                     : t.owner === 'Yan' ? 'owner-Yan'
-                     : '';
+    const ownerClass = t.owner === 'SK' ? 'owner-SK' : t.owner === 'JP' ? 'owner-JP' : t.owner === 'SK/JP' ? 'owner-SKJP' : t.owner === 'Yan' ? 'owner-Yan' : '';
     const statusClass = getStatusClass(t.status);
     const scoreVal = parseInt(t.score) || 0;
     const scoreClass = scoreVal <= 2 ? 'score-1' : scoreVal <= 3 ? 'score-2' : scoreVal <= 4 ? 'score-3' : 'score-high';
-
     let etaClass = '';
-    if (t.eta) {
-      const etaDate = new Date(t.eta);
-      const diff = (etaDate - now) / (1000 * 60 * 60 * 24);
-      if (diff < 0) etaClass = 'overdue';
-      else if (diff <= 7) etaClass = 'soon';
-    }
-
+    if (t.eta) { const etaDate = new Date(t.eta); const diff = (etaDate - now) / (1000*60*60*24); if (diff < 0) etaClass = 'overdue'; else if (diff <= 7) etaClass = 'soon'; }
     const isCritical = parseFloat(t.priority) === 0 && t.priority !== '';
-
     return `<tr onclick="openEditTask(${idx})" class="${isCritical ? 'critical-path' : ''}">
       <td class="td-priority">${t.priority === '99' ? '—' : t.priority}</td>
-      <td class="td-task">
-        ${escHtml(t.task)}
-        ${t.notes ? `<div class="task-notes">${escHtml(t.notes)}</div>` : ''}
-      </td>
-      <td class="hide-sm">
-        <span class="epic-pill" style="color:${color};border-color:${color}30;background:${color}10">${escHtml(shortEpic(t.epic))}</span>
-      </td>
+      <td class="td-task">${escHtml(t.task)}${t.notes ? `<div class="task-notes">${escHtml(t.notes)}</div>` : ''}</td>
+      <td class="hide-sm"><span class="epic-pill" style="color:${color};border-color:${color}30;background:${color}10">${escHtml(shortEpic(t.epic))}</span></td>
       <td><span class="owner-badge ${ownerClass}">${escHtml(t.owner)}</span></td>
       <td><span class="status-badge ${statusClass}">${escHtml(t.status)}</span></td>
       <td class="td-eta ${etaClass} hide-sm">${t.eta || '—'}</td>
       <td class="hide-sm"><div class="score-chip ${scoreClass}">${t.score || '—'}</div></td>
       <td class="td-num hide-sm">${t.scope || '—'}</td>
-      <td class="td-num hide-sm">${t.impact || '—'}</td>
-    </tr>`;
+      <td class="td-num hide-sm">${t.impact || '—'}</td></tr>`;
   }).join('');
 }
 
 function shortEpic(title) {
-  const map = {
-    'Close Seed Round':              'Close Seed',
-    'Generate Revenue vs. Goal':     'Revenue',
-    'Right-Sized Tech Team Build':   'Tech Team',
-    'Customer Onboarding & Support': 'Onboarding',
-    'Carrier Pipeline Engagement':   'Carriers',
-    'AI Foundation':                 'AI',
-  };
+  const map = { 'Close Seed Round':'Close Seed', 'Generate Revenue vs. Goal':'Revenue', 'Right-Sized Tech Team Build':'Tech Team', 'Customer Onboarding & Support':'Onboarding', 'Carrier Pipeline Engagement':'Carriers', 'AI Foundation':'AI' };
   return map[title] || title;
 }
-
 function getStatusClass(s) {
   if (!s) return 'status-not-started';
   const sl = s.toLowerCase();
@@ -1151,18 +758,13 @@ function getStatusClass(s) {
   return 'status-not-started';
 }
 
-// ─────────────────────────────────────────────────────────────
-// RENDER COMPLETED
-// ─────────────────────────────────────────────────────────────
+// ─── RENDER COMPLETED ────────────────────────────────────────
 function renderCompleted() {
   document.getElementById('completedCount').textContent = `(${STATE.completed.length})`;
   const tbody = document.getElementById('completedBody');
   tbody.innerHTML = STATE.completed.map((t, i) => {
     const color = epicColor(t.epic);
-    const ownerClass = t.owner === 'SK' ? 'owner-SK'
-                     : t.owner === 'JP' ? 'owner-JP'
-                     : t.owner === 'Yan' ? 'owner-Yan'
-                     : '';
+    const ownerClass = t.owner === 'SK' ? 'owner-SK' : t.owner === 'JP' ? 'owner-JP' : t.owner === 'Yan' ? 'owner-Yan' : '';
     return `<tr>
       <td class="td-task" style="color:var(--text2);font-weight:400;text-decoration:line-through">${escHtml(t.task)}</td>
       <td class="hide-sm"><span class="epic-pill" style="color:${color};border-color:${color}30;background:${color}10">${escHtml(shortEpic(t.epic))}</span></td>
@@ -1170,11 +772,9 @@ function renderCompleted() {
       <td class="td-num hide-sm">${t.scope || '—'}</td>
       <td class="td-num hide-sm">${t.impact || '—'}</td>
       <td class="hide-sm"><div class="score-chip" style="color:var(--text3);background:var(--surface3)">${t.score || '—'}</div></td>
-      <td class="hide-sm" style="color:var(--text3);font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(t.notes || '')}</td>
-    </tr>`;
+      <td class="hide-sm" style="color:var(--text3);font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(t.notes || '')}</td></tr>`;
   }).join('');
 }
-
 function toggleCompleted() {
   const sec = document.getElementById('completedSection');
   const arrow = document.getElementById('completedArrow');
@@ -1182,30 +782,18 @@ function toggleCompleted() {
   arrow.textContent = sec.classList.contains('open') ? '▼' : '▶';
 }
 
-// ─────────────────────────────────────────────────────────────
-// SORT
-// ─────────────────────────────────────────────────────────────
+// ─── SORT ────────────────────────────────────────────────────
 const SORT_KEYS = ['priority','task','epic','owner','status','eta','score','scope','impact'];
-
 function sortBy(key) {
-  if (STATE.sortKey === key) {
-    STATE.sortDir = STATE.sortDir === 'asc' ? 'desc' : 'asc';
-  } else {
-    STATE.sortKey = key;
-    STATE.sortDir = 'asc';
-  }
-  SORT_KEYS.forEach(k => {
-    const el = document.getElementById(`sort-${k}`);
-    if (el) el.textContent = '';
-  });
+  if (STATE.sortKey === key) { STATE.sortDir = STATE.sortDir === 'asc' ? 'desc' : 'asc'; }
+  else { STATE.sortKey = key; STATE.sortDir = 'asc'; }
+  SORT_KEYS.forEach(k => { const el = document.getElementById(`sort-${k}`); if (el) el.textContent = ''; });
   const el = document.getElementById(`sort-${key}`);
   if (el) el.textContent = STATE.sortDir === 'asc' ? '↑' : '↓';
   renderTasks();
 }
 
-// ─────────────────────────────────────────────────────────────
-// FILTERS
-// ─────────────────────────────────────────────────────────────
+// ─── FILTERS ─────────────────────────────────────────────────
 function setOwnerFilter(owner, el) {
   STATE.ownerFilter = owner;
   document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
@@ -1213,16 +801,11 @@ function setOwnerFilter(owner, el) {
   renderTasks();
 }
 
-// ─────────────────────────────────────────────────────────────
-// MODAL
-// ─────────────────────────────────────────────────────────────
+// ─── MODAL ───────────────────────────────────────────────────
 function populateEpicSelect(selected) {
   const sel = document.getElementById('fEpic');
-  sel.innerHTML = STATE.epics.map(e =>
-    `<option value="${escHtml(e.title)}" ${e.title === selected ? 'selected' : ''}>${escHtml(e.title)}</option>`
-  ).join('');
+  sel.innerHTML = STATE.epics.map(e => `<option value="${escHtml(e.title)}" ${e.title === selected ? 'selected' : ''}>${escHtml(e.title)}</option>`).join('');
 }
-
 function openAddTask() {
   document.getElementById('modalTitle').textContent = 'New Task';
   document.getElementById('editIndex').value = '-1';
@@ -1241,10 +824,8 @@ function openAddTask() {
   document.getElementById('modalOverlay').classList.add('open');
   setTimeout(() => document.getElementById('fTask').focus(), 50);
 }
-
 function openEditTask(idx) {
-  const t = STATE.tasks[idx];
-  if (!t) return;
+  const t = STATE.tasks[idx]; if (!t) return;
   document.getElementById('modalTitle').textContent = 'Edit Task';
   document.getElementById('editIndex').value = idx;
   document.getElementById('fTask').value = t.task;
@@ -1261,114 +842,67 @@ function openEditTask(idx) {
   document.getElementById('completeBtn').style.display = 'block';
   document.getElementById('modalOverlay').classList.add('open');
 }
-
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('open');
-}
-
-function closeModalOnBackdrop(e) {
-  if (e.target === document.getElementById('modalOverlay')) closeModal();
-}
-
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+function closeModalOnBackdrop(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
 function calcScore() {
-  const s  = parseInt(document.getElementById('fScope').value)  || 0;
+  const s = parseInt(document.getElementById('fScope').value) || 0;
   const im = parseInt(document.getElementById('fImpact').value) || 0;
-  const el = document.getElementById('scoreCalc');
-  el.textContent = (s && im) ? `${s} × ${im} = ${s * im}` : '—';
+  document.getElementById('scoreCalc').textContent = (s && im) ? `${s} × ${im} = ${s * im}` : '—';
 }
-
 function saveTask() {
   const idx = parseInt(document.getElementById('editIndex').value);
-  const scope  = document.getElementById('fScope').value;
+  const scope = document.getElementById('fScope').value;
   const impact = document.getElementById('fImpact').value;
-  const score  = (scope && impact) ? String(parseInt(scope) * parseInt(impact)) : '';
+  const score = (scope && impact) ? String(parseInt(scope) * parseInt(impact)) : '';
   const t = {
     priority: document.getElementById('fPriority').value || '1',
-    task:     document.getElementById('fTask').value.trim(),
-    epic:     document.getElementById('fEpic').value,
-    owner:    document.getElementById('fOwner').value,
-    status:   document.getElementById('fStatus').value,
-    eta:      document.getElementById('fETA').value.trim(),
+    task: document.getElementById('fTask').value.trim(),
+    epic: document.getElementById('fEpic').value,
+    owner: document.getElementById('fOwner').value,
+    status: document.getElementById('fStatus').value,
+    eta: document.getElementById('fETA').value.trim(),
     scope, impact, score,
-    url:   document.getElementById('fURL').value.trim(),
+    url: document.getElementById('fURL').value.trim(),
     notes: document.getElementById('fNotes').value.trim(),
   };
   if (!t.task) { showToast('Task name required'); return; }
-  if (idx === -1) {
-    STATE.tasks.push(t);
-    showToast('Task added');
-  } else {
-    STATE.tasks[idx] = t;
-    showToast('Task saved');
-  }
-  closeModal();
-  renderAll();
+  if (idx === -1) { STATE.tasks.push(t); showToast('Task added'); }
+  else { STATE.tasks[idx] = t; showToast('Task saved'); }
+  closeModal(); renderAll();
 }
-
 function markComplete() {
   const idx = parseInt(document.getElementById('editIndex').value);
   if (idx < 0) return;
   const t = STATE.tasks[idx];
-  STATE.completed.unshift({
-    task: t.task, epic: t.epic, owner: t.owner,
-    scope: t.scope, impact: t.impact, score: t.score,
-    url: t.url, notes: t.notes,
-  });
+  STATE.completed.unshift({ task: t.task, epic: t.epic, owner: t.owner, scope: t.scope, impact: t.impact, score: t.score, url: t.url, notes: t.notes });
   STATE.tasks.splice(idx, 1);
-  closeModal();
-  showToast('Moved to Completed');
-  renderAll();
+  closeModal(); showToast('Moved to Completed'); renderAll();
 }
 
-// ─────────────────────────────────────────────────────────────
-// CSV EXPORT
-// ─────────────────────────────────────────────────────────────
+// ─── CSV EXPORT ──────────────────────────────────────────────
 function exportCSV() {
   let csv = 'EPICS\r\nPriority,Title,Next Best Action,Progress %\r\n';
-  STATE.epics.forEach(e => {
-    csv += `${csvCell(e.priority)},${csvCell(e.title)},${csvCell(e.nba)},${csvCell(e.pct)}\r\n`;
-  });
+  STATE.epics.forEach(e => { csv += `${csvCell(e.priority)},${csvCell(e.title)},${csvCell(e.nba)},${csvCell(e.pct)}\r\n`; });
   csv += '\r\nACTIVE TASKS\r\nPriority,Task,Epic,Owner,Status,ETA,Scope,Impact,Score,URL,Notes\r\n';
-  STATE.tasks.forEach(t => {
-    csv += `${csvCell(t.priority)},${csvCell(t.task)},${csvCell(t.epic)},${csvCell(t.owner)},${csvCell(t.status)},${csvCell(t.eta)},${csvCell(t.scope)},${csvCell(t.impact)},${csvCell(t.score)},${csvCell(t.url)},${csvCell(t.notes)}\r\n`;
-  });
+  STATE.tasks.forEach(t => { csv += `${csvCell(t.priority)},${csvCell(t.task)},${csvCell(t.epic)},${csvCell(t.owner)},${csvCell(t.status)},${csvCell(t.eta)},${csvCell(t.scope)},${csvCell(t.impact)},${csvCell(t.score)},${csvCell(t.url)},${csvCell(t.notes)}\r\n`; });
   csv += '\r\nCOMPLETED\r\nTask,Epic,Owner,Scope,Impact,Score,URL,Notes\r\n';
-  STATE.completed.forEach(t => {
-    csv += `${csvCell(t.task)},${csvCell(t.epic)},${csvCell(t.owner)},${csvCell(t.scope)},${csvCell(t.impact)},${csvCell(t.score)},${csvCell(t.url)},${csvCell(t.notes)}\r\n`;
-  });
+  STATE.completed.forEach(t => { csv += `${csvCell(t.task)},${csvCell(t.epic)},${csvCell(t.owner)},${csvCell(t.scope)},${csvCell(t.impact)},${csvCell(t.score)},${csvCell(t.url)},${csvCell(t.notes)}\r\n`; });
   const blob = new Blob([csv], { type: 'text/csv' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href = url;
-  a.download = `8by0-alignment-${today()}.csv`;
-  a.click();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `8by0-alignment-${today()}.csv`; a.click();
   URL.revokeObjectURL(url);
   showToast('CSV exported');
 }
+function csvCell(v) { v = String(v == null ? '' : v); if (v.includes(',') || v.includes('"') || v.includes('\n')) return '"' + v.replace(/"/g, '""') + '"'; return v; }
 
-function csvCell(v) {
-  v = String(v == null ? '' : v);
-  if (v.includes(',') || v.includes('"') || v.includes('\n')) {
-    return '"' + v.replace(/"/g, '""') + '"';
-  }
-  return v;
-}
-
-// ─────────────────────────────────────────────────────────────
-// CSV IMPORT
-// ─────────────────────────────────────────────────────────────
+// ─── CSV IMPORT ──────────────────────────────────────────────
 document.getElementById('csvImport').addEventListener('change', function(e) {
-  const file = e.target.files[0];
-  if (!file) return;
+  const file = e.target.files[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = function(ev) {
-    try {
-      parseCSV(ev.target.result);
-      renderAll();
-      showToast('CSV imported successfully');
-    } catch(err) {
-      showToast('Import error: ' + err.message);
-    }
+    try { parseCSV(ev.target.result); renderAll(); showToast('CSV imported — ' + STATE.tasks.length + ' tasks loaded'); }
+    catch(err) { showToast('Import error: ' + err.message); }
   };
   reader.readAsText(file);
   this.value = '';
@@ -1378,97 +912,59 @@ function parseCSV(text) {
   const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
   let section = null;
   const newEpics = [], newTasks = [], newCompleted = [];
-
   lines.forEach(line => {
     const trimmed = line.trim();
     if (trimmed === 'EPICS')        { section = 'epics';     return; }
     if (trimmed === 'ACTIVE TASKS') { section = 'tasks';     return; }
     if (trimmed === 'COMPLETED')    { section = 'completed'; return; }
     if (!trimmed) return;
-
     const cells = parseCSVRow(trimmed);
     if (!cells || cells.length < 2) return;
-
     if (section === 'epics') {
       if (cells[0] === 'Priority') return;
-      if (cells[0] && cells[1] && cells[1] !== 'Title') {
-        newEpics.push({ priority: cells[0], title: cells[1], nba: cells[2] || '', pct: cells[3] || '0%' });
-      }
+      if (cells[0] && cells[1] && cells[1] !== 'Title') newEpics.push({ priority: cells[0], title: cells[1], nba: cells[2] || '', pct: cells[3] || '0%' });
     } else if (section === 'tasks') {
       if (cells[0] === 'Priority') return;
-      if (cells[1] && cells[1] !== 'Task') {
-        newTasks.push({
-          priority: cells[0] || '1', task: cells[1], epic: cells[2] || '',
-          owner: cells[3] || 'SK', status: cells[4] || 'Not Started',
-          eta: cells[5] || '', scope: cells[6] || '', impact: cells[7] || '',
-          score: cells[8] || '', url: cells[9] || '', notes: cells[10] || '',
-        });
-      }
+      if (cells[1] && cells[1] !== 'Task') newTasks.push({ priority: cells[0] || '1', task: cells[1], epic: cells[2] || '', owner: cells[3] || 'SK', status: cells[4] || 'Not Started', eta: cells[5] || '', scope: cells[6] || '', impact: cells[7] || '', score: cells[8] || '', url: cells[9] || '', notes: cells[10] || '' });
     } else if (section === 'completed') {
       if (cells[0] === 'Task') return;
-      if (cells[0]) {
-        newCompleted.push({
-          task: cells[0], epic: cells[1] || '', owner: cells[2] || '',
-          scope: cells[3] || '', impact: cells[4] || '', score: cells[5] || '',
-          url: cells[6] || '', notes: cells[7] || '',
-        });
-      }
+      if (cells[0]) newCompleted.push({ task: cells[0], epic: cells[1] || '', owner: cells[2] || '', scope: cells[3] || '', impact: cells[4] || '', score: cells[5] || '', url: cells[6] || '', notes: cells[7] || '' });
     }
   });
-
   if (newEpics.length)     STATE.epics     = newEpics;
   if (newTasks.length)     STATE.tasks     = newTasks;
   if (newCompleted.length) STATE.completed = newCompleted;
 }
 
 function parseCSVRow(line) {
-  const result = [];
-  let cur = '', inQuote = false;
+  const result = []; let cur = '', inQuote = false;
   for (let i = 0; i < line.length; i++) {
     const c = line[i];
-    if (c === '"') {
-      if (inQuote && line[i+1] === '"') { cur += '"'; i++; }
-      else inQuote = !inQuote;
-    } else if (c === ',' && !inQuote) {
-      result.push(cur); cur = '';
-    } else {
-      cur += c;
-    }
+    if (c === '"') { if (inQuote && line[i+1] === '"') { cur += '"'; i++; } else inQuote = !inQuote; }
+    else if (c === ',' && !inQuote) { result.push(cur); cur = ''; }
+    else { cur += c; }
   }
   result.push(cur);
   return result;
 }
 
-// ─────────────────────────────────────────────────────────────
-// UTILS
-// ─────────────────────────────────────────────────────────────
-function escHtml(s) {
-  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+// ─── UTILS ───────────────────────────────────────────────────
+function escHtml(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function today() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
 
-function today() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
-
+// ─── RENDER ALL (with persistence) ──────────────────────────
 function renderAll() {
   renderStats();
   renderEpics();
   renderTasks();
   renderCompleted();
+  saveState();  // ← PATCH: persist to localStorage after every change
 }
 
-// ─────────────────────────────────────────────────────────────
-// INIT
-// ─────────────────────────────────────────────────────────────
-loadDefaults();
+// ─── INIT ────────────────────────────────────────────────────
+loadDefaults();          // set baseline structure
+loadState();             // override with saved data if any exist
 renderAll();
 document.getElementById('sort-priority').textContent = '↑';
 
