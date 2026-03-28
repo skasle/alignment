@@ -6,6 +6,7 @@
 <title>8/0 Alignment</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -397,6 +398,68 @@
   /* ── SAVE INDICATOR ──────────────────────────────── */
   .save-indicator { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.05em; }
 
+  /* ── LOGIN SCREEN ──────────────────────────────── */
+  .login-screen {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+  }
+  .login-screen.hidden { display: none; }
+  .login-logo {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .login-logo span { color: var(--text3); }
+  .login-sub {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 32px;
+  }
+  .login-btn {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 10px 24px;
+    border-radius: 6px;
+    border: 1px solid var(--border2);
+    background: var(--surface2);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .login-btn:hover { border-color: var(--accent); background: rgba(108,140,255,0.08); }
+  .login-btn img { width: 18px; height: 18px; }
+  .login-error {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--red);
+    margin-top: 16px;
+    max-width: 320px;
+    text-align: center;
+  }
+  .user-email {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text3);
+    cursor: pointer;
+    letter-spacing: 0.04em;
+  }
+  .user-email:hover { color: var(--red); }
+
   /* ── EPIC EDIT BUTTON ──────────────────────────── */
   .epic-edit-btn {
     font-family: var(--mono);
@@ -531,9 +594,21 @@
 </head>
 <body>
 
+<!-- Login Screen -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-logo">8<span>/</span>0</div>
+  <div class="login-sub">Alignment</div>
+  <button class="login-btn" onclick="signIn()">
+    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G">
+    Sign in with Google
+  </button>
+  <div class="login-error" id="loginError"></div>
+</div>
+
 <header>
   <div class="logo">8<span>/</span>0 <span style="color:var(--text3);font-size:11px;margin-left:6px;">ALIGNMENT</span></div>
   <div class="header-right">
+    <span class="user-email" id="userEmail" onclick="signOut()" title="Click to sign out"></span>
     <span class="save-indicator" id="saveIndicator"></span>
     <input type="file" id="csvImport" accept=".csv">
     <button class="btn btn-primary" onclick="openAddTask()">+ Task</button>
@@ -800,40 +875,73 @@ let _fbRef = null;
 let _saveTimeout = null;
 let _ignoreNextSync = false;
 
+// ─── ALLOWED USERS (add emails here) ─────────────────────────
+const ALLOWED_EMAILS = [
+  'sam@eightbyzero.com',
+  'jp@eightbyzero.com',
+  'yan@eightbyzero.com',
+];
+
 function initFirebase() {
   try {
-    if (FIREBASE_CONFIG.apiKey === "PASTE_YOUR_API_KEY") {
-      console.warn('Firebase not configured — running in local-only mode');
-      document.getElementById('saveIndicator').textContent = '⚠ LOCAL ONLY';
-      document.getElementById('saveIndicator').style.color = '#f59e0b';
-      return false;
-    }
     firebase.initializeApp(FIREBASE_CONFIG);
     _fb = firebase.database();
     _fbRef = _fb.ref('alignment');
 
-    // Real-time listener — when anyone else saves, update our view
-    _fbRef.on('value', (snapshot) => {
-      if (_ignoreNextSync) { _ignoreNextSync = false; return; }
-      const data = snapshot.val();
-      if (!data) return;
-      if (data.epics && data.epics.length) STATE.epics = data.epics;
-      if (data.tasks)                      STATE.tasks = data.tasks;
-      if (data.completed)                  STATE.completed = data.completed;
-      renderStats(); renderEpics(); renderTasks(); renderCompleted(); renderDashboard();
-      const el = document.getElementById('saveIndicator');
-      if (el) el.textContent = 'synced ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-      console.log('Synced from Firebase', data._saved || '');
+    // Listen for auth state changes
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        const email = user.email.toLowerCase();
+        if (!ALLOWED_EMAILS.includes(email)) {
+          document.getElementById('loginError').textContent = 'Access denied: ' + email + ' is not authorized.';
+          firebase.auth().signOut();
+          return;
+        }
+        // Authenticated — show app
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('userEmail').textContent = email;
+
+        // Start real-time listener
+        _fbRef.on('value', (snapshot) => {
+          if (_ignoreNextSync) { _ignoreNextSync = false; return; }
+          const data = snapshot.val();
+          if (!data) return;
+          if (data.epics && data.epics.length) STATE.epics = data.epics;
+          if (data.tasks)                      STATE.tasks = data.tasks;
+          if (data.completed)                  STATE.completed = data.completed;
+          renderStats(); renderEpics(); renderTasks(); renderCompleted(); renderDashboard();
+          const el = document.getElementById('saveIndicator');
+          if (el) el.textContent = 'synced ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+        });
+
+        renderAll();
+        console.log('Authenticated as', email);
+      } else {
+        // Not signed in — show login screen
+        document.getElementById('loginScreen').classList.remove('hidden');
+        _fbRef.off(); // stop listening
+      }
     });
 
-    console.log('Firebase connected');
     return true;
   } catch (e) {
     console.error('Firebase init failed:', e);
-    document.getElementById('saveIndicator').textContent = '⚠ OFFLINE';
-    document.getElementById('saveIndicator').style.color = '#f87171';
+    document.getElementById('loginError').textContent = 'Firebase connection failed: ' + e.message;
     return false;
   }
+}
+
+function signIn() {
+  document.getElementById('loginError').textContent = '';
+  const provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider).catch((err) => {
+    document.getElementById('loginError').textContent = err.message;
+  });
+}
+
+function signOut() {
+  if (!confirm('Sign out?')) return;
+  firebase.auth().signOut();
 }
 
 function saveState() {
@@ -1532,9 +1640,8 @@ function renderAll() {
 
 // ─── INIT ────────────────────────────────────────────────────
 loadDefaults();          // set baseline structure
-loadState();             // load from localStorage cache (fast)
-renderAll();             // render immediately with whatever we have
-initFirebase();          // connect to Firebase — real-time listener will update if remote data is newer
+loadState();             // load from localStorage cache
+initFirebase();          // connect to Firebase Auth — app shows after sign-in
 document.getElementById('sort-priority').textContent = '↑';
 
 document.addEventListener('keydown', e => {
