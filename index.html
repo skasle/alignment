@@ -402,7 +402,6 @@
   <div class="header-right">
     <span class="save-indicator" id="saveIndicator"></span>
     <input type="file" id="csvImport" accept=".csv">
-    <button class="btn" onclick="resetToDefaults()">Reset</button>
     <button class="btn" onclick="document.getElementById('csvImport').click()">Import CSV</button>
     <button class="btn" onclick="exportCSV()">Export CSV</button>
     <button class="btn btn-primary" onclick="openAddTask()">+ Task</button>
@@ -411,7 +410,7 @@
 
 <main>
   <div class="stats-bar" id="statsBar"></div>
-  <div class="section-label">Epics</div>
+  <div class="section-label">Epics <button class="btn" style="margin-left:8px;font-size:9px;padding:3px 8px;" onclick="openAddEpic()">+ Epic</button></div>
   <div class="epics-grid" id="epicsGrid"></div>
   <div class="section-label">Active Tasks</div>
   <div class="toolbar">
@@ -501,6 +500,32 @@
       <div style="display:flex;gap:8px;margin-left:auto;">
         <button class="btn" onclick="closeModal()">Cancel</button>
         <button class="btn btn-primary" onclick="saveTask()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Epic Edit Modal -->
+<div class="modal-overlay" id="epicModalOverlay" onclick="if(event.target===this)closeEpicModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="epicModalTitle">Edit Epic</span>
+      <button class="modal-close" onclick="closeEpicModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="epicEditIndex">
+      <div class="field-row single"><div class="field"><label>Title</label><input type="text" id="fEpicTitle" placeholder="Epic name..."></div></div>
+      <div class="field-row">
+        <div class="field"><label>Priority</label><select id="fEpicPriority"><option value="P0">P0</option><option value="P1">P1</option><option value="P2">P2</option><option value="P3">P3</option></select></div>
+        <div class="field"><label>Progress %</label><input type="text" id="fEpicPct" placeholder="e.g. 35%"></div>
+      </div>
+      <div class="field-row single"><div class="field"><label>Next Best Action</label><textarea id="fEpicNBA" rows="2" placeholder="What needs to happen next..."></textarea></div></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-danger" id="deleteEpicBtn" onclick="deleteEpic()">Delete Epic</button>
+      <div style="display:flex;gap:8px;margin-left:auto;">
+        <button class="btn" onclick="closeEpicModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveEpic()">Save</button>
       </div>
     </div>
   </div>
@@ -650,9 +675,16 @@ function renderEpics() {
     const card = document.createElement('div');
     card.className = 'epic-card' + (isActive ? ' active' : '');
     card.style.setProperty('--epic-color', color);
-    card.onclick = () => { STATE.epicFilter = isActive ? null : epic.title; renderEpics(); renderTasks(); };
+    card.onclick = (e) => {
+      if (e.target.closest('.epic-edit-btn')) return;
+      STATE.epicFilter = isActive ? null : epic.title;
+      renderEpics(); renderTasks();
+    };
     card.innerHTML = `
-      <div class="epic-priority">${escHtml(epic.priority)}</div>
+      <div style="display:flex;justify-content:space-between;align-items:start;">
+        <div class="epic-priority">${escHtml(epic.priority)}</div>
+        <button class="epic-edit-btn" onclick="openEditEpic(${i})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;padding:0 2px;line-height:1;opacity:0.5;transition:opacity 0.15s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5">✎</button>
+      </div>
       <div class="epic-title">${escHtml(epic.title)}</div>
       <div class="epic-nba">${escHtml(epic.nba)}</div>
       <div class="epic-footer">
@@ -879,6 +911,77 @@ function markComplete() {
   closeModal(); showToast('Moved to Completed'); renderAll();
 }
 
+// ─── EPIC MODAL ──────────────────────────────────────────────
+function openEditEpic(idx) {
+  const e = STATE.epics[idx]; if (!e) return;
+  document.getElementById('epicModalTitle').textContent = 'Edit Epic';
+  document.getElementById('epicEditIndex').value = idx;
+  document.getElementById('fEpicTitle').value = e.title;
+  document.getElementById('fEpicPriority').value = e.priority;
+  document.getElementById('fEpicPct').value = e.pct;
+  document.getElementById('fEpicNBA').value = e.nba;
+  document.getElementById('deleteEpicBtn').style.display = 'block';
+  document.getElementById('epicModalOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('fEpicTitle').focus(), 50);
+}
+
+function openAddEpic() {
+  document.getElementById('epicModalTitle').textContent = 'New Epic';
+  document.getElementById('epicEditIndex').value = '-1';
+  document.getElementById('fEpicTitle').value = '';
+  document.getElementById('fEpicPriority').value = 'P1';
+  document.getElementById('fEpicPct').value = '0%';
+  document.getElementById('fEpicNBA').value = '';
+  document.getElementById('deleteEpicBtn').style.display = 'none';
+  document.getElementById('epicModalOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('fEpicTitle').focus(), 50);
+}
+
+function closeEpicModal() { document.getElementById('epicModalOverlay').classList.remove('open'); }
+
+function saveEpic() {
+  const idx = parseInt(document.getElementById('epicEditIndex').value);
+  const oldTitle = idx >= 0 ? STATE.epics[idx].title : null;
+  const newTitle = document.getElementById('fEpicTitle').value.trim();
+  if (!newTitle) { showToast('Epic title required'); return; }
+  const epic = {
+    priority: document.getElementById('fEpicPriority').value,
+    title: newTitle,
+    nba: document.getElementById('fEpicNBA').value.trim(),
+    pct: document.getElementById('fEpicPct').value.trim() || '0%',
+  };
+  if (idx === -1) {
+    STATE.epics.push(epic);
+    showToast('Epic added');
+  } else {
+    STATE.epics[idx] = epic;
+    // Update task references if title changed
+    if (oldTitle && oldTitle !== newTitle) {
+      STATE.tasks.forEach(t => { if (t.epic === oldTitle) t.epic = newTitle; });
+      STATE.completed.forEach(t => { if (t.epic === oldTitle) t.epic = newTitle; });
+    }
+    showToast('Epic saved');
+  }
+  closeEpicModal(); renderAll();
+}
+
+function deleteEpic() {
+  const idx = parseInt(document.getElementById('epicEditIndex').value);
+  if (idx < 0) return;
+  const epic = STATE.epics[idx];
+  const taskCount = STATE.tasks.filter(t => t.epic === epic.title).length;
+  const msg = taskCount > 0
+    ? `Delete "${epic.title}"? ${taskCount} task(s) reference this epic — they will become unassigned.`
+    : `Delete "${epic.title}"?`;
+  if (!confirm(msg)) return;
+  // Unassign tasks
+  STATE.tasks.forEach(t => { if (t.epic === epic.title) t.epic = ''; });
+  STATE.completed.forEach(t => { if (t.epic === epic.title) t.epic = ''; });
+  STATE.epics.splice(idx, 1);
+  if (STATE.epicFilter === epic.title) STATE.epicFilter = null;
+  closeEpicModal(); showToast('Epic deleted'); renderAll();
+}
+
 // ─── CSV EXPORT ──────────────────────────────────────────────
 function exportCSV() {
   let csv = 'EPICS\r\nPriority,Title,Next Best Action,Progress %\r\n';
@@ -969,7 +1072,7 @@ renderAll();
 document.getElementById('sort-priority').textContent = '↑';
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Escape') { closeModal(); closeEpicModal(); }
   if ((e.metaKey || e.ctrlKey) && e.key === 'n') { e.preventDefault(); openAddTask(); }
 });
 </script>
