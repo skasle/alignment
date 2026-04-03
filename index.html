@@ -590,6 +590,40 @@
     color: var(--red);
     font-weight: 500;
   }
+
+  /* ── FORCE RANK: PRIORITY CONFLICT ─────────────── */
+  .priority-conflict {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--red);
+    margin-top: 4px;
+    line-height: 1.4;
+    display: none;
+  }
+  .priority-conflict.visible { display: block; }
+  .priority-conflict .conflict-task {
+    color: var(--text3);
+    font-style: italic;
+  }
+  .priority-conflict .suggest-link {
+    color: var(--accent);
+    cursor: pointer;
+    text-decoration: underline;
+    margin-left: 4px;
+  }
+  .priority-conflict .suggest-link:hover { color: var(--text); }
+
+  .field input.conflict-border { border-color: var(--red) !important; }
+  .field input.ok-border { border-color: var(--green) !important; }
+
+  /* ── RANK COLUMN INDICATOR ─────────────────────── */
+  .rank-num {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text3);
+    opacity: 0.5;
+    margin-left: 2px;
+  }
 </style>
 </head>
 <body>
@@ -611,6 +645,7 @@
     <span class="user-email" id="userEmail" onclick="signOut()" title="Click to sign out"></span>
     <span class="save-indicator" id="saveIndicator"></span>
     <input type="file" id="csvImport" accept=".csv">
+    <button class="btn" onclick="reRankAll()" title="Evenly space all priorities to clean integers">Re-rank</button>
     <button class="btn btn-primary" onclick="openAddTask()">+ Task</button>
   </div>
 </header>
@@ -735,7 +770,11 @@
         <div class="field"><label>Score</label><div class="score-calc" id="scoreCalc">—</div></div>
       </div>
       <div class="field-row">
-        <div class="field"><label>Priority</label><input type="number" id="fPriority" placeholder="e.g. 1" step="0.25"></div>
+        <div class="field">
+          <label>Priority (force ranked)</label>
+          <input type="number" id="fPriority" placeholder="e.g. 1" step="0.1" oninput="checkPriorityConflict()">
+          <div class="priority-conflict" id="priorityConflict"></div>
+        </div>
         <div class="field"><label>URL</label><input type="text" id="fURL" placeholder="https://..."></div>
       </div>
       <div class="field-row single"><div class="field"><label>Notes</label><textarea id="fNotes" rows="2" placeholder="Context, blockers, next step..."></textarea></div></div>
@@ -744,7 +783,7 @@
       <button class="btn-danger" id="completeBtn" onclick="markComplete()">Mark Complete</button>
       <div style="display:flex;gap:8px;margin-left:auto;">
         <button class="btn" onclick="closeModal()">Cancel</button>
-        <button class="btn btn-primary" onclick="saveTask()">Save</button>
+        <button class="btn btn-primary" id="saveBtn" onclick="saveTask()">Save</button>
       </div>
     </div>
   </div>
@@ -801,35 +840,35 @@ function loadDefaults() {
     { priority: 'P2', title: 'AI Foundation',                nba: 'Define internal AI workflow wins and external product-facing AI capability',              pct: '0%'  },
   ];
   STATE.tasks = [
-    { priority: '0',    task: 'Investor outreach',                          epic: 'Close Seed Round',              owner: 'SK',    status: '75%',         eta: '3/31/2026', scope: '2', impact: '1', score: '2',  url: '', notes: '' },
-    { priority: '0.5',  task: 'Broker outreach',                            epic: 'Close Seed Round',              owner: 'SK',    status: 'Started',     eta: '3/31/2026', scope: '2', impact: '2', score: '4',  url: '', notes: '' },
-    { priority: '0.5',  task: 'Unblock Diagram on investor introductions',  epic: 'Close Seed Round',              owner: 'SK',    status: 'Blocked',     eta: '4/8/2026',  scope: '2', impact: '1', score: '2',  url: '', notes: "Structural blocker; Steve hasn't scheduled deck sessions or made intros. Pushed from 3/25 — needs direct escalation." },
-    { priority: '0.5',  task: 'MunichRe rev share agreement',               epic: 'Close Seed Round',              owner: 'SK',    status: '75%',         eta: '3/31/2026', scope: '1', impact: '2', score: '2',  url: '', notes: "Draft in Dawn's hands - needs close in Q2" },
-    { priority: '0.75', task: 'Advisor Agreement Update (Don & Sean)',      epic: 'Close Seed Round',              owner: 'SK',    status: 'Not Started', eta: '3/31/2026', scope: '1', impact: '1', score: '1',  url: '', notes: '' },
-    { priority: '1',    task: 'Manufacture a carrier agreement',            epic: 'Close Seed Round',              owner: 'SK',    status: 'Not Started', eta: '',          scope: '',  impact: '',  score: '',   url: '', notes: '' },
-    { priority: '1',    task: 'Forecast v2',                                epic: 'Close Seed Round',              owner: 'SK/JP', status: 'Started',     eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Sales and dev expense refinement' },
-    { priority: '0.25', task: 'Cap Table',                                  epic: 'Close Seed Round',              owner: 'SK',    status: '90%',         eta: '3/31/2026', scope: '4', impact: '1', score: '4',  url: '', notes: 'Name change approved by Corps Canada Mar 18. Was 90% on 3/24 — close out this week.' },
-    { priority: '0',    task: 'WMC implementation',                         epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '4/18/2026', scope: '3', impact: '1', score: '3',  url: '', notes: 'Placeholder ETA — JP to confirm or adjust.' },
-    { priority: '0.5',  task: 'FDI implementation',                        epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '4/25/2026', scope: '3', impact: '1', score: '3',  url: '', notes: 'Placeholder ETA — JP to confirm or adjust.' },
-    { priority: '1',    task: 'Alliant pilot prep',                         epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Not Started', eta: '',          scope: '2', impact: '1', score: '2',  url: '', notes: 'PLOI sent to Tom Coyne; identify jumbo pilot employer via Blaine/ABC' },
-    { priority: '1',    task: 'TPA employer penetration playbook',          epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Not Started', eta: '4/18/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Define how WMC and FDI introduce 8/0 to employer clients. Placeholder ETA — JP to confirm.' },
-    { priority: '0.5',  task: 'Brokers pitch',                              epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '4/11/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'WTW AON etc. Placeholder ETA — JP to confirm or adjust.' },
-    { priority: '1',    task: 'Broker/employer sales deck rework',          epic: 'Generate Revenue vs. Goal',     owner: 'SK/JP', status: 'Not Started', eta: '4/4/2026',  scope: '2', impact: '2', score: '4',  url: '', notes: 'Rework language to broker/employer audience; less carrier-centric. Pushed from 3/28.' },
-    { priority: '1',    task: 'Yan Avery onboarding',                       epic: 'Right-Sized Tech Team Build',   owner: 'JP',    status: 'Started',     eta: '4/11/2026', scope: '2', impact: '1', score: '2',  url: '', notes: 'Interim period began March 16. Placeholder ETA — JP to confirm or adjust.' },
-    { priority: '1',    task: 'Montreal engineering team assessment',       epic: 'Right-Sized Tech Team Build',   owner: 'SK/JP', status: 'Not Started', eta: '',          scope: '2', impact: '2', score: '4',  url: '', notes: 'Assess current team against WMC/FDI/Alliant delivery demands' },
-    { priority: '1.5',  task: 'ML/AI second hire scoping',                 epic: 'Right-Sized Tech Team Build',   owner: 'SK',    status: 'Not Started', eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Sequence after production data stable from WMC and FDI' },
-    { priority: '1',    task: 'WMC onboarding flow documentation',         epic: 'Customer Onboarding & Support', owner: 'JP',    status: 'Not Started', eta: '4/18/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Document repeatable onboarding process from WMC pilot. Placeholder ETA — JP to confirm.' },
-    { priority: '1',    task: 'Support model definition',                  epic: 'Customer Onboarding & Support', owner: 'SK/JP', status: 'Not Started', eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Define support tiers and feedback loop back into product' },
-    { priority: '1',    task: 'SOC 2 program kickoff',                      epic: 'Customer Onboarding & Support', owner: 'JP',    status: 'Not Started', eta: '4/1/2026',  scope: '1', impact: '3', score: '3',  url: '', notes: 'Vanta selected; kickoff pending. JP to confirm 4/1 ETA still holds.' },
-    { priority: '1',    task: 'Jim Kenny equity negotiation',               epic: 'Customer Onboarding & Support', owner: 'SK',    status: 'Started',     eta: '',          scope: '1', impact: '3', score: '3',  url: '', notes: 'Counter: 2-year post-termination exercise window' },
-    { priority: '1',    task: 'Symetra NDA follow-up',                      epic: 'Carrier Pipeline Engagement',   owner: 'SK',    status: 'Started',     eta: '',          scope: '1', impact: '2', score: '2',  url: '', notes: 'Escalate via Kayla Halpin VP' },
-    { priority: '1',    task: 'Davies TPA re-engagement',                   epic: 'Carrier Pipeline Engagement',   owner: 'SK',    status: 'Not Started', eta: '',          scope: '1', impact: '2', score: '2',  url: '', notes: 'Stalled since late Feb' },
-    { priority: '1',    task: 'Employer-level integration pricing model',   epic: 'Carrier Pipeline Engagement',   owner: 'SK/JP', status: 'Not Started', eta: '4/10/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Define pricing/charging for employer-level integrations' },
-    { priority: '1',    task: 'AI foundation scoping',                      epic: 'AI Foundation',                 owner: 'SK/JP', status: 'Not Started', eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Define internal workflow wins and external product-facing AI capability; align with Yan' },
-    { priority: '1',    task: 'Codebase & architecture review',             epic: 'Right-Sized Tech Team Build',   owner: 'Yan',   status: 'Not Started', eta: '4/4/2026',  scope: '1', impact: '2', score: '2',  url: '', notes: 'Full review of current codebase, infra, and deployment pipeline. Document findings.' },
-    { priority: '1',    task: 'WMC/FDI technical assessment',               epic: 'Right-Sized Tech Team Build',   owner: 'Yan',   status: 'Not Started', eta: '4/11/2026', scope: '2', impact: '1', score: '2',  url: '', notes: 'Assess WMC and FDI integration architecture; identify gaps and risks for production stability.' },
-    { priority: '1.5',  task: 'Tech debt & prioritization inventory',       epic: 'Right-Sized Tech Team Build',   owner: 'Yan',   status: 'Not Started', eta: '4/18/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Catalog tech debt; score by severity and delivery impact; propose sprint plan.' },
-    { priority: '1',    task: 'Data Room Setup',                            epic: 'Close Seed Round',              owner: 'SK',    status: 'Not Started', eta: '4/8/2026',  scope: '1', impact: '1', score: '1',  url: '', notes: 'Need to get template from Diagram' },
+    { priority: '1',    task: 'Investor outreach',                          epic: 'Close Seed Round',              owner: 'SK',    status: '75%',         eta: '3/31/2026', scope: '2', impact: '1', score: '2',  url: '', notes: '' },
+    { priority: '2',    task: 'WMC implementation',                         epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '4/18/2026', scope: '3', impact: '1', score: '3',  url: '', notes: 'Placeholder ETA — JP to confirm or adjust.' },
+    { priority: '3',    task: 'Cap Table',                                  epic: 'Close Seed Round',              owner: 'SK',    status: '90%',         eta: '3/31/2026', scope: '4', impact: '1', score: '4',  url: '', notes: 'Name change approved by Corps Canada Mar 18. Was 90% on 3/24 — close out this week.' },
+    { priority: '4',    task: 'Broker outreach',                            epic: 'Close Seed Round',              owner: 'SK',    status: 'Started',     eta: '3/31/2026', scope: '2', impact: '2', score: '4',  url: '', notes: '' },
+    { priority: '5',    task: 'Unblock Diagram on investor introductions',  epic: 'Close Seed Round',              owner: 'SK',    status: 'Blocked',     eta: '4/8/2026',  scope: '2', impact: '1', score: '2',  url: '', notes: "Structural blocker; Steve hasn't scheduled deck sessions or made intros. Pushed from 3/25 — needs direct escalation." },
+    { priority: '6',    task: 'FDI implementation',                         epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '4/25/2026', scope: '3', impact: '1', score: '3',  url: '', notes: 'Placeholder ETA — JP to confirm or adjust.' },
+    { priority: '7',    task: 'MunichRe rev share agreement',               epic: 'Close Seed Round',              owner: 'SK',    status: '75%',         eta: '3/31/2026', scope: '1', impact: '2', score: '2',  url: '', notes: "Draft in Dawn's hands - needs close in Q2" },
+    { priority: '8',    task: 'Advisor Agreement Update (Don & Sean)',       epic: 'Close Seed Round',              owner: 'SK',    status: 'Not Started', eta: '3/31/2026', scope: '1', impact: '1', score: '1',  url: '', notes: '' },
+    { priority: '9',    task: 'Data Room Setup',                            epic: 'Close Seed Round',              owner: 'SK',    status: 'Not Started', eta: '4/8/2026',  scope: '1', impact: '1', score: '1',  url: '', notes: 'Need to get template from Diagram' },
+    { priority: '10',   task: 'Alliant pilot prep',                         epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Not Started', eta: '',          scope: '2', impact: '1', score: '2',  url: '', notes: 'PLOI sent to Tom Coyne; identify jumbo pilot employer via Blaine/ABC' },
+    { priority: '11',   task: 'Brokers pitch',                              epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '4/11/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'WTW AON etc. Placeholder ETA — JP to confirm or adjust.' },
+    { priority: '12',   task: 'Yan Avery onboarding',                       epic: 'Right-Sized Tech Team Build',   owner: 'JP',    status: 'Started',     eta: '4/11/2026', scope: '2', impact: '1', score: '2',  url: '', notes: 'Interim period began March 16. Placeholder ETA — JP to confirm or adjust.' },
+    { priority: '13',   task: 'Codebase & architecture review',             epic: 'Right-Sized Tech Team Build',   owner: 'Yan',   status: 'Not Started', eta: '4/4/2026',  scope: '1', impact: '2', score: '2',  url: '', notes: 'Full review of current codebase, infra, and deployment pipeline. Document findings.' },
+    { priority: '14',   task: 'WMC/FDI technical assessment',               epic: 'Right-Sized Tech Team Build',   owner: 'Yan',   status: 'Not Started', eta: '4/11/2026', scope: '2', impact: '1', score: '2',  url: '', notes: 'Assess WMC and FDI integration architecture; identify gaps and risks for production stability.' },
+    { priority: '15',   task: 'Manufacture a carrier agreement',            epic: 'Close Seed Round',              owner: 'SK',    status: 'Not Started', eta: '',          scope: '',  impact: '',  score: '',   url: '', notes: '' },
+    { priority: '16',   task: 'Forecast v2',                                epic: 'Close Seed Round',              owner: 'SK/JP', status: 'Started',     eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Sales and dev expense refinement' },
+    { priority: '17',   task: 'Broker/employer sales deck rework',          epic: 'Generate Revenue vs. Goal',     owner: 'SK/JP', status: 'Not Started', eta: '4/4/2026',  scope: '2', impact: '2', score: '4',  url: '', notes: 'Rework language to broker/employer audience; less carrier-centric. Pushed from 3/28.' },
+    { priority: '18',   task: 'TPA employer penetration playbook',          epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Not Started', eta: '4/18/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Define how WMC and FDI introduce 8/0 to employer clients. Placeholder ETA — JP to confirm.' },
+    { priority: '19',   task: 'WMC onboarding flow documentation',         epic: 'Customer Onboarding & Support', owner: 'JP',    status: 'Not Started', eta: '4/18/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Document repeatable onboarding process from WMC pilot. Placeholder ETA — JP to confirm.' },
+    { priority: '20',   task: 'SOC 2 program kickoff',                      epic: 'Customer Onboarding & Support', owner: 'JP',    status: 'Not Started', eta: '4/1/2026',  scope: '1', impact: '3', score: '3',  url: '', notes: 'Vanta selected; kickoff pending. JP to confirm 4/1 ETA still holds.' },
+    { priority: '21',   task: 'Jim Kenny equity negotiation',               epic: 'Customer Onboarding & Support', owner: 'SK',    status: 'Started',     eta: '',          scope: '1', impact: '3', score: '3',  url: '', notes: 'Counter: 2-year post-termination exercise window' },
+    { priority: '22',   task: 'Symetra NDA follow-up',                      epic: 'Carrier Pipeline Engagement',   owner: 'SK',    status: 'Started',     eta: '',          scope: '1', impact: '2', score: '2',  url: '', notes: 'Escalate via Kayla Halpin VP' },
+    { priority: '23',   task: 'Davies TPA re-engagement',                   epic: 'Carrier Pipeline Engagement',   owner: 'SK',    status: 'Not Started', eta: '',          scope: '1', impact: '2', score: '2',  url: '', notes: 'Stalled since late Feb' },
+    { priority: '24',   task: 'Employer-level integration pricing model',   epic: 'Carrier Pipeline Engagement',   owner: 'SK/JP', status: 'Not Started', eta: '4/10/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Define pricing/charging for employer-level integrations' },
+    { priority: '25',   task: 'Montreal engineering team assessment',        epic: 'Right-Sized Tech Team Build',   owner: 'SK/JP', status: 'Not Started', eta: '',          scope: '2', impact: '2', score: '4',  url: '', notes: 'Assess current team against WMC/FDI/Alliant delivery demands' },
+    { priority: '26',   task: 'Support model definition',                   epic: 'Customer Onboarding & Support', owner: 'SK/JP', status: 'Not Started', eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Define support tiers and feedback loop back into product' },
+    { priority: '27',   task: 'Tech debt & prioritization inventory',       epic: 'Right-Sized Tech Team Build',   owner: 'Yan',   status: 'Not Started', eta: '4/18/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Catalog tech debt; score by severity and delivery impact; propose sprint plan.' },
+    { priority: '28',   task: 'ML/AI second hire scoping',                  epic: 'Right-Sized Tech Team Build',   owner: 'SK',    status: 'Not Started', eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Sequence after production data stable from WMC and FDI' },
+    { priority: '29',   task: 'AI foundation scoping',                      epic: 'AI Foundation',                 owner: 'SK/JP', status: 'Not Started', eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Define internal workflow wins and external product-facing AI capability; align with Yan' },
   ];
   STATE.completed = [
     { task: 'CRM solution',                       epic: 'Generate Revenue vs. Goal',      owner: 'SK',  scope: '2', impact: '3', score: '6', url: '', notes: '' },
@@ -858,7 +897,6 @@ function loadDefaults() {
 }
 
 // ─── FIREBASE CONFIG ─────────────────────────────────────────
-// SETUP: Paste your Firebase config here (see instructions below)
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyCN_DHRL6sJHokdsKIZHry9HQuyVdIl_no",
   authDomain: "by0-alignment.firebaseapp.com",
@@ -868,14 +906,12 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "723363743370",
   appId: "1:723363743370:web:cd7aa21d8a51be61e64f73"
 };
-// ─────────────────────────────────────────────────────────────
 
 let _fb = null;
 let _fbRef = null;
 let _saveTimeout = null;
 let _ignoreNextSync = false;
 
-// ─── ALLOWED USERS (add emails here) ─────────────────────────
 const ALLOWED_EMAILS = [
   'sam@eightbyzero.com',
   'jp@eightbyzero.com',
@@ -888,7 +924,6 @@ function initFirebase() {
     _fb = firebase.database();
     _fbRef = _fb.ref('alignment');
 
-    // Listen for auth state changes
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         const email = user.email.toLowerCase();
@@ -897,11 +932,9 @@ function initFirebase() {
           firebase.auth().signOut();
           return;
         }
-        // Authenticated — show app
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('userEmail').textContent = email;
 
-        // Start real-time listener
         _fbRef.on('value', (snapshot) => {
           if (_ignoreNextSync) { _ignoreNextSync = false; return; }
           const data = snapshot.val();
@@ -917,9 +950,8 @@ function initFirebase() {
         renderAll();
         console.log('Authenticated as', email);
       } else {
-        // Not signed in — show login screen
         document.getElementById('loginScreen').classList.remove('hidden');
-        _fbRef.off(); // stop listening
+        _fbRef.off();
       }
     });
 
@@ -945,10 +977,8 @@ function signOut() {
 }
 
 function saveState() {
-  // Debounce: wait 500ms after last change before writing
   clearTimeout(_saveTimeout);
   _saveTimeout = setTimeout(_doSave, 500);
-  // Update indicator immediately
   const el = document.getElementById('saveIndicator');
   if (el) el.textContent = 'saving...';
 }
@@ -960,9 +990,8 @@ function _doSave() {
     completed: STATE.completed,
     _saved: new Date().toISOString(),
   };
-  // Save to Firebase if connected
   if (_fbRef) {
-    _ignoreNextSync = true; // don't re-render from our own write
+    _ignoreNextSync = true;
     _fbRef.set(data).then(() => {
       const el = document.getElementById('saveIndicator');
       if (el) el.textContent = 'saved ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
@@ -973,12 +1002,10 @@ function _doSave() {
       if (el) { el.textContent = '⚠ SAVE FAILED'; el.style.color = '#f87171'; }
     });
   }
-  // Always save to localStorage as fallback
   try { localStorage.setItem('8by0_alignment_state', JSON.stringify(data)); } catch(e) {}
 }
 
 function loadState() {
-  // Try localStorage as immediate cache (Firebase listener will override)
   try {
     const raw = localStorage.getItem('8by0_alignment_state');
     if (raw) {
@@ -1006,6 +1033,88 @@ function epicColor(epicTitle) {
   return EPIC_COLORS[idx % EPIC_COLORS.length] || '#6c8cff';
 }
 function epicColorByIndex(i) { return EPIC_COLORS[i % EPIC_COLORS.length]; }
+
+// ─────────────────────────────────────────────────────────────
+// FORCE RANK LOGIC
+// ─────────────────────────────────────────────────────────────
+
+// Get all used priority values, optionally excluding a task index
+function getUsedPriorities(excludeIdx) {
+  const used = [];
+  STATE.tasks.forEach((t, i) => {
+    if (i === excludeIdx) return;
+    const v = parseFloat(t.priority);
+    if (!isNaN(v)) used.push({ value: v, task: t.task, index: i });
+  });
+  return used;
+}
+
+// Find the next available priority slot near a target value
+function findNextAvailableSlot(target, excludeIdx) {
+  const used = new Set(getUsedPriorities(excludeIdx).map(u => u.value));
+  if (!used.has(target)) return target;
+  // Try increments of 0.1 above the target
+  for (let i = 1; i <= 100; i++) {
+    const candidate = Math.round((target + i * 0.1) * 10) / 10;
+    if (!used.has(candidate)) return candidate;
+  }
+  return target + 0.1;
+}
+
+// Check for priority conflict live in the modal
+function checkPriorityConflict() {
+  const input = document.getElementById('fPriority');
+  const conflictEl = document.getElementById('priorityConflict');
+  const val = parseFloat(input.value);
+  const editIdx = parseInt(document.getElementById('editIndex').value);
+
+  if (isNaN(val) || input.value.trim() === '') {
+    conflictEl.classList.remove('visible');
+    input.classList.remove('conflict-border', 'ok-border');
+    return;
+  }
+
+  const used = getUsedPriorities(editIdx >= 0 ? editIdx : -1);
+  const conflict = used.find(u => u.value === val);
+
+  if (conflict) {
+    const suggestion = findNextAvailableSlot(val, editIdx >= 0 ? editIdx : -1);
+    const taskName = conflict.task.length > 35 ? conflict.task.slice(0, 33) + '…' : conflict.task;
+    conflictEl.innerHTML = `Conflicts with: <span class="conflict-task">${escHtml(taskName)}</span><br>` +
+      `Use <span class="suggest-link" onclick="applySuggestedPriority(${suggestion})">${suggestion}</span> instead?`;
+    conflictEl.classList.add('visible');
+    input.classList.add('conflict-border');
+    input.classList.remove('ok-border');
+  } else {
+    conflictEl.classList.remove('visible');
+    input.classList.remove('conflict-border');
+    input.classList.add('ok-border');
+  }
+}
+
+function applySuggestedPriority(val) {
+  document.getElementById('fPriority').value = val;
+  checkPriorityConflict();
+}
+
+// Re-rank all tasks to clean integers (1, 2, 3, ...) preserving current sort order
+function reRankAll() {
+  if (!confirm('Re-rank all tasks to clean integers (1, 2, 3...)?\nCurrent relative order will be preserved.')) return;
+  // Sort by current priority
+  const sorted = STATE.tasks.slice().sort((a, b) => {
+    const aPri = parseFloat(a.priority) || 999;
+    const bPri = parseFloat(b.priority) || 999;
+    return aPri - bPri;
+  });
+  // Assign clean integers
+  sorted.forEach((t, i) => {
+    // Find original task in STATE.tasks and update
+    const origIdx = STATE.tasks.indexOf(t);
+    if (origIdx >= 0) STATE.tasks[origIdx].priority = String(i + 1);
+  });
+  renderAll();
+  showToast('Re-ranked ' + STATE.tasks.length + ' tasks → 1 through ' + STATE.tasks.length);
+}
 
 // ─── RENDER EPICS ────────────────────────────────────────────
 function renderEpics() {
@@ -1047,11 +1156,19 @@ function renderStats() {
   const byOwnerSK  = STATE.tasks.filter(t => t.owner === 'SK').length;
   const byOwnerJP  = STATE.tasks.filter(t => t.owner === 'JP').length;
   const byOwnerYan = STATE.tasks.filter(t => t.owner === 'Yan').length;
-  const highPri = STATE.tasks.filter(t => parseFloat(t.priority) <= 1 && t.priority !== '99').length;
+  // Check for duplicate priorities
+  const priCounts = {};
+  STATE.tasks.forEach(t => {
+    const v = parseFloat(t.priority);
+    if (!isNaN(v)) { priCounts[v] = (priCounts[v] || 0) + 1; }
+  });
+  const dupeCount = Object.values(priCounts).filter(c => c > 1).reduce((s, c) => s + c, 0);
   document.getElementById('statsBar').innerHTML = `
     <div class="stat"><div class="stat-value">${active}</div><div class="stat-label">Active</div></div>
     <div class="stat-divider"></div>
-    <div class="stat"><div class="stat-value">${highPri}</div><div class="stat-label">Priority ≤1</div></div>
+    <div class="stat"><div class="stat-value">${active}</div><div class="stat-label">Force Ranked</div></div>
+    <div class="stat-divider"></div>
+    <div class="stat"><div class="stat-value" style="${dupeCount > 0 ? 'color:var(--red)' : 'color:var(--green)'}">${dupeCount > 0 ? dupeCount + ' dupes' : '✓'}</div><div class="stat-label">Rank Health</div></div>
     <div class="stat-divider"></div>
     <div class="stat"><div class="stat-value">${byOwnerSK}</div><div class="stat-label">SK Tasks</div></div>
     <div class="stat-divider"></div>
@@ -1066,6 +1183,14 @@ function renderStats() {
 function renderTasks() {
   const search = document.getElementById('searchInput').value.toLowerCase();
   const now = new Date();
+
+  // Build dupe map for visual indicators
+  const priCounts = {};
+  STATE.tasks.forEach(t => {
+    const v = parseFloat(t.priority);
+    if (!isNaN(v)) { priCounts[v] = (priCounts[v] || 0) + 1; }
+  });
+
   let filtered = STATE.tasks.filter(t => {
     if (STATE.ownerFilter !== 'all' && t.owner !== STATE.ownerFilter) return false;
     if (STATE.epicFilter && t.epic !== STATE.epicFilter) return false;
@@ -1076,10 +1201,6 @@ function renderTasks() {
     return true;
   });
   filtered = filtered.slice().sort((a, b) => {
-    const aPri = a.priority === '' || a.priority == null ? 999 : parseFloat(a.priority);
-    const bPri = b.priority === '' || b.priority == null ? 999 : parseFloat(b.priority);
-    if (aPri === 0 && bPri !== 0) return -1;
-    if (aPri !== 0 && bPri === 0) return 1;
     let av = a[STATE.sortKey], bv = b[STATE.sortKey];
     if (['priority','score','scope','impact'].includes(STATE.sortKey)) {
       av = parseFloat(av) || 999; bv = parseFloat(bv) || 999;
@@ -1096,7 +1217,10 @@ function renderTasks() {
     tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:48px;color:var(--text3);font-family:var(--mono);font-size:12px;">No tasks match filters</td></tr>`;
     return;
   }
+  // Compute rank position for the sorted list
+  let rankCounter = 0;
   tbody.innerHTML = filtered.map(t => {
+    rankCounter++;
     const idx = STATE.tasks.indexOf(t);
     const color = epicColor(t.epic);
     const ownerClass = t.owner === 'SK' ? 'owner-SK' : t.owner === 'JP' ? 'owner-JP' : t.owner === 'SK/JP' ? 'owner-SKJP' : t.owner === 'Yan' ? 'owner-Yan' : '';
@@ -1113,10 +1237,13 @@ function renderTasks() {
       if (diff <= 0) { etaClass = 'overdue'; isOverdue = true; }
       else if (diff <= 7) { etaClass = 'soon'; }
     }
-    const isCritical = parseFloat(t.priority) === 0 && t.priority !== '';
+    const priVal = parseFloat(t.priority);
+    const isDupe = !isNaN(priVal) && priCounts[priVal] > 1;
+    const isCritical = priVal <= 3 && !isNaN(priVal);
     const rowClasses = [isCritical ? 'critical-path' : '', isOverdue ? 'overdue-row' : ''].filter(Boolean).join(' ');
+    const dupeStyle = isDupe ? 'color:var(--red);font-weight:600;' : '';
     return `<tr onclick="openEditTask(${idx})" class="${rowClasses}">
-      <td class="td-priority">${t.priority === '99' ? '—' : t.priority}</td>
+      <td class="td-priority" style="${dupeStyle}">${t.priority}${isDupe ? ' ⚠' : ''}</td>
       <td class="td-task">${escHtml(t.task)}${t.notes ? `<div class="task-notes">${escHtml(t.notes)}</div>` : ''}</td>
       <td class="hide-sm"><span class="epic-pill" style="color:${color};border-color:${color}30;background:${color}10">${escHtml(shortEpic(t.epic))}</span></td>
       <td><span class="owner-badge ${ownerClass}">${escHtml(t.owner)}</span></td>
@@ -1196,7 +1323,9 @@ function openAddTask() {
   document.getElementById('editIndex').value = '-1';
   document.getElementById('fTask').value = '';
   document.getElementById('fETA').value = '';
-  document.getElementById('fPriority').value = '1';
+  // Auto-assign next available priority
+  const nextPri = findNextAvailableSlot(STATE.tasks.length + 1, -1);
+  document.getElementById('fPriority').value = nextPri;
   document.getElementById('fURL').value = '';
   document.getElementById('fNotes').value = '';
   document.getElementById('fStatus').value = 'Not Started';
@@ -1205,6 +1334,8 @@ function openAddTask() {
   document.getElementById('fOwner').value = 'SK';
   document.getElementById('scoreCalc').textContent = '—';
   document.getElementById('completeBtn').style.display = 'none';
+  document.getElementById('priorityConflict').classList.remove('visible');
+  document.getElementById('fPriority').classList.remove('conflict-border', 'ok-border');
   populateEpicSelect(STATE.epicFilter || (STATE.epics[0] ? STATE.epics[0].title : ''));
   document.getElementById('modalOverlay').classList.add('open');
   setTimeout(() => document.getElementById('fTask').focus(), 50);
@@ -1225,7 +1356,11 @@ function openEditTask(idx) {
   populateEpicSelect(t.epic);
   calcScore();
   document.getElementById('completeBtn').style.display = 'block';
+  document.getElementById('priorityConflict').classList.remove('visible');
+  document.getElementById('fPriority').classList.remove('conflict-border');
+  document.getElementById('fPriority').classList.add('ok-border');
   document.getElementById('modalOverlay').classList.add('open');
+  checkPriorityConflict();
 }
 function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
 function closeModalOnBackdrop(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
@@ -1240,8 +1375,25 @@ function saveTask() {
   const impact = document.getElementById('fImpact').value;
   const score = (scope && impact) ? String(parseInt(scope) * parseInt(impact)) : '';
   const newStatus = document.getElementById('fStatus').value;
+  const priVal = parseFloat(document.getElementById('fPriority').value);
+
+  // ── FORCE RANK VALIDATION ──
+  if (isNaN(priVal) || document.getElementById('fPriority').value.trim() === '') {
+    showToast('Priority is required for force ranking');
+    document.getElementById('fPriority').focus();
+    return;
+  }
+  const used = getUsedPriorities(idx >= 0 ? idx : -1);
+  const conflict = used.find(u => u.value === priVal);
+  if (conflict) {
+    const suggestion = findNextAvailableSlot(priVal, idx >= 0 ? idx : -1);
+    showToast('Priority ' + priVal + ' is taken. Try ' + suggestion);
+    document.getElementById('fPriority').focus();
+    return;
+  }
+
   const t = {
-    priority: document.getElementById('fPriority').value || '1',
+    priority: String(priVal),
     task: document.getElementById('fTask').value.trim(),
     epic: document.getElementById('fEpic').value,
     owner: document.getElementById('fOwner').value,
@@ -1251,7 +1403,6 @@ function saveTask() {
     url: document.getElementById('fURL').value.trim(),
     notes: document.getElementById('fNotes').value.trim(),
   };
-  // Preserve existing startedDate, or auto-stamp if status just became active
   const activeStatuses = ['Started','In Progress','25%','50%','75%','90%'];
   if (idx >= 0 && STATE.tasks[idx].startedDate) {
     t.startedDate = STATE.tasks[idx].startedDate;
@@ -1317,7 +1468,6 @@ function openAddEpic() {
 function populateEpicPrioritySelect(selected) {
   const sel = document.getElementById('fEpicPriority');
   const count = Math.max(STATE.epics.length, 1);
-  // When adding a new epic, include one extra slot
   const isNew = document.getElementById('epicEditIndex').value === '-1';
   const max = isNew ? count : count - 1;
   sel.innerHTML = '';
@@ -1349,14 +1499,12 @@ function saveEpic() {
     showToast('Epic added');
   } else {
     STATE.epics[idx] = epic;
-    // Update task references if title changed
     if (oldTitle && oldTitle !== newTitle) {
       STATE.tasks.forEach(t => { if (t.epic === oldTitle) t.epic = newTitle; });
       STATE.completed.forEach(t => { if (t.epic === oldTitle) t.epic = newTitle; });
     }
     showToast('Epic saved');
   }
-  // Re-sort epics by priority (P0 first)
   STATE.epics.sort((a, b) => {
     const aN = parseInt(a.priority.replace('P','')) || 0;
     const bN = parseInt(b.priority.replace('P','')) || 0;
@@ -1374,11 +1522,9 @@ function deleteEpic() {
     ? `Delete "${epic.title}"? ${taskCount} task(s) reference this epic — they will become unassigned.`
     : `Delete "${epic.title}"?`;
   if (!confirm(msg)) return;
-  // Unassign tasks
   STATE.tasks.forEach(t => { if (t.epic === epic.title) t.epic = ''; });
   STATE.completed.forEach(t => { if (t.epic === epic.title) t.epic = ''; });
   STATE.epics.splice(idx, 1);
-  // Re-number priorities to stay contiguous (P0, P1, P2...)
   STATE.epics.sort((a, b) => {
     const aN = parseInt(a.priority.replace('P','')) || 0;
     const bN = parseInt(b.priority.replace('P','')) || 0;
@@ -1499,7 +1645,6 @@ function scopeEstimateToDays(s) {
 function renderDashboard() {
   if (!document.getElementById('dashboardPanel').classList.contains('open')) return;
 
-  // ── KPIs ──
   const withDates = STATE.completed.filter(t => t.actualDays);
   const withETA = STATE.completed.filter(t => t.eta && t.completedDate);
   const onTime = withETA.filter(t => new Date(t.completedDate) <= new Date(t.eta)).length;
@@ -1527,7 +1672,6 @@ function renderDashboard() {
     </div>
   `;
 
-  // ── Scope Accuracy Chart ──
   const scopeCanvas = document.getElementById('chartScopeAccuracy');
   const scopeEmpty = document.getElementById('scopeEmpty');
   const scopeData = withDates.filter(t => t.scope);
@@ -1551,7 +1695,6 @@ function renderDashboard() {
     scopeCanvas.style.display = 'none'; scopeEmpty.style.display = 'block';
   }
 
-  // ── Epic Progress Chart ──
   const epicLabels = STATE.epics.map(e => shortEpic(e.title));
   const epicDone = STATE.epics.map(e => STATE.completed.filter(t => t.epic === e.title).length);
   const epicRemaining = STATE.epics.map(e => STATE.tasks.filter(t => t.epic === e.title).length);
@@ -1567,13 +1710,11 @@ function renderDashboard() {
     options: { ...CHART_DEFAULTS, indexAxis: 'y', scales: { ...CHART_DEFAULTS.scales, x: { ...CHART_DEFAULTS.scales.x, stacked: true }, y: { ...CHART_DEFAULTS.scales.y, stacked: true } } }
   });
 
-  // ── Throughput Chart ──
   const throughputCanvas = document.getElementById('chartThroughput');
   const throughputEmpty = document.getElementById('throughputEmpty');
   const datedCompleted = STATE.completed.filter(t => t.completedDate);
   if (datedCompleted.length >= 2) {
     throughputCanvas.style.display = 'block'; throughputEmpty.style.display = 'none';
-    // Group by ISO week
     const weekMap = {};
     datedCompleted.forEach(t => {
       const d = new Date(t.completedDate);
@@ -1597,12 +1738,10 @@ function renderDashboard() {
     throughputCanvas.style.display = 'none'; throughputEmpty.style.display = 'block';
   }
 
-  // ── ETA Reliability Chart ──
   const etaCanvas = document.getElementById('chartETA');
   const etaEmptyEl = document.getElementById('etaEmpty');
   if (withETA.length >= 2) {
     etaCanvas.style.display = 'block'; etaEmptyEl.style.display = 'none';
-    // By owner
     const owners = [...new Set(withETA.map(t => t.owner))];
     const onTimeByOwner = owners.map(o => withETA.filter(t => t.owner === o && new Date(t.completedDate) <= new Date(t.eta)).length);
     const lateByOwner = owners.map(o => withETA.filter(t => t.owner === o && new Date(t.completedDate) > new Date(t.eta)).length);
@@ -1639,9 +1778,9 @@ function renderAll() {
 }
 
 // ─── INIT ────────────────────────────────────────────────────
-loadDefaults();          // set baseline structure
-loadState();             // load from localStorage cache
-initFirebase();          // connect to Firebase Auth — app shows after sign-in
+loadDefaults();
+loadState();
+initFirebase();
 document.getElementById('sort-priority').textContent = '↑';
 
 document.addEventListener('keydown', e => {
