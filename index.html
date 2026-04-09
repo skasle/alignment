@@ -801,7 +801,13 @@
 const EPIC_COLORS = [
   '#6c8cff','#3ecf8e','#a855f7','#22d3ee','#f59e0b','#f87171',
 ];
-
+  
+let STATE = {
+  epics: [], tasks: [], completed: [],
+  sortKey: 'priority', sortDir: 'asc',
+  ownerFilter: 'all', epicFilter: null,
+};
+  
 function loadDefaults() {
   STATE.epics = [];
   STATE.tasks = [];
