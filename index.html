@@ -57,254 +57,80 @@
     z-index: 100;
   }
 
-  .logo {
-    font-family: var(--mono);
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--accent);
-    letter-spacing: 0.05em;
-  }
-
+  .logo { font-family: var(--mono); font-size: 15px; font-weight: 500; color: var(--accent); letter-spacing: 0.05em; }
   .logo span { color: var(--text3); }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  .header-right { display: flex; align-items: center; gap: 10px; }
 
   .btn {
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 500;
-    padding: 6px 14px;
-    border-radius: 4px;
-    border: 1px solid var(--border2);
-    background: var(--surface2);
-    color: var(--text2);
-    cursor: pointer;
-    transition: all 0.15s;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    font-family: var(--mono); font-size: 11px; font-weight: 500; padding: 6px 14px;
+    border-radius: 4px; border: 1px solid var(--border2); background: var(--surface2);
+    color: var(--text2); cursor: pointer; transition: all 0.15s; letter-spacing: 0.04em; text-transform: uppercase;
   }
   .btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(108,140,255,0.06); }
   .btn-primary { background: var(--accent2); border-color: var(--accent2); color: #fff; }
   .btn-primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-  main {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 24px;
-  }
+  main { max-width: 1400px; margin: 0 auto; padding: 24px; }
 
   .section-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--text3);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    font-family: var(--mono); font-size: 10px; font-weight: 500; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--text3); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
   }
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  .epics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 10px;
-    margin-bottom: 32px;
-  }
+  .epics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; margin-bottom: 32px; }
 
   .epic-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 14px 16px;
-    cursor: pointer;
-    transition: all 0.15s;
-    position: relative;
-    overflow: hidden;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+    padding: 14px 16px; cursor: pointer; transition: all 0.15s; position: relative; overflow: hidden;
   }
-  .epic-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 3px;
-    background: var(--epic-color, var(--accent));
-  }
-  .epic-card:hover {
-    border-color: var(--border2);
-    background: var(--surface2);
-  }
-  .epic-card.active {
-    border-color: var(--epic-color, var(--accent));
-    background: var(--surface2);
-  }
-  .epic-card.active::before {
-    width: 3px;
-    box-shadow: 0 0 8px var(--epic-color, var(--accent));
-  }
+  .epic-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--epic-color, var(--accent)); }
+  .epic-card:hover { border-color: var(--border2); background: var(--surface2); }
+  .epic-card.active { border-color: var(--epic-color, var(--accent)); background: var(--surface2); }
+  .epic-card.active::before { box-shadow: 0 0 8px var(--epic-color, var(--accent)); }
 
-  .epic-priority {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text3);
-    margin-bottom: 4px;
-  }
+  .epic-priority { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 4px; }
+  .epic-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
+  .epic-nba { font-size: 11px; color: var(--text2); line-height: 1.4; margin-bottom: 10px; }
+  .epic-footer { display: flex; align-items: center; justify-content: space-between; }
+  .epic-progress-bar { flex: 1; height: 3px; background: var(--border); border-radius: 2px; margin-right: 8px; overflow: hidden; }
+  .epic-progress-fill { height: 100%; background: var(--epic-color, var(--accent)); border-radius: 2px; transition: width 0.4s ease; }
+  .epic-pct { font-family: var(--mono); font-size: 10px; color: var(--text3); white-space: nowrap; }
+  .epic-task-count { font-family: var(--mono); font-size: 10px; color: var(--text3); background: var(--surface3); padding: 2px 6px; border-radius: 3px; margin-left: 8px; }
 
-  .epic-title {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 6px;
-    line-height: 1.3;
-  }
-
-  .epic-nba {
-    font-size: 11px;
-    color: var(--text2);
-    line-height: 1.4;
-    margin-bottom: 10px;
-  }
-
-  .epic-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .epic-progress-bar {
-    flex: 1;
-    height: 3px;
-    background: var(--border);
-    border-radius: 2px;
-    margin-right: 8px;
-    overflow: hidden;
-  }
-  .epic-progress-fill {
-    height: 100%;
-    background: var(--epic-color, var(--accent));
-    border-radius: 2px;
-    transition: width 0.4s ease;
-  }
-
-  .epic-pct {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text3);
-    white-space: nowrap;
-  }
-
-  .epic-task-count {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text3);
-    background: var(--surface3);
-    padding: 2px 6px;
-    border-radius: 3px;
-    margin-left: 8px;
-  }
-
-  .toolbar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
-    flex-wrap: wrap;
-  }
-
+  .toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
   .filter-input {
-    font-family: var(--mono);
-    font-size: 12px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--text);
-    border-radius: 4px;
-    padding: 6px 12px;
-    outline: none;
-    width: 220px;
-    transition: border-color 0.15s;
+    font-family: var(--mono); font-size: 12px; background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); border-radius: 4px; padding: 6px 12px; outline: none; width: 220px; transition: border-color 0.15s;
   }
   .filter-input:focus { border-color: var(--accent); }
   .filter-input::placeholder { color: var(--text3); }
-
   .filter-chip {
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 5px 10px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text3);
-    cursor: pointer;
-    transition: all 0.15s;
+    font-family: var(--mono); font-size: 10px; font-weight: 500; text-transform: uppercase;
+    letter-spacing: 0.06em; padding: 5px 10px; border-radius: 4px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text3); cursor: pointer; transition: all 0.15s;
   }
-  .filter-chip:hover, .filter-chip.active {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: rgba(108,140,255,0.08);
-  }
-
+  .filter-chip:hover, .filter-chip.active { border-color: var(--accent); color: var(--accent); background: rgba(108,140,255,0.08); }
   .toolbar-spacer { flex: 1; }
 
-  .tasks-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 32px;
-  }
-
+  .tasks-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
   .tasks-table thead th {
-    font-family: var(--mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text3);
-    font-weight: 500;
-    padding: 8px 12px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
-    cursor: pointer;
-    user-select: none;
-    background: var(--surface);
-    position: sticky;
-    top: 53px;
-    z-index: 10;
+    font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text3); font-weight: 500; padding: 8px 12px; text-align: left;
+    border-bottom: 1px solid var(--border); white-space: nowrap; cursor: pointer; user-select: none;
+    background: var(--surface); position: sticky; top: 53px; z-index: 10;
   }
   .tasks-table thead th:hover { color: var(--text2); }
   .tasks-table thead th.sorted { color: var(--accent); }
   .sort-indicator { margin-left: 4px; opacity: 0.6; }
-
-  .tasks-table tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.1s;
-    cursor: pointer;
-  }
+  .tasks-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; cursor: pointer; }
   .tasks-table tbody tr:hover { background: var(--surface2); }
-  .tasks-table tbody tr.selected { background: rgba(108,140,255,0.06); }
-
-  .tasks-table td {
-    padding: 10px 12px;
-    vertical-align: middle;
-    color: var(--text2);
-    font-size: 12px;
-  }
+  .tasks-table td { padding: 10px 12px; vertical-align: middle; color: var(--text2); font-size: 12px; }
 
   .td-priority { font-family: var(--mono); font-size: 11px; color: var(--text3); width: 48px; text-align: center; }
   .td-task { color: var(--text); font-weight: 500; min-width: 200px; }
   .td-task .task-notes { font-size: 11px; color: var(--text3); font-weight: 400; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
-
   .epic-pill { display: inline-block; font-family: var(--mono); font-size: 10px; padding: 2px 8px; border-radius: 3px; border: 1px solid; white-space: nowrap; max-width: 180px; overflow: hidden; text-overflow: ellipsis; }
 
   .owner-badge { font-family: var(--mono); font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 3px; background: var(--surface3); color: var(--text2); white-space: nowrap; }
@@ -325,8 +151,7 @@
   .score-2    { background: rgba(62,207,142,0.1);  color: var(--green); opacity: 0.8; }
   .score-3    { background: rgba(245,158,11,0.1);  color: var(--amber); }
   .score-4    { background: rgba(245,158,11,0.12); color: var(--amber); opacity: 0.8; }
-  .score-6    { background: rgba(248,113,113,0.08); color: var(--red);  opacity: 0.7; }
-  .score-high { background: rgba(248,113,113,0.1);  color: var(--red);  }
+  .score-high { background: rgba(248,113,113,0.1); color: var(--red); }
 
   .td-eta { font-family: var(--mono); font-size: 11px; color: var(--text3); white-space: nowrap; }
   .td-eta.overdue { color: var(--red); }
@@ -368,9 +193,6 @@
   .fab { position: fixed; bottom: 28px; right: 28px; width: 44px; height: 44px; border-radius: 50%; background: var(--accent2); border: none; color: #fff; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(61,90,255,0.4); transition: all 0.2s; z-index: 50; }
   .fab:hover { background: var(--accent); box-shadow: 0 6px 28px rgba(108,140,255,0.5); transform: scale(1.06); }
 
-  .task-url-link { color: var(--accent); text-decoration: none; font-family: var(--mono); font-size: 10px; }
-  .task-url-link:hover { text-decoration: underline; }
-
   .toast { position: fixed; bottom: 80px; right: 28px; background: var(--surface2); border: 1px solid var(--border2); color: var(--text); font-family: var(--mono); font-size: 11px; padding: 10px 16px; border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 300; opacity: 0; transform: translateY(8px); transition: all 0.2s; pointer-events: none; }
   .toast.show { opacity: 1; transform: translateY(0); }
 
@@ -383,228 +205,55 @@
   .drag-hint { font-family: var(--mono); font-size: 10px; color: var(--text3); padding: 4px 0; }
   input[type="file"] { display: none; }
   .score-calc { font-family: var(--mono); font-size: 11px; color: var(--accent); padding: 6px 10px; background: rgba(108,140,255,0.06); border-radius: 4px; border: 1px solid rgba(108,140,255,0.15); text-align: center; }
-
   .save-indicator { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.05em; }
 
-  .login-screen {
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-  }
+  .login-screen { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999; }
   .login-screen.hidden { display: none; }
-  .login-logo {
-    font-family: var(--mono);
-    font-size: 28px;
-    font-weight: 500;
-    color: var(--accent);
-    margin-bottom: 8px;
-  }
+  .login-logo { font-family: var(--mono); font-size: 28px; font-weight: 500; color: var(--accent); margin-bottom: 8px; }
   .login-logo span { color: var(--text3); }
-  .login-sub {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin-bottom: 32px;
-  }
-  .login-btn {
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 500;
-    padding: 10px 24px;
-    border-radius: 6px;
-    border: 1px solid var(--border2);
-    background: var(--surface2);
-    color: var(--text);
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  .login-sub { font-family: var(--mono); font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 32px; }
+  .login-btn { font-family: var(--mono); font-size: 12px; font-weight: 500; padding: 10px 24px; border-radius: 6px; border: 1px solid var(--border2); background: var(--surface2); color: var(--text); cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 10px; }
   .login-btn:hover { border-color: var(--accent); background: rgba(108,140,255,0.08); }
   .login-btn img { width: 18px; height: 18px; }
-  .login-error {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--red);
-    margin-top: 16px;
-    max-width: 320px;
-    text-align: center;
-  }
-  .user-email {
-    font-family: var(--mono);
-    font-size: 9px;
-    color: var(--text3);
-    cursor: pointer;
-    letter-spacing: 0.04em;
-  }
+  .login-error { font-family: var(--mono); font-size: 11px; color: var(--red); margin-top: 16px; max-width: 320px; text-align: center; }
+  .user-email { font-family: var(--mono); font-size: 9px; color: var(--text3); cursor: pointer; letter-spacing: 0.04em; }
   .user-email:hover { color: var(--red); }
 
-  .epic-edit-btn {
-    font-family: var(--mono);
-    font-size: 9px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 2px 6px;
-    border-radius: 3px;
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    color: var(--text3);
-    cursor: pointer;
-    opacity: 0;
-    transition: all 0.15s;
-  }
+  .epic-edit-btn { font-family: var(--mono); font-size: 9px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 6px; border-radius: 3px; border: 1px solid var(--border); background: var(--surface2); color: var(--text3); cursor: pointer; opacity: 0; transition: all 0.15s; }
   .epic-card:hover .epic-edit-btn { opacity: 1; }
   .epic-edit-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(108,140,255,0.08); }
 
-  .dashboard-toggle {
-    font-family: var(--mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text3);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
-    user-select: none;
-  }
+  .dashboard-toggle { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); cursor: pointer; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; user-select: none; }
   .dashboard-toggle:hover { color: var(--text2); }
   .dashboard-panel { display: none; margin-bottom: 32px; }
   .dashboard-panel.open { display: block; }
 
-  .dash-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 14px;
-    margin-bottom: 16px;
-  }
-
-  .dash-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 16px;
-  }
-  .dash-card-title {
-    font-family: var(--mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text3);
-    margin-bottom: 12px;
-  }
+  .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-bottom: 16px; }
+  .dash-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 16px; }
+  .dash-card-title { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 12px; }
   .dash-card canvas { max-height: 220px; }
+  .dash-kpi-row { display: flex; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+  .dash-kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 14px 18px; flex: 1; min-width: 140px; }
+  .dash-kpi-value { font-family: var(--mono); font-size: 22px; font-weight: 500; color: var(--text); line-height: 1; margin-bottom: 4px; }
+  .dash-kpi-label { font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); }
+  .dash-kpi-sub { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-top: 4px; }
+  .dash-empty { font-family: var(--mono); font-size: 11px; color: var(--text3); text-align: center; padding: 32px; }
 
-  .dash-kpi-row {
-    display: flex;
-    gap: 14px;
-    margin-bottom: 14px;
-    flex-wrap: wrap;
-  }
-  .dash-kpi {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 14px 18px;
-    flex: 1;
-    min-width: 140px;
-  }
-  .dash-kpi-value {
-    font-family: var(--mono);
-    font-size: 22px;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .dash-kpi-label {
-    font-family: var(--mono);
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text3);
-  }
-  .dash-kpi-sub {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text3);
-    margin-top: 4px;
-  }
-  .dash-empty {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text3);
-    text-align: center;
-    padding: 32px;
-  }
-
-  .csv-footer {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    padding: 24px 0 8px;
-    margin-top: 16px;
-    border-top: 1px solid var(--border);
-    opacity: 0.5;
-    transition: opacity 0.2s;
-  }
+  .csv-footer { display: flex; gap: 10px; justify-content: center; padding: 24px 0 8px; margin-top: 16px; border-top: 1px solid var(--border); opacity: 0.5; transition: opacity 0.2s; }
   .csv-footer:hover { opacity: 1; }
 
-  .tasks-table tbody tr.overdue-row {
-    background: rgba(248,113,113,0.04);
-  }
-  .tasks-table tbody tr.overdue-row:hover {
-    background: rgba(248,113,113,0.09);
-  }
-  .tasks-table tbody tr.overdue-row .td-task {
-    color: var(--red);
-  }
-  .tasks-table tbody tr.overdue-row .td-eta {
-    color: var(--red);
-    font-weight: 500;
-  }
+  .tasks-table tbody tr.overdue-row { background: rgba(248,113,113,0.04); }
+  .tasks-table tbody tr.overdue-row:hover { background: rgba(248,113,113,0.09); }
+  .tasks-table tbody tr.overdue-row .td-task { color: var(--red); }
+  .tasks-table tbody tr.overdue-row .td-eta { color: var(--red); font-weight: 500; }
 
-  .priority-conflict {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--red);
-    margin-top: 4px;
-    line-height: 1.4;
-    display: none;
-  }
+  .priority-conflict { font-family: var(--mono); font-size: 10px; color: var(--red); margin-top: 4px; line-height: 1.4; display: none; }
   .priority-conflict.visible { display: block; }
-  .priority-conflict .conflict-task {
-    color: var(--text3);
-    font-style: italic;
-  }
-  .priority-conflict .suggest-link {
-    color: var(--accent);
-    cursor: pointer;
-    text-decoration: underline;
-    margin-left: 4px;
-  }
+  .priority-conflict .conflict-task { color: var(--text3); font-style: italic; }
+  .priority-conflict .suggest-link { color: var(--accent); cursor: pointer; text-decoration: underline; margin-left: 4px; }
   .priority-conflict .suggest-link:hover { color: var(--text); }
-
   .field input.conflict-border { border-color: var(--red) !important; }
   .field input.ok-border { border-color: var(--green) !important; }
-
-  .rank-num {
-    font-family: var(--mono);
-    font-size: 9px;
-    color: var(--text3);
-    opacity: 0.5;
-    margin-left: 2px;
-  }
 </style>
 </head>
 <body>
@@ -626,7 +275,7 @@
     <span class="save-indicator" id="saveIndicator"></span>
     <input type="file" id="csvImport" accept=".csv">
     <a href="https://alignmentfaqs.netlify.app/" target="_blank" class="btn" style="text-decoration:none;">How it works</a>
-    <button class="btn" onclick="reRankAll()" title="Evenly space all priorities to clean integers">Re-rank</button>
+    <button class="btn" onclick="reRankAll()" title="Re-rank tasks to clean integers">Re-rank</button>
     <button class="btn btn-primary" onclick="openAddTask()">+ Task</button>
   </div>
 </header>
@@ -638,15 +287,15 @@
   <div class="section-label">Active Tasks</div>
   <div class="toolbar">
     <input class="filter-input" id="searchInput" placeholder="Filter tasks..." oninput="renderTasks()">
-    <div class="filter-chip active" data-owner="all"   onclick="setOwnerFilter('all',this)">All</div>
-    <div class="filter-chip"        data-owner="SK"    onclick="setOwnerFilter('SK',this)">SK</div>
-    <div class="filter-chip"        data-owner="JP"    onclick="setOwnerFilter('JP',this)">JP</div>
-    <div class="filter-chip"        data-owner="Yan"   onclick="setOwnerFilter('Yan',this)">Yan</div>
-    <div class="filter-chip"        data-owner="SK/JP" onclick="setOwnerFilter('SK/JP',this)">Shared</div>
+    <div class="filter-chip active" onclick="setOwnerFilter('all',this)">All</div>
+    <div class="filter-chip" onclick="setOwnerFilter('SK',this)">SK</div>
+    <div class="filter-chip" onclick="setOwnerFilter('JP',this)">JP</div>
+    <div class="filter-chip" onclick="setOwnerFilter('Yan',this)">Yan</div>
+    <div class="filter-chip" onclick="setOwnerFilter('SK/JP',this)">Shared</div>
     <div class="toolbar-spacer"></div>
     <span class="drag-hint" id="taskCount"></span>
   </div>
-  <table class="tasks-table" id="tasksTable">
+  <table class="tasks-table">
     <thead>
       <tr>
         <th onclick="sortBy('priority')" class="sorted">PRI <span class="sort-indicator" id="sort-priority">↑</span></th>
@@ -662,6 +311,7 @@
     </thead>
     <tbody id="tasksBody"></tbody>
   </table>
+
   <div class="completed-toggle" onclick="toggleCompleted()">
     <span id="completedArrow">▶</span>
     <span>Completed</span>
@@ -670,24 +320,16 @@
   </div>
   <div class="completed-table" id="completedSection">
     <table class="tasks-table">
-      <thead>
-        <tr>
-          <th>TASK</th>
-          <th>EPIC</th>
-          <th>OWNER</th>
-          <th class="hide-sm">SC</th>
-          <th class="hide-sm">IM</th>
-          <th class="hide-sm">SCORE</th>
-          <th class="hide-sm">NOTES</th>
-        </tr>
-      </thead>
+      <thead><tr>
+        <th>TASK</th><th>EPIC</th><th>OWNER</th>
+        <th class="hide-sm">SC</th><th class="hide-sm">IM</th><th class="hide-sm">SCORE</th><th class="hide-sm">NOTES</th>
+      </tr></thead>
       <tbody id="completedBody"></tbody>
     </table>
   </div>
 
   <div class="dashboard-toggle" onclick="toggleDashboard()">
-    <span id="dashArrow">▶</span>
-    <span>Dashboard</span>
+    <span id="dashArrow">▶</span><span>Dashboard</span>
     <span style="flex:1;height:1px;background:var(--border);margin-left:8px;"></span>
   </div>
   <div class="dashboard-panel" id="dashboardPanel">
@@ -696,7 +338,7 @@
       <div class="dash-card">
         <div class="dash-card-title">Scoping Accuracy — Estimated vs Actual Days</div>
         <canvas id="chartScopeAccuracy"></canvas>
-        <div class="dash-empty" id="scopeEmpty" style="display:none;">Needs completed tasks with start dates to populate</div>
+        <div class="dash-empty" id="scopeEmpty" style="display:none;">Needs completed tasks with start dates</div>
       </div>
       <div class="dash-card">
         <div class="dash-card-title">Epic Progress — Done vs Remaining</div>
@@ -705,12 +347,12 @@
       <div class="dash-card">
         <div class="dash-card-title">Throughput — Completed per Week</div>
         <canvas id="chartThroughput"></canvas>
-        <div class="dash-empty" id="throughputEmpty" style="display:none;">Needs tasks with completion dates to populate</div>
+        <div class="dash-empty" id="throughputEmpty" style="display:none;">Needs tasks with completion dates</div>
       </div>
       <div class="dash-card">
         <div class="dash-card-title">ETA Reliability — On Time vs Late</div>
         <canvas id="chartETA"></canvas>
-        <div class="dash-empty" id="etaEmpty" style="display:none;">Needs completed tasks with ETAs to populate</div>
+        <div class="dash-empty" id="etaEmpty" style="display:none;">Needs completed tasks with ETAs</div>
       </div>
     </div>
   </div>
@@ -719,13 +361,12 @@
     <button class="btn" onclick="document.getElementById('csvImport').click()">Import CSV</button>
     <button class="btn" onclick="exportCSV()">Export CSV</button>
   </div>
-
 </main>
 
 <button class="fab" onclick="openAddTask()">+</button>
 <div class="toast" id="toast"></div>
 
-<!-- Edit/Add Modal -->
+<!-- Task Modal -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnBackdrop(event)">
   <div class="modal">
     <div class="modal-header">
@@ -737,11 +378,11 @@
       <div class="field-row single"><div class="field"><label>Task Name</label><input type="text" id="fTask" placeholder="Describe the task..."></div></div>
       <div class="field-row">
         <div class="field"><label>Epic</label><select id="fEpic"></select></div>
-        <div class="field"><label>Owner</label><select id="fOwner"><option value="SK">SK</option><option value="JP">JP</option><option value="Yan">Yan</option><option value="SK/JP">SK/JP</option><option value="Sam">Sam</option></select></div>
+        <div class="field"><label>Owner</label><select id="fOwner"><option value="SK">SK</option><option value="JP">JP</option><option value="Yan">Yan</option><option value="SK/JP">SK/JP</option></select></div>
       </div>
       <div class="field-row">
         <div class="field"><label>Status</label><select id="fStatus"><option value="Not Started">Not Started</option><option value="Started">Started</option><option value="In Progress">In Progress</option><option value="Blocked">Blocked</option><option value="25%">25%</option><option value="50%">50%</option><option value="75%">75%</option><option value="90%">90%</option><option value="Done">Done</option></select></div>
-        <div class="field"><label>ETA</label><input type="text" id="fETA" placeholder="e.g. 3/31/2026"></div>
+        <div class="field"><label>ETA</label><input type="text" id="fETA" placeholder="e.g. 4/30/2026"></div>
       </div>
       <div class="field-row triple">
         <div class="field"><label>Scope (1–5)</label><select id="fScope" onchange="calcScore()"><option value="">—</option><option value="1">1 · ≤3 days</option><option value="2">2 · 4-7 days</option><option value="3">3 · 1-2 wks</option><option value="4">4 · 3-4 wks</option><option value="5">5 · 4+ wks</option></select></div>
@@ -762,13 +403,13 @@
       <button class="btn-danger" id="completeBtn" onclick="markComplete()">Mark Complete</button>
       <div style="display:flex;gap:8px;margin-left:auto;">
         <button class="btn" onclick="closeModal()">Cancel</button>
-        <button class="btn btn-primary" id="saveBtn" onclick="saveTask()">Save</button>
+        <button class="btn btn-primary" onclick="saveTask()">Save</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Epic Edit Modal -->
+<!-- Epic Modal -->
 <div class="modal-overlay" id="epicModalOverlay" onclick="if(event.target===this)closeEpicModal()">
   <div class="modal">
     <div class="modal-header">
@@ -779,7 +420,11 @@
       <input type="hidden" id="epicEditIndex">
       <div class="field-row single"><div class="field"><label>Title</label><input type="text" id="fEpicTitle" placeholder="Epic name..."></div></div>
       <div class="field-row">
-        <div class="field"><label>Priority</label><select id="fEpicPriority"></select></div>
+        <div class="field">
+          <label>Priority (force ranked)</label>
+          <input type="number" id="fEpicPriority" placeholder="e.g. 1" step="1" oninput="checkEpicPriorityConflict()">
+          <div class="priority-conflict" id="epicPriorityConflict"></div>
+        </div>
         <div class="field"><label>Progress %</label><input type="text" id="fEpicPct" placeholder="e.g. 35%"></div>
       </div>
       <div class="field-row single"><div class="field"><label>Next Best Action</label><textarea id="fEpicNBA" rows="2" placeholder="What needs to happen next..."></textarea></div></div>
@@ -795,26 +440,21 @@
 </div>
 
 <script>
-// ─────────────────────────────────────────────────────────────
-// DATA
-// ─────────────────────────────────────────────────────────────
-const EPIC_COLORS = [
-  '#6c8cff','#3ecf8e','#a855f7','#22d3ee','#f59e0b','#f87171',
-];
-  
+const EPIC_COLORS = ['#6c8cff','#3ecf8e','#a855f7','#22d3ee','#f59e0b','#f87171'];
+
 let STATE = {
   epics: [], tasks: [], completed: [],
   sortKey: 'priority', sortDir: 'asc',
   ownerFilter: 'all', epicFilter: null,
 };
-  
+
 function loadDefaults() {
   STATE.epics = [];
   STATE.tasks = [];
   STATE.completed = [];
 }
 
-// ─── FIREBASE CONFIG ─────────────────────────────────────────
+// ─── FIREBASE ────────────────────────────────────────────────
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyCN_DHRL6sJHokdsKIZHry9HQuyVdIl_no",
   authDomain: "by0-alignment.firebaseapp.com",
@@ -824,35 +464,24 @@ const FIREBASE_CONFIG = {
   appId: "1:723363743370:web:cd7aa21d8a51be61e64f73"
 };
 
-let _fb = null;
-let _fbRef = null;
-let _unsubscribe = null;
-let _saveTimeout = null;
-let _ignoreNextSync = false;
+let _fb = null, _fbRef = null, _unsubscribe = null, _saveTimeout = null, _ignoreNextSync = false;
 
-const ALLOWED_EMAILS = [
-  'sam@eightbyzero.com',
-  'jp@eightbyzero.com',
-  'yan@eightbyzero.com',
-];
+const ALLOWED_EMAILS = ['sam@eightbyzero.com','jp@eightbyzero.com','yan@eightbyzero.com'];
 
 function initFirebase() {
   try {
     firebase.initializeApp(FIREBASE_CONFIG);
     _fb = firebase.firestore();
     _fbRef = _fb.collection('alignment').doc('state');
-
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         const email = user.email.toLowerCase();
         if (!ALLOWED_EMAILS.includes(email)) {
-          document.getElementById('loginError').textContent = 'Access denied: ' + email + ' is not authorized.';
-          firebase.auth().signOut();
-          return;
+          document.getElementById('loginError').textContent = 'Access denied: ' + email;
+          firebase.auth().signOut(); return;
         }
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('userEmail').textContent = email;
-
         _unsubscribe = _fbRef.onSnapshot((snapshot) => {
           if (_ignoreNextSync) { _ignoreNextSync = false; return; }
           const data = snapshot.data();
@@ -862,33 +491,25 @@ function initFirebase() {
           if (data.completed) STATE.completed = data.completed;
           renderStats(); renderEpics(); renderTasks(); renderCompleted(); renderDashboard();
           const el = document.getElementById('saveIndicator');
-          if (el) el.textContent = 'synced ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+          if (el) el.textContent = 'synced ' + new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
         });
-
         renderAll();
-        console.log('Authenticated as', email);
       } else {
         document.getElementById('loginScreen').classList.remove('hidden');
         if (_unsubscribe) { _unsubscribe(); _unsubscribe = null; }
       }
     });
-
-    return true;
-  } catch (e) {
-    console.error('Firebase init failed:', e);
-    document.getElementById('loginError').textContent = 'Firebase connection failed: ' + e.message;
-    return false;
+  } catch(e) {
+    document.getElementById('loginError').textContent = 'Firebase error: ' + e.message;
   }
 }
 
 function signIn() {
   document.getElementById('loginError').textContent = '';
-  const provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider).catch((err) => {
+  firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(err => {
     document.getElementById('loginError').textContent = err.message;
   });
 }
-
 function signOut() {
   if (!confirm('Sign out?')) return;
   firebase.auth().signOut().then(() => window.location.reload());
@@ -900,21 +521,14 @@ function saveState() {
   const el = document.getElementById('saveIndicator');
   if (el) el.textContent = 'saving...';
 }
-
 function _doSave() {
-  const data = {
-    epics: STATE.epics,
-    tasks: STATE.tasks,
-    completed: STATE.completed,
-    _saved: new Date().toISOString(),
-  };
+  const data = { epics: STATE.epics, tasks: STATE.tasks, completed: STATE.completed, _saved: new Date().toISOString() };
   if (_fbRef) {
     _ignoreNextSync = true;
     _fbRef.set(data).then(() => {
       const el = document.getElementById('saveIndicator');
-      if (el) el.textContent = 'saved ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      if (el) el.textContent = 'saved ' + new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
     }).catch(e => {
-      console.error('Firestore save failed:', e);
       _ignoreNextSync = false;
       const el = document.getElementById('saveIndicator');
       if (el) { el.textContent = 'SAVE FAILED'; el.style.color = '#f87171'; }
@@ -922,7 +536,6 @@ function _doSave() {
   }
   try { localStorage.setItem('8by0_alignment_state', JSON.stringify(data)); } catch(e) {}
 }
-
 function loadState() {
   try {
     const raw = localStorage.getItem('8by0_alignment_state');
@@ -933,94 +546,117 @@ function loadState() {
       if (data.completed) STATE.completed = data.completed;
       return true;
     }
-  } catch (e) {}
+  } catch(e) {}
   return false;
 }
 
-// ─── EPIC COLORS ─────────────────────────────────────────────
+// ─── COLORS ──────────────────────────────────────────────────
 function epicColor(epicTitle) {
   const idx = STATE.epics.findIndex(e => e.title === epicTitle);
   return EPIC_COLORS[idx % EPIC_COLORS.length] || '#6c8cff';
 }
 function epicColorByIndex(i) { return EPIC_COLORS[i % EPIC_COLORS.length]; }
 
-// ─── FORCE RANK LOGIC ────────────────────────────────────────
+// ─── TASK FORCE RANK ─────────────────────────────────────────
 function getUsedPriorities(excludeIdx) {
-  const used = [];
-  STATE.tasks.forEach((t, i) => {
-    if (i === excludeIdx) return;
+  return STATE.tasks.reduce((acc, t, i) => {
+    if (i === excludeIdx) return acc;
     const v = parseFloat(t.priority);
-    if (!isNaN(v)) used.push({ value: v, task: t.task, index: i });
-  });
-  return used;
+    if (!isNaN(v)) acc.push({ value: v, task: t.task, index: i });
+    return acc;
+  }, []);
 }
-
 function findNextAvailableSlot(target, excludeIdx) {
   const used = new Set(getUsedPriorities(excludeIdx).map(u => u.value));
   if (!used.has(target)) return target;
   for (let i = 1; i <= 100; i++) {
-    const candidate = Math.round((target + i * 0.1) * 10) / 10;
-    if (!used.has(candidate)) return candidate;
+    const c = Math.round((target + i * 0.1) * 10) / 10;
+    if (!used.has(c)) return c;
   }
   return target + 0.1;
 }
-
 function checkPriorityConflict() {
   const input = document.getElementById('fPriority');
   const conflictEl = document.getElementById('priorityConflict');
   const val = parseFloat(input.value);
   const editIdx = parseInt(document.getElementById('editIndex').value);
-
   if (isNaN(val) || input.value.trim() === '') {
     conflictEl.classList.remove('visible');
-    input.classList.remove('conflict-border', 'ok-border');
-    return;
+    input.classList.remove('conflict-border','ok-border'); return;
   }
-
-  const used = getUsedPriorities(editIdx >= 0 ? editIdx : -1);
-  const conflict = used.find(u => u.value === val);
-
+  const conflict = getUsedPriorities(editIdx >= 0 ? editIdx : -1).find(u => u.value === val);
   if (conflict) {
-    const suggestion = findNextAvailableSlot(val, editIdx >= 0 ? editIdx : -1);
-    const taskName = conflict.task.length > 35 ? conflict.task.slice(0, 33) + '…' : conflict.task;
-    conflictEl.innerHTML = `Conflicts with: <span class="conflict-task">${escHtml(taskName)}</span><br>` +
-      `Use <span class="suggest-link" onclick="applySuggestedPriority(${suggestion})">${suggestion}</span> instead?`;
+    const sug = findNextAvailableSlot(val, editIdx >= 0 ? editIdx : -1);
+    const name = conflict.task.length > 35 ? conflict.task.slice(0,33) + '…' : conflict.task;
+    conflictEl.innerHTML = `Conflicts with: <span class="conflict-task">${escHtml(name)}</span><br>Use <span class="suggest-link" onclick="applySuggestedPriority(${sug})">${sug}</span> instead?`;
     conflictEl.classList.add('visible');
-    input.classList.add('conflict-border');
-    input.classList.remove('ok-border');
+    input.classList.add('conflict-border'); input.classList.remove('ok-border');
   } else {
     conflictEl.classList.remove('visible');
-    input.classList.remove('conflict-border');
-    input.classList.add('ok-border');
+    input.classList.remove('conflict-border'); input.classList.add('ok-border');
   }
 }
-
 function applySuggestedPriority(val) {
   document.getElementById('fPriority').value = val;
   checkPriorityConflict();
 }
-
 function reRankAll() {
-  if (!confirm('Re-rank all tasks to clean integers (1, 2, 3...)?\nCurrent relative order will be preserved.')) return;
-  const sorted = STATE.tasks.slice().sort((a, b) => {
-    const aPri = parseFloat(a.priority) || 999;
-    const bPri = parseFloat(b.priority) || 999;
-    return aPri - bPri;
-  });
-  sorted.forEach((t, i) => {
-    const origIdx = STATE.tasks.indexOf(t);
-    if (origIdx >= 0) STATE.tasks[origIdx].priority = String(i + 1);
-  });
+  if (!confirm('Re-rank all tasks to clean integers (1, 2, 3...)?\nCurrent order preserved.')) return;
+  STATE.tasks.slice().sort((a,b) => (parseFloat(a.priority)||999) - (parseFloat(b.priority)||999))
+    .forEach((t,i) => { STATE.tasks[STATE.tasks.indexOf(t)].priority = String(i+1); });
   renderAll();
-  showToast('Re-ranked ' + STATE.tasks.length + ' tasks → 1 through ' + STATE.tasks.length);
+  showToast('Re-ranked ' + STATE.tasks.length + ' tasks');
+}
+
+// ─── EPIC FORCE RANK ─────────────────────────────────────────
+function getUsedEpicPriorities(excludeIdx) {
+  return STATE.epics.reduce((acc, e, i) => {
+    if (i === excludeIdx) return acc;
+    const v = parseFloat(e.priority);
+    if (!isNaN(v)) acc.push({ value: v, title: e.title, index: i });
+    return acc;
+  }, []);
+}
+function findNextAvailableEpicSlot(target, excludeIdx) {
+  const used = new Set(getUsedEpicPriorities(excludeIdx).map(u => u.value));
+  if (!used.has(target)) return target;
+  for (let i = 1; i <= 100; i++) { if (!used.has(i)) return i; }
+  return target + 1;
+}
+function checkEpicPriorityConflict() {
+  const input = document.getElementById('fEpicPriority');
+  const conflictEl = document.getElementById('epicPriorityConflict');
+  const val = parseFloat(input.value);
+  const editIdx = parseInt(document.getElementById('epicEditIndex').value);
+  if (isNaN(val) || input.value.trim() === '') {
+    conflictEl.classList.remove('visible');
+    input.classList.remove('conflict-border','ok-border'); return;
+  }
+  const conflict = getUsedEpicPriorities(editIdx >= 0 ? editIdx : -1).find(u => u.value === val);
+  if (conflict) {
+    const sug = findNextAvailableEpicSlot(val, editIdx >= 0 ? editIdx : -1);
+    const name = conflict.title.length > 35 ? conflict.title.slice(0,33) + '…' : conflict.title;
+    conflictEl.innerHTML = `Conflicts with: <span class="conflict-task">${escHtml(name)}</span><br>Use <span class="suggest-link" onclick="applyEpicSuggestedPriority(${sug})">${sug}</span> instead?`;
+    conflictEl.classList.add('visible');
+    input.classList.add('conflict-border'); input.classList.remove('ok-border');
+  } else {
+    conflictEl.classList.remove('visible');
+    input.classList.remove('conflict-border'); input.classList.add('ok-border');
+  }
+}
+function applyEpicSuggestedPriority(val) {
+  document.getElementById('fEpicPriority').value = val;
+  checkEpicPriorityConflict();
 }
 
 // ─── RENDER EPICS ────────────────────────────────────────────
 function renderEpics() {
   const grid = document.getElementById('epicsGrid');
   grid.innerHTML = '';
-  STATE.epics.forEach((epic, i) => {
-    const color = epicColorByIndex(i);
+  const sorted = STATE.epics.slice().sort((a,b) => (parseFloat(a.priority)||999) - (parseFloat(b.priority)||999));
+  sorted.forEach((epic, i) => {
+    const origIdx = STATE.epics.indexOf(epic);
+    const color = epicColorByIndex(origIdx);
     const taskCount = STATE.tasks.filter(t => t.epic === epic.title).length;
     const pctNum = parseInt(epic.pct) || 0;
     const isActive = STATE.epicFilter === epic.title;
@@ -1034,8 +670,8 @@ function renderEpics() {
     };
     card.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:start;">
-        <div class="epic-priority">${escHtml(epic.priority)}</div>
-        <button class="epic-edit-btn" onclick="openEditEpic(${i})" title="Edit epic">edit</button>
+        <div class="epic-priority">#${escHtml(String(epic.priority))}</div>
+        <button class="epic-edit-btn" onclick="openEditEpic(${origIdx})">edit</button>
       </div>
       <div class="epic-title">${escHtml(epic.title)}</div>
       <div class="epic-nba">${escHtml(epic.nba)}</div>
@@ -1052,27 +688,22 @@ function renderEpics() {
 function renderStats() {
   const active = STATE.tasks.length;
   const done = STATE.completed.length;
-  const byOwnerSK  = STATE.tasks.filter(t => t.owner === 'SK').length;
-  const byOwnerJP  = STATE.tasks.filter(t => t.owner === 'JP').length;
-  const byOwnerYan = STATE.tasks.filter(t => t.owner === 'Yan').length;
+  const skCount  = STATE.tasks.filter(t => t.owner === 'SK').length;
+  const jpCount  = STATE.tasks.filter(t => t.owner === 'JP').length;
+  const yanCount = STATE.tasks.filter(t => t.owner === 'Yan').length;
   const priCounts = {};
-  STATE.tasks.forEach(t => {
-    const v = parseFloat(t.priority);
-    if (!isNaN(v)) { priCounts[v] = (priCounts[v] || 0) + 1; }
-  });
-  const dupeCount = Object.values(priCounts).filter(c => c > 1).reduce((s, c) => s + c, 0);
+  STATE.tasks.forEach(t => { const v = parseFloat(t.priority); if (!isNaN(v)) priCounts[v] = (priCounts[v]||0)+1; });
+  const dupeCount = Object.values(priCounts).filter(c => c > 1).reduce((s,c) => s+c, 0);
   document.getElementById('statsBar').innerHTML = `
     <div class="stat"><div class="stat-value">${active}</div><div class="stat-label">Active</div></div>
     <div class="stat-divider"></div>
-    <div class="stat"><div class="stat-value">${active}</div><div class="stat-label">Force Ranked</div></div>
-    <div class="stat-divider"></div>
     <div class="stat"><div class="stat-value" style="${dupeCount > 0 ? 'color:var(--red)' : 'color:var(--green)'}">${dupeCount > 0 ? dupeCount + ' dupes' : '✓'}</div><div class="stat-label">Rank Health</div></div>
     <div class="stat-divider"></div>
-    <div class="stat"><div class="stat-value">${byOwnerSK}</div><div class="stat-label">SK Tasks</div></div>
+    <div class="stat"><div class="stat-value">${skCount}</div><div class="stat-label">SK Tasks</div></div>
     <div class="stat-divider"></div>
-    <div class="stat"><div class="stat-value">${byOwnerJP}</div><div class="stat-label">JP Tasks</div></div>
+    <div class="stat"><div class="stat-value">${jpCount}</div><div class="stat-label">JP Tasks</div></div>
     <div class="stat-divider"></div>
-    <div class="stat"><div class="stat-value">${byOwnerYan}</div><div class="stat-label">Yan Tasks</div></div>
+    <div class="stat"><div class="stat-value">${yanCount}</div><div class="stat-label">Yan Tasks</div></div>
     <div class="stat-divider"></div>
     <div class="stat"><div class="stat-value">${done}</div><div class="stat-label">Completed</div></div>`;
 }
@@ -1081,85 +712,67 @@ function renderStats() {
 function renderTasks() {
   const search = document.getElementById('searchInput').value.toLowerCase();
   const now = new Date();
-
   const priCounts = {};
-  STATE.tasks.forEach(t => {
-    const v = parseFloat(t.priority);
-    if (!isNaN(v)) { priCounts[v] = (priCounts[v] || 0) + 1; }
-  });
-
+  STATE.tasks.forEach(t => { const v = parseFloat(t.priority); if (!isNaN(v)) priCounts[v] = (priCounts[v]||0)+1; });
   let filtered = STATE.tasks.filter(t => {
     if (STATE.ownerFilter !== 'all' && t.owner !== STATE.ownerFilter) return false;
     if (STATE.epicFilter && t.epic !== STATE.epicFilter) return false;
-    if (search) {
-      const haystack = [t.task, t.epic, t.owner, t.status, t.notes].join(' ').toLowerCase();
-      if (!haystack.includes(search)) return false;
-    }
+    if (search && ![t.task,t.epic,t.owner,t.status,t.notes].join(' ').toLowerCase().includes(search)) return false;
     return true;
   });
-  filtered = filtered.slice().sort((a, b) => {
+  filtered = filtered.slice().sort((a,b) => {
     let av = a[STATE.sortKey], bv = b[STATE.sortKey];
-    if (['priority','score','scope','impact'].includes(STATE.sortKey)) {
-      av = parseFloat(av) || 999; bv = parseFloat(bv) || 999;
-    } else if (STATE.sortKey === 'eta') {
-      av = av ? new Date(av) : new Date('9999'); bv = bv ? new Date(bv) : new Date('9999');
-    } else { av = (av || '').toLowerCase(); bv = (bv || '').toLowerCase(); }
-    if (av < bv) return STATE.sortDir === 'asc' ? -1 : 1;
-    if (av > bv) return STATE.sortDir === 'asc' ? 1 : -1;
-    return 0;
+    if (['priority','score','scope','impact'].includes(STATE.sortKey)) { av = parseFloat(av)||999; bv = parseFloat(bv)||999; }
+    else if (STATE.sortKey === 'eta') { av = av ? new Date(av) : new Date('9999'); bv = bv ? new Date(bv) : new Date('9999'); }
+    else { av = (av||'').toLowerCase(); bv = (bv||'').toLowerCase(); }
+    return av < bv ? (STATE.sortDir==='asc'?-1:1) : av > bv ? (STATE.sortDir==='asc'?1:-1) : 0;
   });
-  document.getElementById('taskCount').textContent = `${filtered.length} task${filtered.length !== 1 ? 's' : ''}`;
+  document.getElementById('taskCount').textContent = `${filtered.length} task${filtered.length!==1?'s':''}`;
   const tbody = document.getElementById('tasksBody');
-  if (filtered.length === 0) {
+  if (!filtered.length) {
     tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:48px;color:var(--text3);font-family:var(--mono);font-size:12px;">No tasks match filters</td></tr>`;
     return;
   }
   tbody.innerHTML = filtered.map(t => {
     const idx = STATE.tasks.indexOf(t);
     const color = epicColor(t.epic);
-    const ownerClass = t.owner === 'SK' ? 'owner-SK' : t.owner === 'JP' ? 'owner-JP' : t.owner === 'SK/JP' ? 'owner-SKJP' : t.owner === 'Yan' ? 'owner-Yan' : '';
+    const ownerClass = t.owner==='SK'?'owner-SK':t.owner==='JP'?'owner-JP':t.owner==='SK/JP'?'owner-SKJP':t.owner==='Yan'?'owner-Yan':'';
     const statusClass = getStatusClass(t.status);
-    const scoreVal = parseInt(t.score) || 0;
-    const scoreClass = scoreVal <= 2 ? 'score-1' : scoreVal <= 3 ? 'score-2' : scoreVal <= 4 ? 'score-3' : 'score-high';
-    let etaClass = '';
-    let isOverdue = false;
+    const scoreVal = parseInt(t.score)||0;
+    const scoreClass = scoreVal<=2?'score-1':scoreVal<=3?'score-2':scoreVal<=4?'score-3':'score-high';
+    let etaClass = '', isOverdue = false;
     if (t.eta) {
-      const etaDate = new Date(t.eta);
-      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      const etaDay = new Date(etaDate.getFullYear(), etaDate.getMonth(), etaDate.getDate());
-      const diff = (etaDay - todayStart) / (1000*60*60*24);
-      if (diff <= 0) { etaClass = 'overdue'; isOverdue = true; }
-      else if (diff <= 7) { etaClass = 'soon'; }
+      const diff = (new Date(new Date(t.eta).toDateString()) - new Date(new Date().toDateString())) / 86400000;
+      if (diff <= 0) { etaClass='overdue'; isOverdue=true; } else if (diff <= 7) etaClass='soon';
     }
     const priVal = parseFloat(t.priority);
     const isDupe = !isNaN(priVal) && priCounts[priVal] > 1;
     const isCritical = priVal <= 3 && !isNaN(priVal);
-    const rowClasses = [isCritical ? 'critical-path' : '', isOverdue ? 'overdue-row' : ''].filter(Boolean).join(' ');
-    const dupeStyle = isDupe ? 'color:var(--red);font-weight:600;' : '';
-    return `<tr onclick="openEditTask(${idx})" class="${rowClasses}">
-      <td class="td-priority" style="${dupeStyle}">${t.priority}${isDupe ? ' ⚠' : ''}</td>
-      <td class="td-task">${escHtml(t.task)}${t.notes ? `<div class="task-notes">${escHtml(t.notes)}</div>` : ''}</td>
+    const rowClass = [isCritical?'critical-path':'', isOverdue?'overdue-row':''].filter(Boolean).join(' ');
+    return `<tr onclick="openEditTask(${idx})" class="${rowClass}">
+      <td class="td-priority" style="${isDupe?'color:var(--red);font-weight:600;':''}">${t.priority}${isDupe?' ⚠':''}</td>
+      <td class="td-task">${escHtml(t.task)}${t.notes?`<div class="task-notes">${escHtml(t.notes)}</div>`:''}</td>
       <td class="hide-sm"><span class="epic-pill" style="color:${color};border-color:${color}30;background:${color}10">${escHtml(shortEpic(t.epic))}</span></td>
       <td><span class="owner-badge ${ownerClass}">${escHtml(t.owner)}</span></td>
       <td><span class="status-badge ${statusClass}">${escHtml(t.status)}</span></td>
-      <td class="td-eta ${etaClass} hide-sm">${t.eta || '—'}</td>
-      <td class="hide-sm"><div class="score-chip ${scoreClass}">${t.score || '—'}</div></td>
-      <td class="td-num hide-sm">${t.scope || '—'}</td>
-      <td class="td-num hide-sm">${t.impact || '—'}</td></tr>`;
+      <td class="td-eta ${etaClass} hide-sm">${t.eta||'—'}</td>
+      <td class="hide-sm"><div class="score-chip ${scoreClass}">${t.score||'—'}</div></td>
+      <td class="td-num hide-sm">${t.scope||'—'}</td>
+      <td class="td-num hide-sm">${t.impact||'—'}</td></tr>`;
   }).join('');
 }
 
 function shortEpic(title) {
-  const map = { 'Close Seed Round':'Close Seed', 'Generate Revenue vs. Goal':'Revenue', 'Right-Sized Tech Team Build':'Tech Team', 'Customer Onboarding & Support':'Onboarding', 'Carrier Pipeline Engagement':'Carriers', 'AI Foundation':'AI' };
+  const map = {'Close Seed Round':'Close Seed','Generate Revenue vs. Goal':'Revenue','Right-Sized Tech Team Build':'Tech Team','Customer Onboarding & Support':'Onboarding','Carrier Pipeline Engagement':'Carriers','AI Foundation':'AI'};
   return map[title] || title;
 }
 function getStatusClass(s) {
   if (!s) return 'status-not-started';
   const sl = s.toLowerCase();
-  if (sl === 'started' || sl === 'in progress') return 'status-started';
-  if (sl === 'not started') return 'status-not-started';
-  if (sl === 'blocked') return 'status-blocked';
-  if (sl === 'done') return 'status-done';
+  if (sl==='started'||sl==='in progress') return 'status-started';
+  if (sl==='not started') return 'status-not-started';
+  if (sl==='blocked') return 'status-blocked';
+  if (sl==='done') return 'status-done';
   if (sl.includes('%')) return 'status-pct';
   return 'status-not-started';
 }
@@ -1167,39 +780,35 @@ function getStatusClass(s) {
 // ─── RENDER COMPLETED ────────────────────────────────────────
 function renderCompleted() {
   document.getElementById('completedCount').textContent = `(${STATE.completed.length})`;
-  const tbody = document.getElementById('completedBody');
-  tbody.innerHTML = STATE.completed.map((t, i) => {
+  document.getElementById('completedBody').innerHTML = STATE.completed.map(t => {
     const color = epicColor(t.epic);
-    const ownerClass = t.owner === 'SK' ? 'owner-SK' : t.owner === 'JP' ? 'owner-JP' : t.owner === 'Yan' ? 'owner-Yan' : '';
+    const ownerClass = t.owner==='SK'?'owner-SK':t.owner==='JP'?'owner-JP':t.owner==='Yan'?'owner-Yan':'';
     return `<tr>
       <td class="td-task" style="color:var(--text2);font-weight:400;text-decoration:line-through">${escHtml(t.task)}</td>
       <td class="hide-sm"><span class="epic-pill" style="color:${color};border-color:${color}30;background:${color}10">${escHtml(shortEpic(t.epic))}</span></td>
       <td><span class="owner-badge ${ownerClass}">${escHtml(t.owner)}</span></td>
-      <td class="td-num hide-sm">${t.scope || '—'}</td>
-      <td class="td-num hide-sm">${t.impact || '—'}</td>
-      <td class="hide-sm"><div class="score-chip" style="color:var(--text3);background:var(--surface3)">${t.score || '—'}</div></td>
-      <td class="hide-sm" style="color:var(--text3);font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(t.notes || '')}</td></tr>`;
+      <td class="td-num hide-sm">${t.scope||'—'}</td>
+      <td class="td-num hide-sm">${t.impact||'—'}</td>
+      <td class="hide-sm"><div class="score-chip" style="color:var(--text3);background:var(--surface3)">${t.score||'—'}</div></td>
+      <td class="hide-sm" style="color:var(--text3);font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(t.notes||'')}</td></tr>`;
   }).join('');
 }
 function toggleCompleted() {
   const sec = document.getElementById('completedSection');
-  const arrow = document.getElementById('completedArrow');
   sec.classList.toggle('open');
-  arrow.textContent = sec.classList.contains('open') ? '▼' : '▶';
+  document.getElementById('completedArrow').textContent = sec.classList.contains('open') ? '▼' : '▶';
 }
 
 // ─── SORT ────────────────────────────────────────────────────
 const SORT_KEYS = ['priority','task','epic','owner','status','eta','score','scope','impact'];
 function sortBy(key) {
-  if (STATE.sortKey === key) { STATE.sortDir = STATE.sortDir === 'asc' ? 'desc' : 'asc'; }
+  if (STATE.sortKey === key) STATE.sortDir = STATE.sortDir==='asc'?'desc':'asc';
   else { STATE.sortKey = key; STATE.sortDir = 'asc'; }
-  SORT_KEYS.forEach(k => { const el = document.getElementById(`sort-${k}`); if (el) el.textContent = ''; });
+  SORT_KEYS.forEach(k => { const el = document.getElementById(`sort-${k}`); if (el) el.textContent=''; });
   const el = document.getElementById(`sort-${key}`);
-  if (el) el.textContent = STATE.sortDir === 'asc' ? '↑' : '↓';
+  if (el) el.textContent = STATE.sortDir==='asc'?'↑':'↓';
   renderTasks();
 }
-
-// ─── FILTERS ─────────────────────────────────────────────────
 function setOwnerFilter(owner, el) {
   STATE.ownerFilter = owner;
   document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
@@ -1207,20 +816,16 @@ function setOwnerFilter(owner, el) {
   renderTasks();
 }
 
-// ─── MODAL ───────────────────────────────────────────────────
+// ─── TASK MODAL ───────────────────────────────────────────────
 function populateEpicSelect(selected) {
-  const sel = document.getElementById('fEpic');
-  sel.innerHTML = STATE.epics.map(e => `<option value="${escHtml(e.title)}" ${e.title === selected ? 'selected' : ''}>${escHtml(e.title)}</option>`).join('');
+  document.getElementById('fEpic').innerHTML = STATE.epics.map(e =>
+    `<option value="${escHtml(e.title)}" ${e.title===selected?'selected':''}>${escHtml(e.title)}</option>`).join('');
 }
 function openAddTask() {
   document.getElementById('modalTitle').textContent = 'New Task';
   document.getElementById('editIndex').value = '-1';
-  document.getElementById('fTask').value = '';
-  document.getElementById('fETA').value = '';
-  const nextPri = findNextAvailableSlot(STATE.tasks.length + 1, -1);
-  document.getElementById('fPriority').value = nextPri;
-  document.getElementById('fURL').value = '';
-  document.getElementById('fNotes').value = '';
+  ['fTask','fETA','fURL','fNotes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('fPriority').value = findNextAvailableSlot(STATE.tasks.length+1, -1);
   document.getElementById('fStatus').value = 'Not Started';
   document.getElementById('fScope').value = '';
   document.getElementById('fImpact').value = '';
@@ -1228,8 +833,8 @@ function openAddTask() {
   document.getElementById('scoreCalc').textContent = '—';
   document.getElementById('completeBtn').style.display = 'none';
   document.getElementById('priorityConflict').classList.remove('visible');
-  document.getElementById('fPriority').classList.remove('conflict-border', 'ok-border');
-  populateEpicSelect(STATE.epicFilter || (STATE.epics[0] ? STATE.epics[0].title : ''));
+  document.getElementById('fPriority').classList.remove('conflict-border','ok-border');
+  populateEpicSelect(STATE.epicFilter || (STATE.epics[0]?STATE.epics[0].title:''));
   document.getElementById('modalOverlay').classList.add('open');
   setTimeout(() => document.getElementById('fTask').focus(), 50);
 }
@@ -1256,34 +861,21 @@ function openEditTask(idx) {
   checkPriorityConflict();
 }
 function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
-function closeModalOnBackdrop(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+function closeModalOnBackdrop(e) { if (e.target===document.getElementById('modalOverlay')) closeModal(); }
 function calcScore() {
-  const s = parseInt(document.getElementById('fScope').value) || 0;
-  const im = parseInt(document.getElementById('fImpact').value) || 0;
-  document.getElementById('scoreCalc').textContent = (s && im) ? `${s} × ${im} = ${s * im}` : '—';
+  const s = parseInt(document.getElementById('fScope').value)||0;
+  const im = parseInt(document.getElementById('fImpact').value)||0;
+  document.getElementById('scoreCalc').textContent = (s&&im) ? `${s} × ${im} = ${s*im}` : '—';
 }
 function saveTask() {
   const idx = parseInt(document.getElementById('editIndex').value);
+  const priVal = parseFloat(document.getElementById('fPriority').value);
+  if (isNaN(priVal)) { showToast('Priority required'); document.getElementById('fPriority').focus(); return; }
+  const conflict = getUsedPriorities(idx>=0?idx:-1).find(u => u.value===priVal);
+  if (conflict) { showToast('Priority ' + priVal + ' taken. Try ' + findNextAvailableSlot(priVal, idx>=0?idx:-1)); document.getElementById('fPriority').focus(); return; }
   const scope = document.getElementById('fScope').value;
   const impact = document.getElementById('fImpact').value;
-  const score = (scope && impact) ? String(parseInt(scope) * parseInt(impact)) : '';
   const newStatus = document.getElementById('fStatus').value;
-  const priVal = parseFloat(document.getElementById('fPriority').value);
-
-  if (isNaN(priVal) || document.getElementById('fPriority').value.trim() === '') {
-    showToast('Priority is required for force ranking');
-    document.getElementById('fPriority').focus();
-    return;
-  }
-  const used = getUsedPriorities(idx >= 0 ? idx : -1);
-  const conflict = used.find(u => u.value === priVal);
-  if (conflict) {
-    const suggestion = findNextAvailableSlot(priVal, idx >= 0 ? idx : -1);
-    showToast('Priority ' + priVal + ' is taken. Try ' + suggestion);
-    document.getElementById('fPriority').focus();
-    return;
-  }
-
   const t = {
     priority: String(priVal),
     task: document.getElementById('fTask').value.trim(),
@@ -1291,144 +883,107 @@ function saveTask() {
     owner: document.getElementById('fOwner').value,
     status: newStatus,
     eta: document.getElementById('fETA').value.trim(),
-    scope, impact, score,
+    scope, impact,
+    score: (scope&&impact) ? String(parseInt(scope)*parseInt(impact)) : '',
     url: document.getElementById('fURL').value.trim(),
     notes: document.getElementById('fNotes').value.trim(),
   };
-  const activeStatuses = ['Started','In Progress','25%','50%','75%','90%'];
-  if (idx >= 0 && STATE.tasks[idx].startedDate) {
-    t.startedDate = STATE.tasks[idx].startedDate;
-  } else if (activeStatuses.includes(newStatus)) {
-    t.startedDate = new Date().toISOString().slice(0, 10);
-  }
   if (!t.task) { showToast('Task name required'); return; }
-  if (idx === -1) {
-    if (activeStatuses.includes(newStatus)) t.startedDate = new Date().toISOString().slice(0, 10);
-    STATE.tasks.push(t); showToast('Task added');
-  } else {
-    STATE.tasks[idx] = t; showToast('Task saved');
-  }
+  const activeStatuses = ['Started','In Progress','25%','50%','75%','90%'];
+  if (idx>=0 && STATE.tasks[idx].startedDate) t.startedDate = STATE.tasks[idx].startedDate;
+  else if (activeStatuses.includes(newStatus)) t.startedDate = new Date().toISOString().slice(0,10);
+  if (idx===-1) { STATE.tasks.push(t); showToast('Task added'); }
+  else { STATE.tasks[idx] = t; showToast('Task saved'); }
   closeModal(); renderAll();
 }
 function markComplete() {
   const idx = parseInt(document.getElementById('editIndex').value);
   if (idx < 0) return;
   const t = STATE.tasks[idx];
-  const completedDate = new Date().toISOString().slice(0, 10);
+  const completedDate = new Date().toISOString().slice(0,10);
   const startedDate = t.startedDate || '';
   let actualDays = '';
   if (startedDate) {
-    const diff = (new Date(completedDate) - new Date(startedDate)) / (1000 * 60 * 60 * 24);
+    const diff = (new Date(completedDate) - new Date(startedDate)) / 86400000;
     actualDays = String(Math.max(1, Math.round(diff)));
   }
-  STATE.completed.unshift({
-    task: t.task, epic: t.epic, owner: t.owner,
-    scope: t.scope, impact: t.impact, score: t.score,
-    url: t.url, notes: t.notes,
-    startedDate, completedDate, actualDays,
-    eta: t.eta || '',
-  });
+  STATE.completed.unshift({ task:t.task, epic:t.epic, owner:t.owner, scope:t.scope, impact:t.impact, score:t.score, url:t.url, notes:t.notes, startedDate, completedDate, actualDays, eta:t.eta||'' });
   STATE.tasks.splice(idx, 1);
   closeModal(); showToast('Moved to Completed'); renderAll();
 }
 
-// ─── EPIC MODAL ──────────────────────────────────────────────
+// ─── EPIC MODAL ───────────────────────────────────────────────
 function openEditEpic(idx) {
   const e = STATE.epics[idx]; if (!e) return;
   document.getElementById('epicModalTitle').textContent = 'Edit Epic';
   document.getElementById('epicEditIndex').value = idx;
   document.getElementById('fEpicTitle').value = e.title;
-  populateEpicPrioritySelect(e.priority);
+  document.getElementById('fEpicPriority').value = e.priority;
+  document.getElementById('fEpicPriority').classList.remove('conflict-border');
+  document.getElementById('fEpicPriority').classList.add('ok-border');
+  document.getElementById('epicPriorityConflict').classList.remove('visible');
   document.getElementById('fEpicPct').value = e.pct;
   document.getElementById('fEpicNBA').value = e.nba;
   document.getElementById('deleteEpicBtn').style.display = 'block';
   document.getElementById('epicModalOverlay').classList.add('open');
   setTimeout(() => document.getElementById('fEpicTitle').focus(), 50);
 }
-
 function openAddEpic() {
   document.getElementById('epicModalTitle').textContent = 'New Epic';
   document.getElementById('epicEditIndex').value = '-1';
   document.getElementById('fEpicTitle').value = '';
-  populateEpicPrioritySelect('P' + STATE.epics.length);
+  document.getElementById('fEpicPriority').value = findNextAvailableEpicSlot(STATE.epics.length+1, -1);
+  document.getElementById('fEpicPriority').classList.remove('conflict-border','ok-border');
+  document.getElementById('epicPriorityConflict').classList.remove('visible');
   document.getElementById('fEpicPct').value = '0%';
   document.getElementById('fEpicNBA').value = '';
   document.getElementById('deleteEpicBtn').style.display = 'none';
   document.getElementById('epicModalOverlay').classList.add('open');
   setTimeout(() => document.getElementById('fEpicTitle').focus(), 50);
 }
-
-function populateEpicPrioritySelect(selected) {
-  const sel = document.getElementById('fEpicPriority');
-  const count = Math.max(STATE.epics.length, 1);
-  const isNew = document.getElementById('epicEditIndex').value === '-1';
-  const max = isNew ? count : count - 1;
-  sel.innerHTML = '';
-  for (let i = 0; i <= max; i++) {
-    const val = 'P' + i;
-    const opt = document.createElement('option');
-    opt.value = val;
-    opt.textContent = val;
-    if (val === selected) opt.selected = true;
-    sel.appendChild(opt);
-  }
-}
-
 function closeEpicModal() { document.getElementById('epicModalOverlay').classList.remove('open'); }
-
 function saveEpic() {
   const idx = parseInt(document.getElementById('epicEditIndex').value);
   const oldTitle = idx >= 0 ? STATE.epics[idx].title : null;
   const newTitle = document.getElementById('fEpicTitle').value.trim();
   if (!newTitle) { showToast('Epic title required'); return; }
+  const epicPriVal = parseFloat(document.getElementById('fEpicPriority').value);
+  if (isNaN(epicPriVal)) { showToast('Priority required'); document.getElementById('fEpicPriority').focus(); return; }
+  const conflict = getUsedEpicPriorities(idx>=0?idx:-1).find(u => u.value===epicPriVal);
+  if (conflict) { showToast('Priority ' + epicPriVal + ' taken. Try ' + findNextAvailableEpicSlot(epicPriVal, idx>=0?idx:-1)); document.getElementById('fEpicPriority').focus(); return; }
   const epic = {
-    priority: document.getElementById('fEpicPriority').value,
+    priority: String(epicPriVal),
     title: newTitle,
     nba: document.getElementById('fEpicNBA').value.trim(),
     pct: document.getElementById('fEpicPct').value.trim() || '0%',
   };
-  if (idx === -1) {
-    STATE.epics.push(epic);
-    showToast('Epic added');
-  } else {
+  if (idx === -1) { STATE.epics.push(epic); showToast('Epic added'); }
+  else {
     STATE.epics[idx] = epic;
     if (oldTitle && oldTitle !== newTitle) {
-      STATE.tasks.forEach(t => { if (t.epic === oldTitle) t.epic = newTitle; });
-      STATE.completed.forEach(t => { if (t.epic === oldTitle) t.epic = newTitle; });
+      STATE.tasks.forEach(t => { if (t.epic===oldTitle) t.epic=newTitle; });
+      STATE.completed.forEach(t => { if (t.epic===oldTitle) t.epic=newTitle; });
     }
     showToast('Epic saved');
   }
-  STATE.epics.sort((a, b) => {
-    const aN = parseInt(a.priority.replace('P','')) || 0;
-    const bN = parseInt(b.priority.replace('P','')) || 0;
-    return aN - bN;
-  });
+  STATE.epics.sort((a,b) => (parseFloat(a.priority)||999) - (parseFloat(b.priority)||999));
   closeEpicModal(); renderAll();
 }
-
 function deleteEpic() {
   const idx = parseInt(document.getElementById('epicEditIndex').value);
   if (idx < 0) return;
   const epic = STATE.epics[idx];
-  const taskCount = STATE.tasks.filter(t => t.epic === epic.title).length;
-  const msg = taskCount > 0
-    ? `Delete "${epic.title}"? ${taskCount} task(s) reference this epic — they will become unassigned.`
-    : `Delete "${epic.title}"?`;
-  if (!confirm(msg)) return;
-  STATE.tasks.forEach(t => { if (t.epic === epic.title) t.epic = ''; });
-  STATE.completed.forEach(t => { if (t.epic === epic.title) t.epic = ''; });
+  const taskCount = STATE.tasks.filter(t => t.epic===epic.title).length;
+  if (!confirm(`Delete "${epic.title}"?${taskCount>0?' '+taskCount+' task(s) will become unassigned.':''}`)) return;
+  STATE.tasks.forEach(t => { if (t.epic===epic.title) t.epic=''; });
+  STATE.completed.forEach(t => { if (t.epic===epic.title) t.epic=''; });
   STATE.epics.splice(idx, 1);
-  STATE.epics.sort((a, b) => {
-    const aN = parseInt(a.priority.replace('P','')) || 0;
-    const bN = parseInt(b.priority.replace('P','')) || 0;
-    return aN - bN;
-  });
-  STATE.epics.forEach((e, i) => { e.priority = 'P' + i; });
-  if (STATE.epicFilter === epic.title) STATE.epicFilter = null;
+  STATE.epics.sort((a,b) => (parseFloat(a.priority)||999) - (parseFloat(b.priority)||999));
+  if (STATE.epicFilter===epic.title) STATE.epicFilter=null;
   closeEpicModal(); showToast('Epic deleted'); renderAll();
 }
 
-// ─── CSV EXPORT ──────────────────────────────────────────────
+// ─── CSV ─────────────────────────────────────────────────────
 function exportCSV() {
   let csv = 'EPICS\r\nPriority,Title,Next Best Action,Progress %\r\n';
   STATE.epics.forEach(e => { csv += `${csvCell(e.priority)},${csvCell(e.title)},${csvCell(e.nba)},${csvCell(e.pct)}\r\n`; });
@@ -1436,237 +991,135 @@ function exportCSV() {
   STATE.tasks.forEach(t => { csv += `${csvCell(t.priority)},${csvCell(t.task)},${csvCell(t.epic)},${csvCell(t.owner)},${csvCell(t.status)},${csvCell(t.eta)},${csvCell(t.scope)},${csvCell(t.impact)},${csvCell(t.score)},${csvCell(t.url)},${csvCell(t.notes)},${csvCell(t.startedDate)}\r\n`; });
   csv += '\r\nCOMPLETED\r\nTask,Epic,Owner,Scope,Impact,Score,URL,Notes,Started,Completed,Actual Days,ETA\r\n';
   STATE.completed.forEach(t => { csv += `${csvCell(t.task)},${csvCell(t.epic)},${csvCell(t.owner)},${csvCell(t.scope)},${csvCell(t.impact)},${csvCell(t.score)},${csvCell(t.url)},${csvCell(t.notes)},${csvCell(t.startedDate)},${csvCell(t.completedDate)},${csvCell(t.actualDays)},${csvCell(t.eta)}\r\n`; });
-  const blob = new Blob([csv], { type: 'text/csv' });
+  const blob = new Blob([csv], {type:'text/csv'});
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = `8by0-alignment-${today()}.csv`; a.click();
-  URL.revokeObjectURL(url);
-  showToast('CSV exported');
+  const a = document.createElement('a'); a.href=url; a.download=`8by0-alignment-${today()}.csv`; a.click();
+  URL.revokeObjectURL(url); showToast('CSV exported');
 }
-function csvCell(v) { v = String(v == null ? '' : v); if (v.includes(',') || v.includes('"') || v.includes('\n')) return '"' + v.replace(/"/g, '""') + '"'; return v; }
+function csvCell(v) { v=String(v==null?'':v); if(v.includes(',')||v.includes('"')||v.includes('\n')) return '"'+v.replace(/"/g,'""')+'"'; return v; }
 
-// ─── CSV IMPORT ──────────────────────────────────────────────
 document.getElementById('csvImport').addEventListener('change', function(e) {
   const file = e.target.files[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = function(ev) {
-    try { parseCSV(ev.target.result); renderAll(); showToast('CSV imported — ' + STATE.tasks.length + ' tasks loaded'); }
+    try { parseCSV(ev.target.result); renderAll(); showToast('CSV imported — ' + STATE.tasks.length + ' tasks'); }
     catch(err) { showToast('Import error: ' + err.message); }
   };
-  reader.readAsText(file);
-  this.value = '';
+  reader.readAsText(file); this.value = '';
 });
 
 function parseCSV(text) {
-  const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+  const lines = text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
   let section = null;
-  const newEpics = [], newTasks = [], newCompleted = [];
+  const newEpics=[], newTasks=[], newCompleted=[];
   lines.forEach(line => {
     const trimmed = line.trim();
-    if (trimmed === 'EPICS')        { section = 'epics';     return; }
-    if (trimmed === 'ACTIVE TASKS') { section = 'tasks';     return; }
-    if (trimmed === 'COMPLETED')    { section = 'completed'; return; }
+    if (trimmed==='EPICS')        { section='epics';     return; }
+    if (trimmed==='ACTIVE TASKS') { section='tasks';     return; }
+    if (trimmed==='COMPLETED')    { section='completed'; return; }
     if (!trimmed) return;
     const cells = parseCSVRow(trimmed);
     if (!cells || cells.length < 2) return;
-    if (section === 'epics') {
-      if (cells[0] === 'Priority') return;
-      if (cells[0] && cells[1] && cells[1] !== 'Title') newEpics.push({ priority: cells[0], title: cells[1], nba: cells[2] || '', pct: cells[3] || '0%' });
-    } else if (section === 'tasks') {
-      if (cells[0] === 'Priority') return;
-      if (cells[1] && cells[1] !== 'Task') newTasks.push({ priority: cells[0] || '1', task: cells[1], epic: cells[2] || '', owner: cells[3] || 'SK', status: cells[4] || 'Not Started', eta: cells[5] || '', scope: cells[6] || '', impact: cells[7] || '', score: cells[8] || '', url: cells[9] || '', notes: cells[10] || '', startedDate: cells[11] || '' });
-    } else if (section === 'completed') {
-      if (cells[0] === 'Task') return;
-      if (cells[0]) newCompleted.push({ task: cells[0], epic: cells[1] || '', owner: cells[2] || '', scope: cells[3] || '', impact: cells[4] || '', score: cells[5] || '', url: cells[6] || '', notes: cells[7] || '', startedDate: cells[8] || '', completedDate: cells[9] || '', actualDays: cells[10] || '', eta: cells[11] || '' });
+    if (section==='epics') {
+      if (cells[0]==='Priority') return;
+      if (cells[0]&&cells[1]&&cells[1]!=='Title') newEpics.push({priority:cells[0],title:cells[1],nba:cells[2]||'',pct:cells[3]||'0%'});
+    } else if (section==='tasks') {
+      if (cells[0]==='Priority') return;
+      if (cells[1]&&cells[1]!=='Task') newTasks.push({priority:cells[0]||'1',task:cells[1],epic:cells[2]||'',owner:cells[3]||'SK',status:cells[4]||'Not Started',eta:cells[5]||'',scope:cells[6]||'',impact:cells[7]||'',score:cells[8]||'',url:cells[9]||'',notes:cells[10]||'',startedDate:cells[11]||''});
+    } else if (section==='completed') {
+      if (cells[0]==='Task') return;
+      if (cells[0]) newCompleted.push({task:cells[0],epic:cells[1]||'',owner:cells[2]||'',scope:cells[3]||'',impact:cells[4]||'',score:cells[5]||'',url:cells[6]||'',notes:cells[7]||'',startedDate:cells[8]||'',completedDate:cells[9]||'',actualDays:cells[10]||'',eta:cells[11]||''});
     }
   });
   if (newEpics.length)     STATE.epics     = newEpics;
   if (newTasks.length)     STATE.tasks     = newTasks;
   if (newCompleted.length) STATE.completed = newCompleted;
 }
-
 function parseCSVRow(line) {
-  const result = []; let cur = '', inQuote = false;
-  for (let i = 0; i < line.length; i++) {
-    const c = line[i];
-    if (c === '"') { if (inQuote && line[i+1] === '"') { cur += '"'; i++; } else inQuote = !inQuote; }
-    else if (c === ',' && !inQuote) { result.push(cur); cur = ''; }
-    else { cur += c; }
+  const result=[]; let cur='', inQuote=false;
+  for (let i=0; i<line.length; i++) {
+    const c=line[i];
+    if (c==='"') { if (inQuote&&line[i+1]==='"') { cur+='"'; i++; } else inQuote=!inQuote; }
+    else if (c===','&&!inQuote) { result.push(cur); cur=''; }
+    else { cur+=c; }
   }
-  result.push(cur);
-  return result;
+  result.push(cur); return result;
 }
 
 // ─── UTILS ───────────────────────────────────────────────────
-function escHtml(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function today() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
-function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
+function escHtml(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function today() { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
 
 // ─── DASHBOARD ───────────────────────────────────────────────
 function toggleDashboard() {
-  const sec = document.getElementById('dashboardPanel');
-  const arrow = document.getElementById('dashArrow');
+  const sec=document.getElementById('dashboardPanel');
   sec.classList.toggle('open');
-  arrow.textContent = sec.classList.contains('open') ? '▼' : '▶';
+  document.getElementById('dashArrow').textContent = sec.classList.contains('open')?'▼':'▶';
   if (sec.classList.contains('open')) renderDashboard();
 }
-
 const _charts = {};
-function getOrCreateChart(canvasId, config) {
-  if (_charts[canvasId]) _charts[canvasId].destroy();
-  const ctx = document.getElementById(canvasId);
-  if (!ctx) return null;
-  _charts[canvasId] = new Chart(ctx, config);
-  return _charts[canvasId];
+function getOrCreateChart(id, config) {
+  if (_charts[id]) _charts[id].destroy();
+  const ctx = document.getElementById(id); if (!ctx) return null;
+  _charts[id] = new Chart(ctx, config); return _charts[id];
 }
-
 const CHART_DEFAULTS = {
   responsive: true,
-  plugins: { legend: { labels: { color: '#8e8eaa', font: { family: "'DM Mono', monospace", size: 10 } } } },
+  plugins: { legend: { labels: { color:'#8e8eaa', font:{family:"'DM Mono', monospace",size:10} } } },
   scales: {
-    x: { ticks: { color: '#8e8eaa', font: { family: "'DM Mono', monospace", size: 9 } }, grid: { color: '#2a2a32' } },
-    y: { ticks: { color: '#8e8eaa', font: { family: "'DM Mono', monospace", size: 9 } }, grid: { color: '#2a2a32' }, beginAtZero: true },
+    x: { ticks:{color:'#8e8eaa',font:{family:"'DM Mono', monospace",size:9}}, grid:{color:'#2a2a32'} },
+    y: { ticks:{color:'#8e8eaa',font:{family:"'DM Mono', monospace",size:9}}, grid:{color:'#2a2a32'}, beginAtZero:true },
   },
 };
-
-function scopeEstimateToDays(s) {
-  const map = { '1': 3, '2': 5.5, '3': 10.5, '4': 24.5, '5': 35 };
-  return map[s] || 0;
-}
-
+function scopeEstimateToDays(s) { return {'1':3,'2':5.5,'3':10.5,'4':24.5,'5':35}[s]||0; }
 function renderDashboard() {
   if (!document.getElementById('dashboardPanel').classList.contains('open')) return;
-
-  const withDates = STATE.completed.filter(t => t.actualDays);
-  const withETA = STATE.completed.filter(t => t.eta && t.completedDate);
-  const onTime = withETA.filter(t => new Date(t.completedDate) <= new Date(t.eta)).length;
-  const avgActualDays = withDates.length ? (withDates.reduce((s, t) => s + parseInt(t.actualDays), 0) / withDates.length).toFixed(1) : '—';
-  const etaPct = withETA.length ? Math.round((onTime / withETA.length) * 100) + '%' : '—';
-
+  const withDates = STATE.completed.filter(t=>t.actualDays);
+  const withETA   = STATE.completed.filter(t=>t.eta&&t.completedDate);
+  const onTime    = withETA.filter(t=>new Date(t.completedDate)<=new Date(t.eta)).length;
+  const avg = withDates.length ? (withDates.reduce((s,t)=>s+parseInt(t.actualDays),0)/withDates.length).toFixed(1) : '—';
   document.getElementById('dashKPIs').innerHTML = `
-    <div class="dash-kpi">
-      <div class="dash-kpi-value">${STATE.completed.length}</div>
-      <div class="dash-kpi-label">Total Completed</div>
-    </div>
-    <div class="dash-kpi">
-      <div class="dash-kpi-value">${withDates.length}</div>
-      <div class="dash-kpi-label">With Duration Data</div>
-      <div class="dash-kpi-sub">New completions auto-track</div>
-    </div>
-    <div class="dash-kpi">
-      <div class="dash-kpi-value">${avgActualDays}</div>
-      <div class="dash-kpi-label">Avg Actual Days</div>
-    </div>
-    <div class="dash-kpi">
-      <div class="dash-kpi-value">${etaPct}</div>
-      <div class="dash-kpi-label">On-Time Rate</div>
-      <div class="dash-kpi-sub">${withETA.length ? onTime + '/' + withETA.length + ' on or before ETA' : 'Needs ETAs + completion dates'}</div>
-    </div>
-  `;
+    <div class="dash-kpi"><div class="dash-kpi-value">${STATE.completed.length}</div><div class="dash-kpi-label">Total Completed</div></div>
+    <div class="dash-kpi"><div class="dash-kpi-value">${withDates.length}</div><div class="dash-kpi-label">With Duration Data</div></div>
+    <div class="dash-kpi"><div class="dash-kpi-value">${avg}</div><div class="dash-kpi-label">Avg Actual Days</div></div>
+    <div class="dash-kpi"><div class="dash-kpi-value">${withETA.length?Math.round(onTime/withETA.length*100)+'%':'—'}</div><div class="dash-kpi-label">On-Time Rate</div><div class="dash-kpi-sub">${withETA.length?onTime+'/'+withETA.length+' on or before ETA':'Needs ETAs + completion dates'}</div></div>`;
 
+  const scopeData = withDates.filter(t=>t.scope);
   const scopeCanvas = document.getElementById('chartScopeAccuracy');
-  const scopeEmpty = document.getElementById('scopeEmpty');
-  const scopeData = withDates.filter(t => t.scope);
   if (scopeData.length >= 2) {
-    scopeCanvas.style.display = 'block'; scopeEmpty.style.display = 'none';
-    const labels = scopeData.slice(-15).map(t => t.task.length > 20 ? t.task.slice(0,18) + '…' : t.task);
-    const estimated = scopeData.slice(-15).map(t => scopeEstimateToDays(t.scope));
-    const actual = scopeData.slice(-15).map(t => parseInt(t.actualDays) || 0);
-    getOrCreateChart('chartScopeAccuracy', {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [
-          { label: 'Estimated (days)', data: estimated, backgroundColor: 'rgba(108,140,255,0.4)', borderColor: '#6c8cff', borderWidth: 1 },
-          { label: 'Actual (days)', data: actual, backgroundColor: 'rgba(62,207,142,0.4)', borderColor: '#3ecf8e', borderWidth: 1 },
-        ]
-      },
-      options: { ...CHART_DEFAULTS, plugins: { ...CHART_DEFAULTS.plugins, tooltip: { callbacks: { title: (items) => scopeData.slice(-15)[items[0].dataIndex].task } } } }
-    });
-  } else {
-    scopeCanvas.style.display = 'none'; scopeEmpty.style.display = 'block';
-  }
+    scopeCanvas.style.display='block'; document.getElementById('scopeEmpty').style.display='none';
+    const sl = scopeData.slice(-15);
+    getOrCreateChart('chartScopeAccuracy',{type:'bar',data:{labels:sl.map(t=>t.task.length>20?t.task.slice(0,18)+'…':t.task),datasets:[{label:'Estimated (days)',data:sl.map(t=>scopeEstimateToDays(t.scope)),backgroundColor:'rgba(108,140,255,0.4)',borderColor:'#6c8cff',borderWidth:1},{label:'Actual (days)',data:sl.map(t=>parseInt(t.actualDays)||0),backgroundColor:'rgba(62,207,142,0.4)',borderColor:'#3ecf8e',borderWidth:1}]},options:CHART_DEFAULTS});
+  } else { scopeCanvas.style.display='none'; document.getElementById('scopeEmpty').style.display='block'; }
 
-  const epicLabels = STATE.epics.map(e => shortEpic(e.title));
-  const epicDone = STATE.epics.map(e => STATE.completed.filter(t => t.epic === e.title).length);
-  const epicRemaining = STATE.epics.map(e => STATE.tasks.filter(t => t.epic === e.title).length);
-  getOrCreateChart('chartEpicProgress', {
-    type: 'bar',
-    data: {
-      labels: epicLabels,
-      datasets: [
-        { label: 'Completed', data: epicDone, backgroundColor: 'rgba(62,207,142,0.5)', borderColor: '#3ecf8e', borderWidth: 1 },
-        { label: 'Remaining', data: epicRemaining, backgroundColor: 'rgba(248,113,113,0.3)', borderColor: '#f87171', borderWidth: 1 },
-      ]
-    },
-    options: { ...CHART_DEFAULTS, indexAxis: 'y', scales: { ...CHART_DEFAULTS.scales, x: { ...CHART_DEFAULTS.scales.x, stacked: true }, y: { ...CHART_DEFAULTS.scales.y, stacked: true } } }
-  });
+  getOrCreateChart('chartEpicProgress',{type:'bar',data:{labels:STATE.epics.map(e=>shortEpic(e.title)),datasets:[{label:'Completed',data:STATE.epics.map(e=>STATE.completed.filter(t=>t.epic===e.title).length),backgroundColor:'rgba(62,207,142,0.5)',borderColor:'#3ecf8e',borderWidth:1},{label:'Remaining',data:STATE.epics.map(e=>STATE.tasks.filter(t=>t.epic===e.title).length),backgroundColor:'rgba(248,113,113,0.3)',borderColor:'#f87171',borderWidth:1}]},options:{...CHART_DEFAULTS,indexAxis:'y',scales:{...CHART_DEFAULTS.scales,x:{...CHART_DEFAULTS.scales.x,stacked:true},y:{...CHART_DEFAULTS.scales.y,stacked:true}}}});
 
+  const datedC = STATE.completed.filter(t=>t.completedDate);
   const throughputCanvas = document.getElementById('chartThroughput');
-  const throughputEmpty = document.getElementById('throughputEmpty');
-  const datedCompleted = STATE.completed.filter(t => t.completedDate);
-  if (datedCompleted.length >= 2) {
-    throughputCanvas.style.display = 'block'; throughputEmpty.style.display = 'none';
-    const weekMap = {};
-    datedCompleted.forEach(t => {
-      const d = new Date(t.completedDate);
-      const wk = getISOWeekLabel(d);
-      if (!weekMap[wk]) weekMap[wk] = { count: 0, totalDays: 0, withDays: 0 };
-      weekMap[wk].count++;
-      if (t.actualDays) { weekMap[wk].totalDays += parseInt(t.actualDays); weekMap[wk].withDays++; }
-    });
-    const weeks = Object.keys(weekMap).sort().slice(-12);
-    getOrCreateChart('chartThroughput', {
-      type: 'bar',
-      data: {
-        labels: weeks,
-        datasets: [
-          { label: 'Tasks Completed', data: weeks.map(w => weekMap[w].count), backgroundColor: 'rgba(108,140,255,0.5)', borderColor: '#6c8cff', borderWidth: 1 },
-        ]
-      },
-      options: CHART_DEFAULTS
-    });
-  } else {
-    throughputCanvas.style.display = 'none'; throughputEmpty.style.display = 'block';
-  }
+  if (datedC.length >= 2) {
+    throughputCanvas.style.display='block'; document.getElementById('throughputEmpty').style.display='none';
+    const weekMap={};
+    datedC.forEach(t=>{ const wk=getISOWeekLabel(new Date(t.completedDate)); weekMap[wk]=(weekMap[wk]||0)+1; });
+    const weeks=Object.keys(weekMap).sort().slice(-12);
+    getOrCreateChart('chartThroughput',{type:'bar',data:{labels:weeks,datasets:[{label:'Tasks Completed',data:weeks.map(w=>weekMap[w]),backgroundColor:'rgba(108,140,255,0.5)',borderColor:'#6c8cff',borderWidth:1}]},options:CHART_DEFAULTS});
+  } else { throughputCanvas.style.display='none'; document.getElementById('throughputEmpty').style.display='block'; }
 
   const etaCanvas = document.getElementById('chartETA');
-  const etaEmptyEl = document.getElementById('etaEmpty');
   if (withETA.length >= 2) {
-    etaCanvas.style.display = 'block'; etaEmptyEl.style.display = 'none';
-    const owners = [...new Set(withETA.map(t => t.owner))];
-    const onTimeByOwner = owners.map(o => withETA.filter(t => t.owner === o && new Date(t.completedDate) <= new Date(t.eta)).length);
-    const lateByOwner = owners.map(o => withETA.filter(t => t.owner === o && new Date(t.completedDate) > new Date(t.eta)).length);
-    getOrCreateChart('chartETA', {
-      type: 'bar',
-      data: {
-        labels: owners,
-        datasets: [
-          { label: 'On Time', data: onTimeByOwner, backgroundColor: 'rgba(62,207,142,0.5)', borderColor: '#3ecf8e', borderWidth: 1 },
-          { label: 'Late', data: lateByOwner, backgroundColor: 'rgba(248,113,113,0.4)', borderColor: '#f87171', borderWidth: 1 },
-        ]
-      },
-      options: { ...CHART_DEFAULTS, scales: { ...CHART_DEFAULTS.scales, x: { ...CHART_DEFAULTS.scales.x, stacked: true }, y: { ...CHART_DEFAULTS.scales.y, stacked: true } } }
-    });
-  } else {
-    etaCanvas.style.display = 'none'; etaEmptyEl.style.display = 'block';
-  }
+    etaCanvas.style.display='block'; document.getElementById('etaEmpty').style.display='none';
+    const owners=[...new Set(withETA.map(t=>t.owner))];
+    getOrCreateChart('chartETA',{type:'bar',data:{labels:owners,datasets:[{label:'On Time',data:owners.map(o=>withETA.filter(t=>t.owner===o&&new Date(t.completedDate)<=new Date(t.eta)).length),backgroundColor:'rgba(62,207,142,0.5)',borderColor:'#3ecf8e',borderWidth:1},{label:'Late',data:owners.map(o=>withETA.filter(t=>t.owner===o&&new Date(t.completedDate)>new Date(t.eta)).length),backgroundColor:'rgba(248,113,113,0.4)',borderColor:'#f87171',borderWidth:1}]},options:{...CHART_DEFAULTS,scales:{...CHART_DEFAULTS.scales,x:{...CHART_DEFAULTS.scales.x,stacked:true},y:{...CHART_DEFAULTS.scales.y,stacked:true}}}});
+  } else { etaCanvas.style.display='none'; document.getElementById('etaEmpty').style.display='block'; }
 }
-
 function getISOWeekLabel(d) {
-  const jan1 = new Date(d.getFullYear(), 0, 1);
-  const week = Math.ceil(((d - jan1) / 86400000 + jan1.getDay() + 1) / 7);
-  return `W${String(week).padStart(2,'0')}`;
+  const jan1=new Date(d.getFullYear(),0,1);
+  return `W${String(Math.ceil(((d-jan1)/86400000+jan1.getDay()+1)/7)).padStart(2,'0')}`;
 }
 
 // ─── RENDER ALL ──────────────────────────────────────────────
 function renderAll() {
-  renderStats();
-  renderEpics();
-  renderTasks();
-  renderCompleted();
-  renderDashboard();
-  saveState();
+  renderStats(); renderEpics(); renderTasks(); renderCompleted(); renderDashboard(); saveState();
 }
 
 // ─── INIT ────────────────────────────────────────────────────
@@ -1674,10 +1127,9 @@ loadDefaults();
 loadState();
 initFirebase();
 document.getElementById('sort-priority').textContent = '↑';
-
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); closeEpicModal(); }
-  if ((e.metaKey || e.ctrlKey) && e.key === 'n') { e.preventDefault(); openAddTask(); }
+  if (e.key==='Escape') { closeModal(); closeEpicModal(); }
+  if ((e.metaKey||e.ctrlKey)&&e.key==='n') { e.preventDefault(); openAddTask(); }
 });
 </script>
 </body>
