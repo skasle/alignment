@@ -802,76 +802,10 @@ const EPIC_COLORS = [
   '#6c8cff','#3ecf8e','#a855f7','#22d3ee','#f59e0b','#f87171',
 ];
 
-let STATE = {
-  epics: [], tasks: [], completed: [],
-  sortKey: 'priority', sortDir: 'asc',
-  ownerFilter: 'all', epicFilter: null,
-};
-
 function loadDefaults() {
-  STATE.epics = [
-    { priority: 'P0', title: 'Close Seed Round',             nba: 'Unblock Diagram intros; close by April 5',                                              pct: '35%' },
-    { priority: 'P1', title: 'Generate Revenue vs. Goal',    nba: 'Drive WMC and FDI to paid agreements; identify Alliant pilot employer',                  pct: '20%' },
-    { priority: 'P1', title: 'Right-Sized Tech Team Build',  nba: 'Yan onboarded; assess Montreal team; scope ML/AI second hire',                           pct: '25%' },
-    { priority: 'P1', title: 'Customer Onboarding & Support',nba: 'Document onboarding flows; define support model for WMC and FDI',                        pct: '10%' },
-    { priority: 'P2', title: 'Carrier Pipeline Engagement',  nba: 'Active structured engagement with Sun Life / Symetra / MunichRe-introduced carriers',    pct: '8%'  },
-    { priority: 'P2', title: 'AI Foundation',                nba: 'Define internal AI workflow wins and external product-facing AI capability',              pct: '0%'  },
-  ];
-  STATE.tasks = [
-    { priority: '1',  task: 'Investor outreach',                         epic: 'Close Seed Round',              owner: 'SK',    status: '75%',         eta: '3/31/2026', scope: '2', impact: '1', score: '2',  url: '', notes: '' },
-    { priority: '2',  task: 'WMC implementation',                        epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '4/18/2026', scope: '3', impact: '1', score: '3',  url: '', notes: 'Placeholder ETA — JP to confirm or adjust.' },
-    { priority: '3',  task: 'Cap Table',                                 epic: 'Close Seed Round',              owner: 'SK',    status: '90%',         eta: '3/31/2026', scope: '4', impact: '1', score: '4',  url: '', notes: 'Name change approved by Corps Canada Mar 18. Was 90% on 3/24 — close out this week.' },
-    { priority: '4',  task: 'Broker outreach',                           epic: 'Close Seed Round',              owner: 'SK',    status: 'Started',     eta: '3/31/2026', scope: '2', impact: '2', score: '4',  url: '', notes: '' },
-    { priority: '5',  task: 'Unblock Diagram on investor introductions', epic: 'Close Seed Round',              owner: 'SK',    status: 'Blocked',     eta: '4/8/2026',  scope: '2', impact: '1', score: '2',  url: '', notes: "Structural blocker; Steve hasn't scheduled deck sessions or made intros. Pushed from 3/25 — needs direct escalation." },
-    { priority: '6',  task: 'FDI implementation',                        epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '4/25/2026', scope: '3', impact: '1', score: '3',  url: '', notes: 'Placeholder ETA — JP to confirm or adjust.' },
-    { priority: '7',  task: 'MunichRe rev share agreement',              epic: 'Close Seed Round',              owner: 'SK',    status: '75%',         eta: '3/31/2026', scope: '1', impact: '2', score: '2',  url: '', notes: "Draft in Dawn's hands - needs close in Q2" },
-    { priority: '8',  task: 'Advisor Agreement Update (Don & Sean)',      epic: 'Close Seed Round',              owner: 'SK',    status: 'Not Started', eta: '3/31/2026', scope: '1', impact: '1', score: '1',  url: '', notes: '' },
-    { priority: '9',  task: 'Data Room Setup',                           epic: 'Close Seed Round',              owner: 'SK',    status: 'Not Started', eta: '4/8/2026',  scope: '1', impact: '1', score: '1',  url: '', notes: 'Need to get template from Diagram' },
-    { priority: '10', task: 'Alliant pilot prep',                        epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Not Started', eta: '',          scope: '2', impact: '1', score: '2',  url: '', notes: 'PLOI sent to Tom Coyne; identify jumbo pilot employer via Blaine/ABC' },
-    { priority: '11', task: 'Brokers pitch',                             epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Started',     eta: '4/11/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'WTW AON etc. Placeholder ETA — JP to confirm or adjust.' },
-    { priority: '12', task: 'Yan Avery onboarding',                      epic: 'Right-Sized Tech Team Build',   owner: 'JP',    status: 'Started',     eta: '4/11/2026', scope: '2', impact: '1', score: '2',  url: '', notes: 'Interim period began March 16. Placeholder ETA — JP to confirm or adjust.' },
-    { priority: '13', task: 'Codebase & architecture review',            epic: 'Right-Sized Tech Team Build',   owner: 'Yan',   status: 'Not Started', eta: '4/4/2026',  scope: '1', impact: '2', score: '2',  url: '', notes: 'Full review of current codebase, infra, and deployment pipeline. Document findings.' },
-    { priority: '14', task: 'WMC/FDI technical assessment',              epic: 'Right-Sized Tech Team Build',   owner: 'Yan',   status: 'Not Started', eta: '4/11/2026', scope: '2', impact: '1', score: '2',  url: '', notes: 'Assess WMC and FDI integration architecture; identify gaps and risks for production stability.' },
-    { priority: '15', task: 'Manufacture a carrier agreement',           epic: 'Close Seed Round',              owner: 'SK',    status: 'Not Started', eta: '',          scope: '',  impact: '',  score: '',   url: '', notes: '' },
-    { priority: '16', task: 'Forecast v2',                               epic: 'Close Seed Round',              owner: 'SK/JP', status: 'Started',     eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Sales and dev expense refinement' },
-    { priority: '17', task: 'Broker/employer sales deck rework',         epic: 'Generate Revenue vs. Goal',     owner: 'SK/JP', status: 'Not Started', eta: '4/4/2026',  scope: '2', impact: '2', score: '4',  url: '', notes: 'Rework language to broker/employer audience; less carrier-centric. Pushed from 3/28.' },
-    { priority: '18', task: 'TPA employer penetration playbook',         epic: 'Generate Revenue vs. Goal',     owner: 'JP',    status: 'Not Started', eta: '4/18/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Define how WMC and FDI introduce 8/0 to employer clients. Placeholder ETA — JP to confirm.' },
-    { priority: '19', task: 'WMC onboarding flow documentation',        epic: 'Customer Onboarding & Support', owner: 'JP',    status: 'Not Started', eta: '4/18/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Document repeatable onboarding process from WMC pilot. Placeholder ETA — JP to confirm.' },
-    { priority: '20', task: 'SOC 2 program kickoff',                     epic: 'Customer Onboarding & Support', owner: 'JP',    status: 'Not Started', eta: '4/1/2026',  scope: '1', impact: '3', score: '3',  url: '', notes: 'Vanta selected; kickoff pending. JP to confirm 4/1 ETA still holds.' },
-    { priority: '21', task: 'Jim Kenny equity negotiation',              epic: 'Customer Onboarding & Support', owner: 'SK',    status: 'Started',     eta: '',          scope: '1', impact: '3', score: '3',  url: '', notes: 'Counter: 2-year post-termination exercise window' },
-    { priority: '22', task: 'Symetra NDA follow-up',                     epic: 'Carrier Pipeline Engagement',   owner: 'SK',    status: 'Started',     eta: '',          scope: '1', impact: '2', score: '2',  url: '', notes: 'Escalate via Kayla Halpin VP' },
-    { priority: '23', task: 'Davies TPA re-engagement',                  epic: 'Carrier Pipeline Engagement',   owner: 'SK',    status: 'Not Started', eta: '',          scope: '1', impact: '2', score: '2',  url: '', notes: 'Stalled since late Feb' },
-    { priority: '24', task: 'Employer-level integration pricing model',  epic: 'Carrier Pipeline Engagement',   owner: 'SK/JP', status: 'Not Started', eta: '4/10/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Define pricing/charging for employer-level integrations' },
-    { priority: '25', task: 'Montreal engineering team assessment',       epic: 'Right-Sized Tech Team Build',   owner: 'SK/JP', status: 'Not Started', eta: '',          scope: '2', impact: '2', score: '4',  url: '', notes: 'Assess current team against WMC/FDI/Alliant delivery demands' },
-    { priority: '26', task: 'Support model definition',                  epic: 'Customer Onboarding & Support', owner: 'SK/JP', status: 'Not Started', eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Define support tiers and feedback loop back into product' },
-    { priority: '27', task: 'Tech debt & prioritization inventory',      epic: 'Right-Sized Tech Team Build',   owner: 'Yan',   status: 'Not Started', eta: '4/18/2026', scope: '2', impact: '2', score: '4',  url: '', notes: 'Catalog tech debt; score by severity and delivery impact; propose sprint plan.' },
-    { priority: '28', task: 'ML/AI second hire scoping',                 epic: 'Right-Sized Tech Team Build',   owner: 'SK',    status: 'Not Started', eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Sequence after production data stable from WMC and FDI' },
-    { priority: '29', task: 'AI foundation scoping',                     epic: 'AI Foundation',                 owner: 'SK/JP', status: 'Not Started', eta: '',          scope: '2', impact: '3', score: '6',  url: '', notes: 'Define internal workflow wins and external product-facing AI capability; align with Yan' },
-  ];
-  STATE.completed = [
-    { task: 'CRM solution',                       epic: 'Generate Revenue vs. Goal',      owner: 'SK',  scope: '2', impact: '3', score: '6', url: '', notes: '' },
-    { task: 'SOC 2 consideration',                epic: 'Customer Onboarding & Support',  owner: 'JP',  scope: '1', impact: '2', score: '2', url: '', notes: 'Vanta selected' },
-    { task: 'Carrier strategy session with Dawn', epic: 'Carrier Pipeline Engagement',    owner: 'SK',  scope: '1', impact: '2', score: '2', url: '', notes: '' },
-    { task: 'markd.vc Amanda Couture meeting',    epic: 'Close Seed Round',               owner: 'SK',  scope: '1', impact: '1', score: '1', url: '', notes: '' },
-    { task: 'Intact Ventures meeting',            epic: 'Close Seed Round',               owner: 'SK',  scope: '1', impact: '1', score: '1', url: '', notes: '' },
-    { task: 'Munich MOU',                         epic: 'Close Seed Round',               owner: 'SK',  scope: '2', impact: '2', score: '4', url: '', notes: '' },
-    { task: 'FDI agreement',                      epic: 'Generate Revenue vs. Goal',      owner: 'SK',  scope: '2', impact: '1', score: '2', url: '', notes: '' },
-    { task: 'Deck for MunichRe internal',         epic: 'Close Seed Round',               owner: 'SK',  scope: '2', impact: '3', score: '6', url: '', notes: '' },
-    { task: 'Move SR&ED forward',                 epic: 'Close Seed Round',               owner: 'SK',  scope: '3', impact: '2', score: '6', url: '', notes: '' },
-    { task: 'Investor one pager',                 epic: 'Close Seed Round',               owner: 'SK',  scope: '2', impact: '3', score: '6', url: '', notes: '' },
-    { task: 'Investor deck',                      epic: 'Close Seed Round',               owner: 'SK',  scope: '3', impact: '1', score: '3', url: '', notes: '' },
-    { task: 'MunichRe account manager one pager', epic: 'Generate Revenue vs. Goal',      owner: 'JP',  scope: '2', impact: '2', score: '4', url: '', notes: '' },
-    { task: 'Privacy agreement for WMC',          epic: 'Generate Revenue vs. Goal',      owner: 'JP',  scope: '1', impact: '1', score: '1', url: '', notes: '' },
-    { task: 'MOU for WMC',                        epic: 'Generate Revenue vs. Goal',      owner: 'SK',  scope: '1', impact: '1', score: '1', url: '', notes: '' },
-    { task: 'Short form sales deck',              epic: 'Generate Revenue vs. Goal',      owner: 'SK',  scope: '2', impact: '1', score: '2', url: '', notes: '' },
-    { task: 'Rework econ slides',                 epic: 'Close Seed Round',               owner: 'SK',  scope: '1', impact: '3', score: '3', url: '', notes: '' },
-    { task: 'Demo V2',                            epic: 'Generate Revenue vs. Goal',      owner: 'JP',  scope: '3', impact: '2', score: '6', url: '', notes: '' },
-    { task: 'Wave 3 Canadian carriers outreach',  epic: 'Carrier Pipeline Engagement',    owner: 'JP',  scope: '2', impact: '2', score: '4', url: '', notes: '' },
-    { task: 'Company name Eight by Zero',         epic: 'Close Seed Round',               owner: 'SK',  scope: '3', impact: '2', score: '6', url: '', notes: '' },
-    { task: 'Website v1',                         epic: 'Close Seed Round',               owner: 'SK',  scope: '2', impact: '3', score: '6', url: '', notes: '' },
-    { task: 'Advisory board setup',               epic: 'Generate Revenue vs. Goal',      owner: 'JP',  scope: '3', impact: '2', score: '6', url: '', notes: '' },
-    { task: 'Equitable call with Evan Scarponi',  epic: 'Carrier Pipeline Engagement',    owner: 'SK',  scope: '1', impact: '2', score: '2', url: '', notes: 'Reconnect meeting completed Mar 18' },
-  ];
+  STATE.epics = [];
+  STATE.tasks = [];
+  STATE.completed = [];
 }
 
 // ─── FIREBASE CONFIG ─────────────────────────────────────────
